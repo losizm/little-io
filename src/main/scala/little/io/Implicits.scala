@@ -13,6 +13,50 @@ object Implicits {
 
   /** Provides extension methods to {@code java.io.File}. */
   implicit class FileType(val file: File) extends AnyVal {
+    /**
+     * Appends supplied bytes to file.
+     *
+     * @return file
+     */
+    def <<(bytes: Array[Byte]): File =
+      withOutputStream(true) { out =>
+        out.write(bytes)
+        file
+      }
+
+    /**
+     * Appends supplied text to file.
+     *
+     * @return file
+     */
+    def <<(text: String): File =
+      withWriter(true) { out =>
+        out.append(text)
+        file
+      }
+
+    /**
+     * Appends contents of supplied InputStream to file.
+     *
+     * @return file
+     */
+    def <<(in: InputStream)(implicit bufferSize: BufferSize): File =
+      withOutputStream(true) { out =>
+        out << in
+        file
+      }
+
+    /**
+     * Appends contents of supplied Reader to file.
+     *
+     * @return file
+     */
+    def <<(in: Reader)(implicit bufferSize: BufferSize): File =
+      withWriter(true) { out =>
+        out << in
+        file
+      }
+
     /** Reads file and returns byte array. */
     def getBytes(): Array[Byte] = file.toPath.getBytes
 
@@ -24,26 +68,6 @@ object Implicits {
 
     /** Sets file content to supplied text. */
     def setText(text: String): Unit = file.toPath.setText(text)
-
-    /**
-     * Appends supplied bytes to file.
-     *
-     * @return file
-     */
-    def append(bytes: Array[Byte]): File = {
-      file.toPath.append(bytes)
-      file
-    }
-
-    /**
-     * Appends supplied text to file.
-     *
-     * @return file
-     */
-    def append(text: String): File = {
-      file.toPath.append(text)
-      file
-    }
 
     /**
      * Reads file and invokes supplied function for each line in file.
@@ -135,6 +159,50 @@ object Implicits {
 
   /** Provides extension methods to {@code java.nio.file.Path}. */
   implicit class PathType(val path: Path) extends AnyVal {
+    /**
+     * Appends supplied bytes to file.
+     *
+     * @return path
+     */
+    def <<(bytes: Array[Byte]): Path =
+      withOutputStream(APPEND) { out =>
+        out.write(bytes)
+        path
+      }
+
+    /**
+     * Appends supplied text to file.
+     *
+     * @return path
+     */
+    def <<(text: String): Path =
+      withWriter(APPEND) { out =>
+        out.append(text)
+        path
+      }
+
+    /**
+     * Appends contents of supplied InputStream to file.
+     *
+     * @return path
+     */
+    def <<(in: InputStream)(implicit bufferSize: BufferSize): Path =
+      withOutputStream(APPEND) { out =>
+        out << in
+        path
+      }
+
+    /**
+     * Appends contents of supplied Reader to file.
+     *
+     * @return path
+     */
+    def <<(in: Reader)(implicit bufferSize: BufferSize): Path =
+      withWriter(APPEND) { out =>
+        out << in
+        path
+      }
+
     /** Reads file at path and returns byte array. */
     def getBytes(): Array[Byte] = Files.readAllBytes(path)
 
@@ -148,28 +216,6 @@ object Implicits {
     /** Sets file content to supplied text. */
     def setText(text: String): Unit =
       withWriter(TRUNCATE_EXISTING) { out => out.append(text) }
-
-    /**
-     * Appends supplied bytes to file.
-     *
-     * @return path
-     */
-    def append(bytes: Array[Byte]): Path =
-      withOutputStream(APPEND) { out =>
-        out.write(bytes)
-        path
-      }
-
-    /**
-     * Appends supplied text to file.
-     *
-     * @return path
-     */
-    def append(text: String): Path =
-      withWriter(APPEND) { out =>
-        out.append(text)
-        path
-      }
 
     /**
      * Reads file at path and invokes supplied function for each line in file.

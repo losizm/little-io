@@ -1,12 +1,14 @@
 package little.io
 
-import java.io.{ ByteArrayOutputStream, File, StringWriter }
+import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, File, StringReader, StringWriter }
 
 import org.scalatest.FlatSpec
 
 import Implicits._
 
 class FileTypeSpec extends FlatSpec {
+  implicit val bufferSize = BufferSize(64)
+
   val text = "Now Peter Piper picked peppers\nbut Run rocks rhymes."
 
   s"File" should "be written to output stream and read from input stream" in {
@@ -49,13 +51,13 @@ class FileTypeSpec extends FlatSpec {
     val file = File.createTempFile("little-io-", ".txt")
 
     file.setText("abc")
-    file.append("123".getBytes).append(".!?")
+    file << "123".getBytes << ".!?"
 
     assert(file.getText == "abc123.!?")
 
     file.setBytes("ABC".getBytes)
-    file.append("123").append(".!?".getBytes)
+    file << "123" << ".!?".getBytes << new ByteArrayInputStream("abc".getBytes) << new StringReader("xyz")
 
-    assert(file.getText == "ABC123.!?")
+    assert(file.getText == "ABC123.!?abcxyz")
   }
 }

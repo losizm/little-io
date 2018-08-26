@@ -1,6 +1,6 @@
 package little.io
 
-import java.io.{ ByteArrayOutputStream, StringWriter }
+import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, StringReader, StringWriter }
 import java.nio.file.Files
 
 import org.scalatest.FlatSpec
@@ -8,6 +8,8 @@ import org.scalatest.FlatSpec
 import Implicits._
 
 class PathTypeSpec extends FlatSpec {
+  implicit val bufferSize = BufferSize(64)
+
   val text = "Now Peter Piper picked peppers but Run rocks rhymes."
 
   s"Path" should "be written to output stream and read from input stream" in {
@@ -50,13 +52,13 @@ class PathTypeSpec extends FlatSpec {
     val file = Files.createTempFile("little-io-", ".txt")
 
     file.setText("abc")
-    file.append("123".getBytes).append(".!?")
+    file << "123".getBytes << ".!?"
 
     assert(file.getText == "abc123.!?")
 
     file.setBytes("ABC".getBytes)
-    file.append("123").append(".!?".getBytes)
+    file << "123" << ".!?".getBytes << new ByteArrayInputStream("abc".getBytes) << new StringReader("xyz")
 
-    assert(file.getText == "ABC123.!?")
+    assert(file.getText == "ABC123.!?abcxyz")
   }
 }
