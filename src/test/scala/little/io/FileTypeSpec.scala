@@ -44,4 +44,18 @@ class FileTypeSpec extends FlatSpec {
       first = false
     }
   }
+
+  it should "have its content set to bytes and text" in {
+    val file = File.createTempFile("little-io-", ".txt")
+
+    file.setText("abc")
+    file.append("123".getBytes).append(".!?")
+
+    assert(file.getText == "abc123.!?")
+
+    file.setBytes("ABC".getBytes)
+    file.append("123").append(".!?".getBytes)
+
+    assert(file.getText == "ABC123.!?")
+  }
 }

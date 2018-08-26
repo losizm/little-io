@@ -16,8 +16,34 @@ object Implicits {
     /** Reads file and returns byte array. */
     def getBytes(): Array[Byte] = file.toPath.getBytes
 
+    /** Sets file content to supplied bytes. */
+    def setBytes(bytes: Array[Byte]): Unit = file.toPath.setBytes(bytes)
+
     /** Reads file and returns text. */
     def getText(): String = file.toPath.getText
+
+    /** Sets file content to supplied text. */
+    def setText(text: String): Unit = file.toPath.setText(text)
+
+    /**
+     * Appends supplied bytes to file.
+     *
+     * @return file
+     */
+    def append(bytes: Array[Byte]): File = {
+      file.toPath.append(bytes)
+      file
+    }
+
+    /**
+     * Appends supplied text to file.
+     *
+     * @return file
+     */
+    def append(text: String): File = {
+      file.toPath.append(text)
+      file
+    }
 
     /**
      * Reads file and invokes supplied function for each line in file.
@@ -112,8 +138,38 @@ object Implicits {
     /** Reads file at path and returns byte array. */
     def getBytes(): Array[Byte] = Files.readAllBytes(path)
 
+    /** Sets file content to supplied bytes. */
+    def setBytes(bytes: Array[Byte]): Unit =
+      withOutputStream(TRUNCATE_EXISTING) { out => out.write(bytes) }
+
     /** Reads file at path and returns text. */
     def getText(): String = new String(getBytes())
+
+    /** Sets file content to supplied text. */
+    def setText(text: String): Unit =
+      withWriter(TRUNCATE_EXISTING) { out => out.append(text) }
+
+    /**
+     * Appends supplied bytes to file.
+     *
+     * @return path
+     */
+    def append(bytes: Array[Byte]): Path =
+      withOutputStream(APPEND) { out =>
+        out.write(bytes)
+        path
+      }
+
+    /**
+     * Appends supplied text to file.
+     *
+     * @return path
+     */
+    def append(text: String): Path =
+      withWriter(APPEND) { out =>
+        out.append(text)
+        path
+      }
 
     /**
      * Reads file at path and invokes supplied function for each line in file.
