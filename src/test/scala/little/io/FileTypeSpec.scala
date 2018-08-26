@@ -7,7 +7,7 @@ import org.scalatest.FlatSpec
 import Implicits._
 
 class FileTypeSpec extends FlatSpec {
-  val text = "Now Peter Piper picked peppers but Run rocks rhymes."
+  val text = "Now Peter Piper picked peppers\nbut Run rocks rhymes."
 
   s"File" should "be written to output stream and read from input stream" in {
     val bytes = text.getBytes("utf-8")
@@ -34,5 +34,14 @@ class FileTypeSpec extends FlatSpec {
     }
 
     assert(file.getText == text)
+
+    var first = true
+
+    file.forEachLine { line =>
+      if (first) assert(line == text.split("\n").head)
+      else assert(line == text.split("\n").last)
+
+      first = false
+    }
   }
 }

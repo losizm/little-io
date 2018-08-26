@@ -2,6 +2,7 @@ package little.io
 
 import java.io._
 import java.nio.file.{ Files, OpenOption, Path }
+import java.nio.file.StandardOpenOption._
 
 import scala.util.Try
 
@@ -13,10 +14,19 @@ object Implicits {
   /** Provides extension methods to {@code java.io.File}. */
   implicit class FileType(val file: File) extends AnyVal {
     /** Reads file and returns byte array. */
-    def getBytes(): Array[Byte] = Files.readAllBytes(file.toPath)
+    def getBytes(): Array[Byte] = file.toPath.getBytes
 
     /** Reads file and returns text. */
-    def getText(): String = new String(getBytes())
+    def getText(): String = file.toPath.getText
+
+    /**
+     * Reads file and invokes supplied function for each line in file.
+     *
+     * The line content, excluding line separator, is passed to function.
+     *
+     * @param f function
+     */
+    def forEachLine(f: String => Unit): Unit = file.toPath.forEachLine(f)
 
     /**
      * Opens InputStream to file and passes it to supplied function. Input
@@ -61,32 +71,29 @@ object Implicits {
     }
 
     /**
-     * Opens Reader to file and passes it to supplied function. Reader is closed
-     * on function's return.
+     * Opens BufferedReader to file and passes it to supplied function. Reader
+     * is closed on function's return.
      *
      * @param f function
      *
      * @return value from supplied function
      */
-    def withReader[T](f: Reader => T): T = {
-      val reader = new FileReader(file)
-      try f(reader)
-      finally Try(reader.close())
-    }
+    def withReader[T](f: BufferedReader => T): T =
+      file.toPath.withReader(f)
 
     /**
-     * Opens Writer to file and passes it to supplied function. Writer is closed
-     * on function's return.
+     * Opens BufferedWriter to file and passes it to supplied function. Writer
+     * is closed on function's return.
      *
      * @param f function
      *
      * @return value from supplied function
      */
-    def withWriter[T](f: Writer => T): T = withWriter(false)(f)
+    def withWriter[T](f: BufferedWriter => T): T = withWriter(false)(f)
 
     /**
-     * Opens Writer to file and passes it to supplied function. Writer is closed
-     * on function's return.
+     * Opens BufferedWriter to file and passes it to supplied function. Writer
+     * is closed on function's return.
      *
      * @param append if {@code true}, output is written at end of file;
      * otherwise, if {@code false}, file is truncated and output is written at
@@ -96,11 +103,8 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withWriter[T](append: Boolean)(f: Writer => T): T = {
-      val writer = new FileWriter(file, append)
-      try f(writer)
-      finally Try(writer.close())
-    }
+    def withWriter[T](append: Boolean)(f: BufferedWriter => T): T =
+      file.toPath.withWriter(if (append) APPEND else TRUNCATE_EXISTING)(f)
   }
 
   /** Provides extension methods to {@code java.nio.file.Path}. */
@@ -110,6 +114,20 @@ object Implicits {
 
     /** Reads file at path and returns text. */
     def getText(): String = new String(getBytes())
+
+    /**
+     * Reads file at path and invokes supplied function for each line in file.
+     *
+     * The line content, excluding line separator, is passed to function.
+     *
+     * @param f function
+     */
+    def forEachLine(f: String => Unit): Unit =
+      withReader { in =>
+        var line: String = null
+        while ({ line = in.readLine(); line != null })
+          f(line)
+      }
 
     /**
      * Opens InputStream to file at path and passes it to supplied function.
