@@ -8,11 +8,10 @@ import Implicits._
 
 class WriterTypeSpec extends FlatSpec {
   s"Writer" should "write characters from Reader" in {
-    val message = "Now Peter Piper picked peppers but Run rocks rhymes."
-    val reader = new StringReader(message)
-    val writer = new StringWriter()
-    writer << reader
-    assert(writer.toString() == message)
+    val text = "Now Peter Piper picked peppers but Run rocks rhymes."
+    val reader = new StringReader(text)
+    val writer = new StringWriter() << reader
+    assert(writer.toString == text)
   }
 }
 
