@@ -5,6 +5,7 @@ import java.nio.file.{ Files, OpenOption, Path }
 import java.nio.file.StandardOpenOption._
 
 import scala.util.Try
+import scala.compat.Platform.EOL
 
 /** Provides extension methods to {@code java.io} and {@code java.nio}. */
 object Implicits {
@@ -57,13 +58,13 @@ object Implicits {
         file
       }
 
-    /** Reads file and returns byte array. */
+    /** Reads file and returns its bytes. */
     def getBytes(): Array[Byte] = file.toPath.getBytes
 
     /** Sets file content to supplied bytes. */
     def setBytes(bytes: Array[Byte]): Unit = file.toPath.setBytes(bytes)
 
-    /** Reads file and returns text. */
+    /** Reads file and returns its text. */
     def getText(): String = file.toPath.getText
 
     /** Sets file content to supplied text. */
@@ -106,7 +107,7 @@ object Implicits {
      * Opens OutputStream to file and passes it to supplied function. Output
      * stream is closed on function's return.
      *
-     * @param append if {@code true}, output is written at end of file;
+     * @param append if {@code true}, output is appended to end of file;
      * otherwise, if {@code false}, file is truncated and output is written at
      * beginning of file
      *
@@ -145,7 +146,7 @@ object Implicits {
      * Opens BufferedWriter to file and passes it to supplied function. Writer
      * is closed on function's return.
      *
-     * @param append if {@code true}, output is written at end of file;
+     * @param append if {@code true}, output is appended to end of file;
      * otherwise, if {@code false}, file is truncated and output is written at
      * beginning of file
      *
@@ -203,14 +204,14 @@ object Implicits {
         path
       }
 
-    /** Reads file at path and returns byte array. */
+    /** Reads file at path and returns its bytes. */
     def getBytes(): Array[Byte] = Files.readAllBytes(path)
 
     /** Sets file content to supplied bytes. */
     def setBytes(bytes: Array[Byte]): Unit =
       withOutputStream(TRUNCATE_EXISTING) { out => out.write(bytes) }
 
-    /** Reads file at path and returns text. */
+    /** Reads file at path and returns its text. */
     def getText(): String = new String(getBytes())
 
     /** Sets file content to supplied text. */
@@ -294,7 +295,17 @@ object Implicits {
   /** Provides extension methods to {@code java.io.OutputStream}. */
   implicit class OutputStreamType[T <: OutputStream](val out: T) extends AnyVal {
     /**
-     * Writes all bytes from given input stream.
+     * Appends bytes to output stream.
+     *
+     * @return out
+     */
+    def <<(bytes: Array[Byte]): T = {
+      out.write(bytes)
+      out
+    }
+
+    /**
+     * Appends contents of supplied input stream.
      *
      * @param in input stream from which bytes are read
      *
@@ -313,7 +324,17 @@ object Implicits {
   /** Provides extension methods to {@code java.io.Writer}. */
   implicit class WriterType[T <: Writer](val out: T) extends AnyVal {
     /**
-     * Writes all characters from given reader.
+     * Appends text to writer.
+     *
+     * @return out
+     */
+    def <<(text: String): T = {
+      out.append(text)
+      out
+    }
+
+    /**
+     * Appends contents of supplied reader.
      *
      * @param in reader from which characters are read
      *
@@ -327,5 +348,9 @@ object Implicits {
         out.write(buffer, 0, length)
       out
     }
+
+    /** Writes text followed by platform's line separator. */
+    def writeLine(text: String): Unit =
+      out << text << EOL
   }
 }
