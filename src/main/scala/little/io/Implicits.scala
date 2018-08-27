@@ -1,7 +1,7 @@
 package little.io
 
 import java.io._
-import java.nio.file.{ Files, OpenOption, Path }
+import java.nio.file.{ Files, LinkOption, OpenOption, Path }
 import java.nio.file.StandardOpenOption._
 
 import scala.util.Try
@@ -218,6 +218,53 @@ object Implicits {
     /** Sets file content to supplied text. */
     def setText(text: String): Unit =
       withWriter(TRUNCATE_EXISTING) { out => out.append(text) }
+
+    /**
+     * Tests whether file at path exists.
+     *
+     * @param options indicates how symbolic links are handled
+     */
+    def exists(options: LinkOption*): Boolean =
+      Files.exists(path, options : _*)
+
+    /**
+     * Tests whether file at path does not exist.
+     *
+     * @param options indicates how symbolic links are handled
+     */
+    def notExists(options: LinkOption*): Boolean =
+      Files.notExists(path, options : _*)
+
+    /**
+     * Tests whether file at path is a regular file.
+     *
+     * @param options indicates how symbolic links are handled
+     */
+    def isRegularFile(options: LinkOption*): Boolean =
+      Files.isRegularFile(path, options : _*)
+
+    /**
+     * Tests whether file at path is a directory.
+     *
+     * @param options indicates how symbolic links are handled
+     */
+    def isDirectory(options: LinkOption*): Boolean =
+      Files.isDirectory(path, options : _*)
+
+    /** Tests whether file at path is a symbolic link. */
+    def isSymbolicLink: Boolean = Files.isSymbolicLink(path)
+
+    /** Tests whether file at path is hidden. */
+    def isHidden: Boolean = Files.isHidden(path)
+
+    /** Tests whether file at path is readable. */
+    def isReadable: Boolean = Files.isReadable(path)
+
+    /** Tests whether file at path is writable. */
+    def isWritable: Boolean = Files.isWritable(path)
+
+    /** Tests whether file at path is executable. */
+    def isExecutable: Boolean = Files.isExecutable(path)
 
     /**
      * Reads file content into byte buffer and passes buffer along with its

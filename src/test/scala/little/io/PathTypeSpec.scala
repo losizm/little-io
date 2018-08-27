@@ -61,4 +61,21 @@ class PathTypeSpec extends FlatSpec {
 
     assert(file.getText == "ABC123.!?abcxyz")
   }
+
+  "File" should "be created and deleted" in {
+    val file = Files.createTempFile("little-io-", ".txt") << "a regular file"
+
+    assert(file.exists())
+    assert(!file.notExists())
+    assert(file.isRegularFile())
+    assert(!file.isDirectory())
+    assert(!file.isSymbolicLink)
+    assert(!file.isHidden)
+    assert(file.isReadable)
+    assert(file.isWritable)
+    assert(!file.isExecutable)
+    assert(Files.deleteIfExists(file))
+    assert(!file.exists())
+    assert(file.notExists())
+  }
 }
