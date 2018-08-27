@@ -12,7 +12,11 @@ object Implicits {
   /** Default buffer size for I/O operations &mdash; i.e., BufferSize(8192). */
   implicit val bufferSize = BufferSize(8192)
 
-  /** Provides extension methods to {@code java.io.File}. */
+  /**
+   * Provides extension methods to {@code java.io.File}.
+   *
+   * @see [[PathType]]
+   */
   implicit class FileType(val file: File) extends AnyVal {
     /**
      * Appends supplied bytes to file.
@@ -71,13 +75,30 @@ object Implicits {
     def setText(text: String): Unit = file.toPath.setText(text)
 
     /**
-     * Reads file and invokes supplied function for each line in file.
+     * Reads file content into byte buffer and passes buffer along with its
+     * effective length to supplied function. The function is invoked repeatedly
+     * until all content is consumed.
+     */
+    def forEachByteArray(f: (Array[Byte], Int) => Unit)(implicit bufferSize: BufferSize): Unit =
+      withInputStream { in => in.forEachByteArray(f) }
+
+    /**
+     * Reads file content into character buffer and passes buffer along with its
+     * effective length to supplied function. The function is invoked repeatedly
+     * until all content is consumed.
+     */
+    def forEachCharArray(f: (Array[Char], Int) => Unit)(implicit bufferSize: BufferSize): Unit =
+      withReader { in => in.forEachCharArray(f) }
+
+    /**
+     * Reads file and invokes supplied function for each line.
      *
      * The line content, excluding line separator, is passed to function.
      *
      * @param f function
      */
-    def forEachLine(f: String => Unit): Unit = file.toPath.forEachLine(f)
+    def forEachLine(f: String => Unit): Unit =
+      withReader { in => in.forEachLine(f) }
 
     /**
      * Opens InputStream to file and passes it to supplied function. Input
@@ -158,7 +179,11 @@ object Implicits {
       file.toPath.withWriter(if (append) APPEND else TRUNCATE_EXISTING)(f)
   }
 
-  /** Provides extension methods to {@code java.nio.file.Path}. */
+  /**
+   * Provides extension methods to {@code java.nio.file.Path}.
+   *
+   * @see [[FileType]]
+   */
   implicit class PathType(val path: Path) extends AnyVal {
     /**
      * Appends supplied bytes to file.
@@ -219,18 +244,30 @@ object Implicits {
       withWriter(TRUNCATE_EXISTING) { out => out.append(text) }
 
     /**
-     * Reads file at path and invokes supplied function for each line in file.
+     * Reads file content into byte buffer and passes buffer along with its
+     * effective length to supplied function. The function is invoked repeatedly
+     * until all content is consumed.
+     */
+    def forEachByteArray(f: (Array[Byte], Int) => Unit)(implicit bufferSize: BufferSize): Unit =
+      withInputStream() { in => in.forEachByteArray(f) }
+
+    /**
+     * Reads file content into character buffer and passes buffer along with its
+     * effective length to supplied function. The function is invoked repeatedly
+     * until all content is consumed.
+     */
+    def forEachCharArray(f: (Array[Char], Int) => Unit)(implicit bufferSize: BufferSize): Unit =
+      withReader { in => in.forEachCharArray(f) }
+
+    /**
+     * Reads file at path and invokes supplied function for each line.
      *
      * The line content, excluding line separator, is passed to function.
      *
      * @param f function
      */
     def forEachLine(f: String => Unit): Unit =
-      withReader { in =>
-        var line: String = null
-        while ({ line = in.readLine(); line != null })
-          f(line)
-      }
+      withReader { in => in.forEachLine(f) }
 
     /**
      * Opens InputStream to file at path and passes it to supplied function.
@@ -292,7 +329,30 @@ object Implicits {
     }
   }
 
-  /** Provides extension methods to {@code java.io.OutputStream}. */
+  /**
+   * Provides extension methods to {@code java.io.InputStream}.
+   *
+   * @see [[OutputStreamType]]
+   */
+  implicit class InputStreamType[T <: InputStream](val in: T) extends AnyVal {
+    /**
+     * Reads content into byte buffer and passes buffer along with its effective
+     * length to supplied function. The function is invoked repeatedly until all
+     * content is consumed.
+     */
+    def forEachByteArray(f: (Array[Byte], Int) => Unit)(implicit bufferSize: BufferSize): Unit = {
+      val buf = new Array[Byte](bufferSize.value)
+      var len = 0
+      while ({ len = in.read(buf); len != -1 })
+        f(buf, len)
+    }
+  }
+
+  /**
+   * Provides extension methods to {@code java.io.OutputStream}.
+   *
+   * @see [[InputStreamType]]
+   */
   implicit class OutputStreamType[T <: OutputStream](val out: T) extends AnyVal {
     /**
      * Appends bytes to output stream.
@@ -321,7 +381,48 @@ object Implicits {
     }
   }
 
-  /** Provides extension methods to {@code java.io.Writer}. */
+  /**
+   * Provides extension methods to {@code java.io.Reader}.
+   *
+   * @see [[WriterType]]
+   */
+  implicit class ReaderType[T <: Reader](val in: T) extends AnyVal {
+    /**
+     * Reads content into character buffer and passes buffer along with its
+     * effective length to supplied function. The function is invoked repeatedly
+     * until all content is consumed.
+     */
+    def forEachCharArray(f: (Array[Char], Int) => Unit)(implicit bufferSize: BufferSize): Unit = {
+      val buf = new Array[Char](bufferSize.value)
+      var len = 0
+      while ({ len = in.read(buf); len != -1 })
+        f(buf, len)
+    }
+
+    /**
+     * Reads content and invokes supplied function for each line.
+     *
+     * The line content, excluding line separator, is passed to function.
+     *
+     * @param f function
+     */
+    def forEachLine(f: String => Unit): Unit = {
+      val reader = in match {
+        case in: BufferedReader => in
+        case in => new BufferedReader(in)
+      }
+
+      var line: String = null
+      while ({ line = reader.readLine(); line != null })
+        f(line)
+    }
+  }
+
+  /**
+   * Provides extension methods to {@code java.io.Writer}.
+   *
+   * @see [[ReaderType]]
+   */
   implicit class WriterType[T <: Writer](val out: T) extends AnyVal {
     /**
      * Appends text to writer.
