@@ -1,10 +1,11 @@
 package little.io
 
-import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, File, StringReader, StringWriter }
+import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, StringReader, StringWriter }
 
 import org.scalatest.FlatSpec
 
 import Implicits._
+import TestFile._
 
 class FileTypeSpec extends FlatSpec {
   implicit val bufferSize = BufferSize(64)
@@ -13,7 +14,7 @@ class FileTypeSpec extends FlatSpec {
 
   s"File" should "be written to output stream and read from input stream" in {
     val bytes = text.getBytes("utf-8")
-    val file = File.createTempFile("little-io-", ".txt")
+    val file = createTempFile()
     
     file.withOutputStream(out => out.write(bytes))
 
@@ -26,7 +27,7 @@ class FileTypeSpec extends FlatSpec {
   }
 
   it should "be written to writer and read from reader" in {
-    val file = File.createTempFile("little-io-", ".txt")
+    val file = createTempFile()
     
     file.withWriter(writer => writer.append(text))
 
@@ -48,7 +49,7 @@ class FileTypeSpec extends FlatSpec {
   }
 
   it should "have its content set to bytes and text" in {
-    val file = File.createTempFile("little-io-", ".txt")
+    val file = createTempFile()
 
     file.setText("abc")
     file << "123".getBytes << ".!?"

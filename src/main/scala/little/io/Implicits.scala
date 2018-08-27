@@ -1,11 +1,14 @@
 package little.io
 
 import java.io._
-import java.nio.file.{ Files, LinkOption, OpenOption, Path }
+import java.nio.file._
 import java.nio.file.StandardOpenOption._
+import java.nio.file.attribute.BasicFileAttributes
 
 import scala.util.Try
 import scala.compat.Platform.EOL
+
+import FileVisitEvent._
 
 /** Provides extension methods to {@code java.io} and {@code java.nio}. */
 object Implicits {
@@ -291,6 +294,57 @@ object Implicits {
      */
     def forEachLine(f: String => Unit): Unit =
       withReader { in => in.forEachLine(f) }
+
+    /**
+     * Opens directory stream to path and invokes supplied function for each
+     * file in directory.
+     */
+    def forEachFile(f: Path => Unit): Unit =
+      forEachFile("*")(f)
+
+    /**
+     * Opens directory stream to path and invokes supplied function for each
+     * file satisfying glob in directory.
+     */
+    def forEachFile(glob: String)(f: Path => Unit): Unit = {
+      var stream: DirectoryStream[Path] = null
+
+      try {
+        stream = Files.newDirectoryStream(path, glob)
+        stream.forEach(f(_))
+      } finally Try(stream.close())
+    }
+
+
+    /**
+     * Walks file tree starting at path and invokes supplied visitor function
+     * for each event encountered.
+     *
+     * If supplied visitor does not handle an event, then it is treated as if
+     * it returned {@code FileVisitResult.CONTINUE}.
+     *
+     * @see [[FileVisitEvent.PreVisitDirectory]], [[FileVisitEvent.PostVisitDirectory]]
+     *      [[FileVisitEvent.VisitFile]], [[FileVisitEvent.VisitFileFailed]]
+     */
+    def walkFileTree(visitor: PartialFunction[FileVisitEvent, FileVisitResult]): Unit =  {
+      Files.walkFileTree(path, new FileVisitor[Path] {
+        def preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult =
+          visitor.applyOrElse(PreVisitDirectory(dir, attrs),
+              (evt: FileVisitEvent) => FileVisitResult.CONTINUE)
+
+        def postVisitDirectory(dir: Path, ex: IOException): FileVisitResult =
+          visitor.applyOrElse(PostVisitDirectory(dir, Option(ex)),
+              (evt: FileVisitEvent) => FileVisitResult.CONTINUE)
+
+        def visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult =
+          visitor.applyOrElse(VisitFile(file, attrs),
+              (evt: FileVisitEvent) => FileVisitResult.CONTINUE)
+
+        def visitFileFailed(file: Path, ex: IOException): FileVisitResult =
+          visitor.applyOrElse(VisitFileFailed(file, ex),
+              (evt: FileVisitEvent) => FileVisitResult.CONTINUE)
+      })
+    }
 
     /**
      * Opens InputStream to file at path and passes it to supplied function.
