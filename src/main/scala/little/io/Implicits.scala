@@ -24,10 +24,7 @@ object Implicits {
      * @return file
      */
     def <<(bytes: Array[Byte]): File =
-      withOutputStream(true) { out =>
-        out.write(bytes)
-        file
-      }
+      withOutputStream(true) { out => out.write(bytes); file }
 
     /**
      * Appends supplied text to file.
@@ -35,10 +32,7 @@ object Implicits {
      * @return file
      */
     def <<(text: String): File =
-      withWriter(true) { out =>
-        out.append(text)
-        file
-      }
+      withWriter(true) { out => out.append(text); file }
 
     /**
      * Appends contents of supplied InputStream to file.
@@ -46,10 +40,7 @@ object Implicits {
      * @return file
      */
     def <<(in: InputStream)(implicit bufferSize: BufferSize): File =
-      withOutputStream(true) { out =>
-        out << in
-        file
-      }
+      withOutputStream(true) { out => out << in; file }
 
     /**
      * Appends contents of supplied Reader to file.
@@ -57,10 +48,7 @@ object Implicits {
      * @return file
      */
     def <<(in: Reader)(implicit bufferSize: BufferSize): File =
-      withWriter(true) { out =>
-        out << in
-        file
-      }
+      withWriter(true) { out => out << in; file }
 
     /** Reads file and returns its bytes. */
     def getBytes(): Array[Byte] = file.toPath.getBytes
@@ -191,10 +179,7 @@ object Implicits {
      * @return path
      */
     def <<(bytes: Array[Byte]): Path =
-      withOutputStream(APPEND) { out =>
-        out.write(bytes)
-        path
-      }
+      withOutputStream(APPEND) { out => out.write(bytes); path }
 
     /**
      * Appends supplied text to file.
@@ -202,10 +187,7 @@ object Implicits {
      * @return path
      */
     def <<(text: String): Path =
-      withWriter(APPEND) { out =>
-        out.append(text)
-        path
-      }
+      withWriter(APPEND) { out => out.append(text); path }
 
     /**
      * Appends contents of supplied InputStream to file.
@@ -213,10 +195,7 @@ object Implicits {
      * @return path
      */
     def <<(in: InputStream)(implicit bufferSize: BufferSize): Path =
-      withOutputStream(APPEND) { out =>
-        out << in
-        path
-      }
+      withOutputStream(APPEND) { out => out << in; path }
 
     /**
      * Appends contents of supplied Reader to file.
@@ -224,10 +203,7 @@ object Implicits {
      * @return path
      */
     def <<(in: Reader)(implicit bufferSize: BufferSize): Path =
-      withWriter(APPEND) { out =>
-        out << in
-        path
-      }
+      withWriter(APPEND) { out => out << in; path }
 
     /** Reads file at path and returns its bytes. */
     def getBytes(): Array[Byte] = Files.readAllBytes(path)
@@ -359,10 +335,7 @@ object Implicits {
      *
      * @return out
      */
-    def <<(bytes: Array[Byte]): T = {
-      out.write(bytes)
-      out
-    }
+    def <<(bytes: Array[Byte]): T = { out.write(bytes); out }
 
     /**
      * Appends contents of supplied input stream.
@@ -429,10 +402,7 @@ object Implicits {
      *
      * @return out
      */
-    def <<(text: String): T = {
-      out.append(text)
-      out
-    }
+    def <<(text: String): T = { out.append(text); out }
 
     /**
      * Appends contents of supplied reader.
