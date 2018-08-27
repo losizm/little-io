@@ -134,4 +134,37 @@ class PathTypeSpec extends FlatSpec {
     assert(postDirCount == 2)
     assert(fileCount == 1)
   }
+
+  it should "not be traversed" in {
+    val dir = createTempDir()
+    val subdir = createTempDir(dir)
+    val file1 = createTempFile(dir)
+    val file2 = createTempFile(subdir)
+
+    var preDirCount = 0
+    var postDirCount = 0
+    var fileCount = 0
+
+    dir.walkFileTree {
+      case PreVisitDirectory(path, _) =>
+        preDirCount += 1
+        assert(path == dir || path == subdir)
+        if (path == subdir) FileVisitResult.SKIP_SUBTREE
+        else FileVisitResult.CONTINUE
+
+      case VisitFile(path, _) =>
+        fileCount += 1
+        assert(path == file1)
+        FileVisitResult.CONTINUE
+
+      case PostVisitDirectory(path, _) =>
+        postDirCount += 1
+        assert(path == dir)
+        FileVisitResult.CONTINUE
+    }
+
+    assert(preDirCount == 2)
+    assert(postDirCount == 1)
+    assert(fileCount == 1)
+  }
 }
