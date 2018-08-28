@@ -2,6 +2,9 @@ package little.io
 
 import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, StringReader, StringWriter }
 import java.nio.file.{ Files, FileVisitResult }
+import java.nio.file.StandardWatchEventKinds._
+
+import scala.util.Try
 
 import org.scalatest.FlatSpec
 
@@ -166,5 +169,28 @@ class PathTypeSpec extends FlatSpec {
     assert(preDirCount == 2)
     assert(postDirCount == 1)
     assert(fileCount == 1)
+  }
+
+  it should "be watched" in {
+    val dir = createTempDir()
+    var created = 0
+    var deleted = 0
+
+    val handle = dir.watch(ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY) { event =>
+      event.kind match {
+        case ENTRY_CREATE => println(s"${event.context} created")
+        case ENTRY_DELETE => println(s"${event.context} deleted")
+        case ENTRY_MODIFY => println(s"${event.context} modified")
+      }
+    }
+
+    scala.concurrent.Future {
+      try {
+        Files.delete(createTempFile(dir))
+        Thread.sleep(2000)
+      } finally {
+        Try(handle.close())
+      }
+    } (scala.concurrent.ExecutionContext.global)
   }
 }

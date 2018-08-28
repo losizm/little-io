@@ -6,6 +6,7 @@ import java.nio.file.StandardOpenOption._
 import java.nio.file.attribute.BasicFileAttributes
 
 import scala.util.Try
+import scala.util.control.NonFatal
 import scala.compat.Platform.EOL
 
 import FileVisitEvent._
@@ -344,6 +345,17 @@ object Implicits {
           visitor.applyOrElse(VisitFileFailed(file, ex),
               (evt: FileVisitEvent) => FileVisitResult.CONTINUE)
       })
+    }
+
+    /**
+     * Watch file at path for specified events.
+     *
+     * @return watch handle
+     */
+    def watch(events: WatchEvent.Kind[_]*)(watcher: WatchEvent[_] => Unit): WatchHandle = {
+      val service = path.getFileSystem.newWatchService()
+      try new WatchHandle(service, path.register(service, events : _*), watcher)
+      catch { case NonFatal(e) => service.close(); throw e }
     }
 
     /**
