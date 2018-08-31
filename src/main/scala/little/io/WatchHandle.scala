@@ -16,9 +16,22 @@ private object WatchExecutionContext extends ExecutionContext {
 }
 
 /**
- * Provides opaque handle to watch service and registered key.
+ * Provides opaque handle to watch service.
  *
- * @see [[Implicits.PathType.watch]]
+ * A handle is obtained via [[Implicits.PathType.watch]], which registers path
+ * to watch service.
+ *
+ * {{{
+ * import java.nio.file.Paths
+ * import java.nio.file.StandardWatchEventKinds.ENTRY_CREATE
+ * import little.io.Implicits.PathType
+ *
+ * val dir = Paths.get(".")
+ *
+ * val handle = dir.watch(ENTRY_CREATE) { evt ⇒
+ *   println(s"${evt.context} was created.")
+ * }
+ * }}}
  */
 final class WatchHandle private[io] (service: WatchService, key: WatchKey, watcher: WatchEvent[_] => Unit) {
   private implicit val ec = WatchExecutionContext
@@ -43,6 +56,6 @@ final class WatchHandle private[io] (service: WatchService, key: WatchKey, watch
     closed = true
   }
 
-  /** Tests whether handle is closed. */
+  /** Tests whether underlying watch service is closed. */
   def isClosed: Boolean = closed
 }

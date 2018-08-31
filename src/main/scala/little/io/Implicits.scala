@@ -305,7 +305,7 @@ object Implicits {
 
     /**
      * Opens directory stream to path and invokes supplied function for each
-     * file satisfying glob in directory.
+     * file in directory satisfying glob.
      */
     def forEachFile(glob: String)(f: Path => Unit): Unit = {
       var stream: DirectoryStream[Path] = null
@@ -323,6 +323,28 @@ object Implicits {
      *
      * If supplied visitor does not handle an event, then it is treated as if
      * it returned {@code FileVisitResult.CONTINUE}.
+     *
+     * {{{
+     * import java.nio.file.{ FileVisitResult, Paths }
+     * import little.io.FileVisitEvent.{ PreVisitDirectory, VisitFile }
+     * import little.io.Implicits.PathType
+     *
+     * val sourceDir = Paths.get("src")
+     *
+     * sourceDir.walkFileTree {
+     *   case PreVisitDirectory(dir, attrs) ⇒
+     *     if (dir.getFileName.toString == "test")
+     *       FileVisitResult.SKIP_SUBTREE
+     *     else {
+     *       println(s"Listing files in ${dir.getFileName} directory...")
+     *       FileVisitResult.CONTINUE
+     *     }
+     *
+     *   case VisitFile(file, attrs) ⇒
+     *     println(s"${file.getFileName} is ${attrs.size} bytes.")
+     *     FileVisitResult.CONTINUE
+     * }
+     * }}}
      *
      * @see [[FileVisitEvent.PreVisitDirectory]], [[FileVisitEvent.PostVisitDirectory]]
      *      [[FileVisitEvent.VisitFile]], [[FileVisitEvent.VisitFileFailed]]
