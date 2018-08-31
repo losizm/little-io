@@ -16,11 +16,11 @@ private object WatchExecutionContext extends ExecutionContext {
 }
 
 /**
- * Provides handle to watch service and key.
+ * Provides opaque handle to watch service and registered key.
  *
  * @see [[Implicits.PathType.watch]]
  */
-final class WatchHandle private[io] (_service: WatchService, _key: WatchKey, watcher: WatchEvent[_] => Unit) {
+final class WatchHandle private[io] (service: WatchService, key: WatchKey, watcher: WatchEvent[_] => Unit) {
   private implicit val ec = WatchExecutionContext
   private var closed = false
 
@@ -36,13 +36,7 @@ final class WatchHandle private[io] (_service: WatchService, _key: WatchKey, wat
     case result => if (!closed) close()
   }
 
-  /** Gets watch service. */
-  def service: WatchService = _service
-
-  /** Gets watch key. */
-  def key: WatchKey = _key
-
-  /** Cancels watch key and closes watch service. */
+  /** Closes underlying watch service. */
   def close(): Unit = {
     Try(key.cancel())
     Try(service.close())
