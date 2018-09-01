@@ -183,7 +183,8 @@ object Implicits {
      * @return value from supplied function
      */
     def withWriter[T](append: Boolean)(f: BufferedWriter => T): T =
-      file.toPath.withWriter(if (append) APPEND else TRUNCATE_EXISTING)(f)
+      if (append) file.toPath.withWriter(CREATE, APPEND)(f)
+      else file.toPath.withWriter(CREATE, TRUNCATE_EXISTING)(f)
   }
 
   /**
@@ -198,7 +199,7 @@ object Implicits {
      * @return path
      */
     def <<(bytes: Array[Byte]): Path =
-      withOutputStream(APPEND) { out => out.write(bytes); path }
+      withOutputStream(CREATE, APPEND) { out => out.write(bytes); path }
 
     /**
      * Appends supplied text to file.
@@ -206,7 +207,7 @@ object Implicits {
      * @return path
      */
     def <<(text: String): Path =
-      withWriter(APPEND) { out => out.append(text); path }
+      withWriter(CREATE, APPEND) { out => out.append(text); path }
 
     /**
      * Appends contents of supplied InputStream to file.
@@ -214,7 +215,7 @@ object Implicits {
      * @return path
      */
     def <<(in: InputStream)(implicit bufferSize: BufferSize): Path =
-      withOutputStream(APPEND) { out => out << in; path }
+      withOutputStream(CREATE, APPEND) { out => out << in; path }
 
     /**
      * Appends contents of supplied Reader to file.
@@ -222,21 +223,21 @@ object Implicits {
      * @return path
      */
     def <<(in: Reader)(implicit bufferSize: BufferSize): Path =
-      withWriter(APPEND) { out => out << in; path }
+      withWriter(CREATE, APPEND) { out => out << in; path }
 
     /** Reads file at path and returns its bytes. */
     def getBytes(): Array[Byte] = Files.readAllBytes(path)
 
     /** Sets file content to supplied bytes. */
     def setBytes(bytes: Array[Byte]): Unit =
-      withOutputStream(TRUNCATE_EXISTING) { out => out.write(bytes) }
+      withOutputStream(CREATE, TRUNCATE_EXISTING) { out => out.write(bytes) }
 
     /** Reads file at path and returns its text. */
     def getText(): String = new String(getBytes())
 
     /** Sets file content to supplied text. */
     def setText(text: String): Unit =
-      withWriter(TRUNCATE_EXISTING) { out => out.append(text) }
+      withWriter(CREATE, TRUNCATE_EXISTING) { out => out.append(text) }
 
     /**
      * Tests whether file at path exists.
