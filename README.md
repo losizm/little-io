@@ -25,12 +25,12 @@ compile group: 'losizm', name: 'little-io_2.12', version: '0.5.0'
 
 ## A Taste of little-io
 
-Here's a taste of what **little-io** has to offer.
+Here's a taste of what **little-io** offers.
 
 ### Getting and Setting File Content
 
 If you have a reference to a `File`, you can set its content without the
-boilerplate of opening and closing a `FileOutputStream` or `FileWriter`. And
+boilerplate of opening and closing a `FileOutputStream` or a `FileWriter`. And
 getting its content is just as concise.
 
 ```scala
@@ -108,7 +108,7 @@ Or if you'll be reading file content line by line, there's an even simpler way.
 
 ```scala
 import java.nio.file.Paths
-// Adds methods to java.nio.file.Path and java.io.Writer
+// Adds methods to java.nio.file.Path
 import little.io.Implicits.PathType
 
 val file = Paths.get("numbers.txt")
@@ -119,8 +119,8 @@ file.forEachLine(line => println(line))
 
 ### Traversing File Directories
 
-One feature available since Java 7 is builtin library support for walking a file
-tree starting at a particular `Path`. This is accomplished by specifying a
+A feature available since Java 7 is builtin library support for walking a file
+tree starting at a particular `Path`. This is carried out by specifying a
 `FileVisitor` as a callback to handle a set of events.
 
 **little-io** makes this process a little more Scala-like. You make a method
