@@ -8,18 +8,18 @@ To use **little-io**, add it as a dependency to your project:
 
 * sbt
 ```scala
-libraryDependencies += "losizm" %% "little-io" % "0.5.0"
+libraryDependencies += "losizm" %% "little-io" % "1.0.0"
 ```
 * Gradle
 ```groovy
-compile group: 'losizm', name: 'little-io_2.12', version: '0.5.0'
+compile group: 'losizm', name: 'little-io_2.12', version: '1.0.0'
 ```
 * Maven
 ```xml
 <dependency>
   <groupId>losizm</groupId>
   <artifactId>little-io_2.12</artifactId>
-  <version>0.5.0</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
@@ -35,7 +35,7 @@ getting its content is just as concise.
 
 ```scala
 import java.io.File
-// Adds methods to java.io.File
+// Add methods to java.io.File
 import little.io.Implicits.FileType
 
 val file = new File("greeting.txt")
@@ -56,31 +56,46 @@ import little.io.Implicits.FileType
 // Append text to file and return reference to file
 val file = new File("greeting.txt") << "Hello, world!"
 
-// Open reader to file, read text, and close reader
-println(file.getText()) // Hello, world!
+println(file.getText())
 ```
 
 The same applies to `java.nio.file.Path`.
 
 ```scala
 import java.nio.file.Paths
-// Adds methods to java.nio.file.Path
+// Add methods to java.nio.file.Path
 import little.io.Implicits.PathType
 
 val path = Paths.get("greeting.txt") << "Hello, world!"
-println(path.getText()) // Hello, world!
+println(path.getText())
+```
+
+And, if you prefer working with bytes, there are extensions for those too.
+
+```scala
+import java.io.File
+import little.io.Implicits.FileType
+
+val file = new File("greeting.txt")
+val data = "Hello, world!".getBytes("utf-8")
+
+file.setBytes(data)
+file << "\n" << data.reverse
+
+println(new String(file.getBytes(), "utf-8"))
 ```
 
 ### Reading and Writing File Content
 
-If you have a reference to a `File` or `Path`, you can open an `OutputStream` or
-a `Writer` to the file to write file content, and you can open an `InputStream`
-or a `Reader` to read its content, all with automatic resource management.
+If you have a reference to a `File` or a `Path`, you can open an `OutputStream`
+or a `Writer` to the file to write its content, and you can open an
+`InputStream` or a `Reader` to read its content, all with automatic resource
+management.
 
 ```scala
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption.CREATE
-// Adds methods to java.nio.file.Path and java.io.Writer
+// Add methods to java.nio.file.Path and java.io.Writer
 import little.io.Implicits.{ PathType, WriterType }
 
 val file = Paths.get("numbers.txt")
@@ -104,11 +119,10 @@ file.withReader { in =>
 }
 ```
 
-Or if you'll be reading file content line by line, there's an even simpler way.
+Or, if you'll be reading file content line by line, there's an even simpler way.
 
 ```scala
 import java.nio.file.Paths
-// Adds methods to java.nio.file.Path
 import little.io.Implicits.PathType
 
 val file = Paths.get("numbers.txt")
@@ -123,13 +137,13 @@ A feature available since Java 7 is builtin library support for walking a file
 tree starting at a particular `Path`. This is carried out by specifying a
 `FileVisitor` as a callback to handle a set of events.
 
-**little-io** makes this process a little more Scala-like. You make a method
+**little-io** makes this feature a little more Scala-like. You make a method
 call to an extension method of `Path`, passing in a `PartialFunction` to handle
 the events you're interested in.
 
 ```scala
 import java.nio.file.{ FileVisitResult, Paths }
-// Import events corresponding to methods of java.nio.file.FileVisitor
+// Import file events for walking file tree
 import little.io.FileVisitEvent.{ PreVisitDirectory, VisitFile }
 import little.io.Implicits.PathType
 
@@ -155,17 +169,17 @@ sourceDir.walkFileTree {
 
 ### Watching File Events
 
-Another feature available since Java 7 is `java.nio.file.WatchService`, which
-allows you to monitor a directory for changes. You can poll the service to check
-for new, modified, and deleted files.
+Another feature available since Java 7 is `WatchService`, which allows you to
+monitor a directory for changes. You can poll the service to check for new,
+modified, and deleted files.
 
 With pure Java, you create a `Path` to a directory, create a `WatchService`
 using a reference to the path's `FileSystem`, and then register the path with
 the service while specifying the kinds of `WatchEvent`s you wish to track. A
-`WatchKey` is returned when the path is registered, which you then use to
-poll for file events.
+`WatchKey` is returned when the path is registered, and this key is used to poll
+for file events.
 
-With **little-io**, it's concise and straight to the point.
+With **little-io**, it's straight to the point.
 
 ```scala
 import java.nio.file.Paths
