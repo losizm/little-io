@@ -46,6 +46,9 @@ private object WatchExecutionContext extends ExecutionContext {
  * val handle = dir.watch(ENTRY_CREATE) { evt ⇒
  *   println(s"${evt.context} was created.")
  * }
+ *
+ * // Close handle when finished
+ * //handle.close()
  * }}}
  */
 final class WatchHandle private[io] (service: WatchService, key: WatchKey, watcher: WatchEvent[_] => Unit) {

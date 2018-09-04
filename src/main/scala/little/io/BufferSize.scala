@@ -15,5 +15,5 @@
  */
 package little.io
 
-/** Specifies buffer size for I/O operation. */
+/** Specifies buffer size of I/O operation. */
 case class BufferSize(value: Int)
