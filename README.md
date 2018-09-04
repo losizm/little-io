@@ -1,25 +1,24 @@
-# little-io &ndash; Scala library for java.io and java.nio
+# little-io
 
-**little-io** is a Scala library that provides extension methods to _java.io_
-and _java.nio_.
+Scala library that provides extension methods to _java.io_ and _java.nio_.
 
 ## Getting Started
 To use **little-io**, add it as a dependency to your project:
 
 * sbt
 ```scala
-libraryDependencies += "losizm" %% "little-io" % "1.0.0"
+libraryDependencies += "losizm" %% "little-io" % "1.1.0"
 ```
 * Gradle
 ```groovy
-compile group: 'losizm', name: 'little-io_2.12', version: '1.0.0'
+compile group: 'losizm', name: 'little-io_2.12', version: '1.1.0'
 ```
 * Maven
 ```xml
 <dependency>
   <groupId>losizm</groupId>
   <artifactId>little-io_2.12</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 
@@ -176,7 +175,7 @@ modified, and deleted files.
 With pure Java, you create a `Path` to a directory, create a `WatchService`
 using a reference to the path's `FileSystem`, and then register the path with
 the service while specifying the kinds of `WatchEvent`s you wish to track. A
-`WatchKey` is returned when the path is registered, and this key is used to poll
+`WatchKey` is returned when the path is registered, and you use this key to poll
 for file events.
 
 With **little-io**, it's straight to the point.
