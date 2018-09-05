@@ -29,7 +29,7 @@ class ReaderTypeSpec extends FlatSpec {
     val in = new StringReader(text)
     val out = new StringWriter()
 
-    in.forEachCharArray { (buf, len) => out.write(buf, 0, len) }
+    in.forEach { (buf, len) => out.write(buf, 0, len) }
 
     assert(out.toString == text)
   }

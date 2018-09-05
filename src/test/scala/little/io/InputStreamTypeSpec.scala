@@ -29,7 +29,7 @@ class InputStreamTypeSpec extends FlatSpec {
     val in = new ByteArrayInputStream(text.getBytes)
     val out = new ByteArrayOutputStream()
 
-    in.forEachByteArray { (buf, len) => out.write(buf, 0, len) }
+    in.forEach { (buf, len) => out.write(buf, 0, len) }
 
     assert(out.toString == text)
   }
