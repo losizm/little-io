@@ -27,7 +27,7 @@ class FileTypeSpec extends FlatSpec {
 
   val text = "Now Peter Piper picked peppers\nbut Run rocks rhymes."
 
-  s"File" should "be written to output stream and read from input stream" in {
+  "File" should "be written to output stream and read from input stream" in {
     val bytes = text.getBytes("utf-8")
     val file = createTempFile()
     

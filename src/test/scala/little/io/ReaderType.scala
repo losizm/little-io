@@ -22,7 +22,7 @@ import org.scalatest.FlatSpec
 import Implicits._
 
 class ReaderTypeSpec extends FlatSpec {
-  s"Reader" should "read characters into buffer" in {
+  "Reader" should "read characters into buffer" in {
     implicit val bufferSize = BufferSize(8)
 
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
@@ -32,5 +32,11 @@ class ReaderTypeSpec extends FlatSpec {
     in.forEach { (buf, len) => out.write(buf, 0, len) }
 
     assert(out.toString == text)
+  }
+
+  it should "read all text" in {
+    val text = "Now Peter Piper picked peppers but Run rocks rhymes."
+    val in = new StringReader(text)
+    assert(in.getText == text)
   }
 }

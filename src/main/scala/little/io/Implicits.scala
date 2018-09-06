@@ -484,6 +484,13 @@ object Implicits {
    * @see [[OutputStreamType]]
    */
   implicit class InputStreamType[T <: InputStream](val in: T) extends AnyVal {
+    /** Gets remaining bytes. */
+    def getBytes(): Array[Byte] = {
+      val out = new ByteArrayOutputStream
+      forEach { (buf, len) => out.write(buf, 0, len) }
+      out.toByteArray
+    }
+
     /**
      * Reads content into supplied byte buffer and passes it along with its
      * effective length to supplied function. The function is invoked repeatedly
@@ -540,6 +547,13 @@ object Implicits {
    * @see [[WriterType]]
    */
   implicit class ReaderType[T <: Reader](val in: T) extends AnyVal {
+    /** Gets remaining text. */
+    def getText(): String = {
+      val out = new StringBuilder
+      forEach { (buf, len) => out.appendAll(buf, 0, len) }
+      out.toString
+    }
+
     /**
      * Reads content into supplied character buffer and passes it along with its
      * effective length to supplied function. The function is invoked repeatedly

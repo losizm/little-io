@@ -32,7 +32,7 @@ class PathTypeSpec extends FlatSpec {
 
   val text = "Now Peter Piper picked peppers but Run rocks rhymes."
 
-  s"Path" should "be written to output stream and read from input stream" in {
+  "Path" should "be written to output stream and read from input stream" in {
     val bytes = text.getBytes("utf-8")
     val file = createTempFile()
     
