@@ -18,8 +18,9 @@ package little.io
 import java.io._
 import java.nio.file._
 import java.nio.file.StandardOpenOption._
-import java.nio.file.attribute.BasicFileAttributes
+import java.nio.file.attribute._
 
+import scala.collection.convert.ImplicitConversions.`iterable AsScalaIterable`
 import scala.util.Try
 import scala.util.control.NonFatal
 import scala.compat.Platform.EOL
@@ -265,6 +266,57 @@ object Implicits {
      */
     def readChars(f: (Array[Char], Int) => Unit)(implicit bufferSize: BufferSize): Unit =
       withReader { in => in.forEach(f) }
+
+    /**
+     * Gets owner name of file at path.
+     *
+     * @param options indicates how symbolic links are handled
+     */
+    def getOwnerName(options: LinkOption*): String =
+      Files.getOwner(path, options : _*).getName
+
+    /**
+     * Gets group name of file at path.
+     *
+     * @param options indicates how symbolic links are handled
+     */
+    def getGroupName(options: LinkOption*): String =
+      Files.getFileAttributeView(path, classOf[PosixFileAttributeView], options : _*)
+        .readAttributes().group().getName
+
+    /**
+     * Gets permissions of file at path.
+     *
+     * @param options indicates how symbolic links are handled
+     */
+    def getPosixFilePermissions(options: LinkOption*): Seq[PosixFilePermission] =
+      Files.getPosixFilePermissions(path, options : _*).toSeq
+
+    /**
+     * Gets creation time of file at path.
+     *
+     * @param options indicates how symbolic links are handled
+     */
+    def getCreationTime(options: LinkOption*): FileTime =
+      Files.getFileAttributeView(path, classOf[PosixFileAttributeView], options : _*)
+        .readAttributes().creationTime()
+
+    /**
+     * Gets last access time of file at path.
+     *
+     * @param options indicates how symbolic links are handled
+     */
+    def getLastAccessTime(options: LinkOption*): FileTime =
+      Files.getFileAttributeView(path, classOf[PosixFileAttributeView], options : _*)
+        .readAttributes().lastAccessTime()
+
+    /**
+     * Gets last modified time of file at path.
+     *
+     * @param options indicates how symbolic links are handled
+     */
+    def getLastModifiedTime(options: LinkOption*): FileTime =
+      Files.getLastModifiedTime(path, options : _*)
 
     /**
      * Tests whether file at path exists.
