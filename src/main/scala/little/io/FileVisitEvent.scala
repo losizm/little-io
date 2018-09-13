@@ -36,8 +36,7 @@ object FileVisitEvent {
   case class PreVisitDirectory(directory: Path, attributes: BasicFileAttributes) extends FileVisitEvent
 
   /**
-   * Occurs after entries in directory, and all of their descendents, are
-   * visited.
+   * Occurs after entries in directory and all of their descendents are visited.
    */
   case class PostVisitDirectory(directory: Path, exception: Option[IOException]) extends FileVisitEvent
 
