@@ -120,8 +120,8 @@
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="little.io">io</a></dd><dt>See also</dt><dd><span class="cmt"><p><a href="Implicits$$PathType.html#walkFileTree(visitor:PartialFunction[little.io.FileVisitEvent,java.nio.file.FileVisitResult]):Unit" class="extmbr" name="little.io.Implicits.PathType#walkFileTree">Implicits.PathType.walkFileTree</a></p></span></dd></dl></div>
     </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="FileVisitEvent$$PostVisitDirectory.html" title="Occurs after entries in directory and all of their descendents are visited."></a>
-                        <a href="FileVisitEvent$$PostVisitDirectory.html" title="Occurs after entries in directory and all of their descendents are visited.">PostVisitDirectory</a>
+                        <a class="class" href="" title="Occurs after entries in directory, and all of their descendents, are visited."></a>
+                        <a href="" title="Occurs after entries in directory, and all of their descendents, are visited.">PostVisitDirectory</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="class" href="FileVisitEvent$$PreVisitDirectory.html" title="Occurs before entries in directory are visited."></a>
@@ -132,8 +132,8 @@
                         <a href="FileVisitEvent$$VisitFile.html" title="Occurs when file is visited.">VisitFile</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="" title="Occurs when file could not be visited."></a>
-                        <a href="" title="Occurs when file could not be visited.">VisitFileFailed</a>
+                        <a class="class" href="FileVisitEvent$$VisitFileFailed.html" title="Occurs when file could not be visited."></a>
+                        <a href="FileVisitEvent$$VisitFileFailed.html" title="Occurs when file could not be visited.">VisitFileFailed</a>
                       </li>
               </ul>
             </div>
@@ -143,8 +143,8 @@
       <div id="definition">
         <div class="big-circle class">c</div>
         <p id="owner"><a href="../index.html" class="extype" name="little">little</a>.<a href="index.html" class="extype" name="little.io">io</a>.<a href="FileVisitEvent$.html" class="extype" name="little.io.FileVisitEvent">FileVisitEvent</a></p>
-        <h1>VisitFileFailed<span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html" title="Permalink">
+        <h1>PostVisitDirectory<span class="permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
@@ -157,12 +157,14 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">VisitFileFailed</span><span class="params">(<span name="file">file: <span class="extype" name="java.nio.file.Path">Path</span></span>, <span name="exception">exception: <span class="extype" name="java.io.IOException">IOException</span></span>)</span><span class="result"> extends <a href="FileVisitEvent.html" class="extype" name="little.io.FileVisitEvent">FileVisitEvent</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">PostVisitDirectory</span><span class="params">(<span name="directory">directory: <span class="extype" name="java.nio.file.Path">Path</span></span>, <span name="exception">exception: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.io.IOException">IOException</span>]</span>)</span><span class="result"> extends <a href="FileVisitEvent.html" class="extype" name="little.io.FileVisitEvent">FileVisitEvent</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Occurs when file could not be visited.</p></div><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Occurs after entries in directory, and all of their descendents, are
+visited.
+</p></div><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -192,7 +194,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="little.io.FileVisitEvent.VisitFileFailed"><span>VisitFileFailed</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="little.io.FileVisitEvent"><span>FileVisitEvent</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="little.io.FileVisitEvent.PostVisitDirectory"><span>PostVisitDirectory</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="little.io.FileVisitEvent"><span>FileVisitEvent</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -212,10 +214,10 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="little.io.FileVisitEvent.VisitFileFailed#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(file:java.nio.file.Path,exception:java.io.IOException):little.io.FileVisitEvent.VisitFileFailed"></a><a id="&lt;init&gt;:VisitFileFailed"></a>
+              <ol><li name="little.io.FileVisitEvent.PostVisitDirectory#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(directory:java.nio.file.Path,exception:Option[java.io.IOException]):little.io.FileVisitEvent.PostVisitDirectory"></a><a id="&lt;init&gt;:PostVisitDirectory"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#&lt;init&gt;(file:java.nio.file.Path,exception:java.io.IOException):little.io.FileVisitEvent.VisitFileFailed" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#&lt;init&gt;(directory:java.nio.file.Path,exception:Option[java.io.IOException]):little.io.FileVisitEvent.PostVisitDirectory" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -224,7 +226,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">VisitFileFailed</span><span class="params">(<span name="file">file: <span class="extype" name="java.nio.file.Path">Path</span></span>, <span name="exception">exception: <span class="extype" name="java.io.IOException">IOException</span></span>)</span>
+        <span class="name">PostVisitDirectory</span><span class="params">(<span name="directory">directory: <span class="extype" name="java.nio.file.Path">Path</span></span>, <span name="exception">exception: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.io.IOException">IOException</span>]</span>)</span>
       </span>
       
       
@@ -241,7 +243,7 @@
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -257,7 +259,7 @@
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html###():Int" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -273,7 +275,7 @@
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -289,7 +291,7 @@
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -305,7 +307,7 @@
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#clone():Object" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -326,10 +328,26 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="little.io.FileVisitEvent.PostVisitDirectory#directory" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="directory:java.nio.file.Path"></a><a id="directory:Path"></a>
+      <span class="permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#directory:java.nio.file.Path" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">directory</span><span class="result">: <span class="extype" name="java.nio.file.Path">Path</span></span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -342,10 +360,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="little.io.FileVisitEvent.VisitFileFailed#exception" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="exception:java.io.IOException"></a><a id="exception:IOException"></a>
+    </li><li name="little.io.FileVisitEvent.PostVisitDirectory#exception" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="exception:Option[java.io.IOException]"></a><a id="exception:Option[IOException]"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#exception:java.io.IOException" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#exception:Option[java.io.IOException]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -354,30 +372,14 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">exception</span><span class="result">: <span class="extype" name="java.io.IOException">IOException</span></span>
-      </span>
-      
-      
-    </li><li name="little.io.FileVisitEvent.VisitFileFailed#file" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="file:java.nio.file.Path"></a><a id="file:Path"></a>
-      <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#file:java.nio.file.Path" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">file</span><span class="result">: <span class="extype" name="java.nio.file.Path">Path</span></span>
+        <span class="name">exception</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.io.IOException">IOException</span>]</span>
       </span>
       
       
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#finalize():Unit" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -399,7 +401,7 @@
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#getClass():Class[_]" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -418,7 +420,7 @@
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -434,7 +436,7 @@
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -450,7 +452,7 @@
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#notify():Unit" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -469,7 +471,7 @@
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#notifyAll():Unit" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -488,7 +490,7 @@
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -504,7 +506,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#wait():Unit" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -526,7 +528,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -548,7 +550,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$PostVisitDirectory.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>

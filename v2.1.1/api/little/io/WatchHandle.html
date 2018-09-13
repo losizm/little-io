@@ -101,39 +101,22 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="little">little</a></dd></dl></div>
-    </li><li name="little.io.FileVisitEvent" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="FileVisitEvent"></a><a id="FileVisitEvent:FileVisitEvent"></a>
-      <span class="permalink">
-      <a href="../../little/io/index.html#FileVisitEvent" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="Contains file visit events." href="FileVisitEvent$.html"><span class="name">FileVisitEvent</span></a>
-      </span>
-      
-      <p class="shortcomment cmt">Contains file visit events.</p><div class="fullcomment"><div class="comment cmt"><p>Contains file visit events.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="little.io">io</a></dd><dt>See also</dt><dd><span class="cmt"><p><a href="Implicits$$PathType.html#walkFileTree(visitor:PartialFunction[little.io.FileVisitEvent,java.nio.file.FileVisitResult]):Unit" class="extmbr" name="little.io.Implicits.PathType#walkFileTree">Implicits.PathType.walkFileTree</a></p></span></dd></dl></div>
-    </li><li class="current-entities indented3">
+    </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="FileVisitEvent$$PostVisitDirectory.html" title="Occurs after entries in directory and all of their descendents are visited."></a>
-                        <a href="FileVisitEvent$$PostVisitDirectory.html" title="Occurs after entries in directory and all of their descendents are visited.">PostVisitDirectory</a>
-                      </li><li class="current-entities indented3">
+                        <a class="class" href="BufferSize.html" title="Specifies buffer size of I/O operation."></a>
+                        <a href="BufferSize.html" title="Specifies buffer size of I/O operation.">BufferSize</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="FileVisitEvent$.html" title="Contains file visit events."></a>
+                        <a class="trait" href="FileVisitEvent.html" title="Occurs when walking file tree."></a>
+                        <a href="FileVisitEvent.html" title="Occurs when walking file tree.">FileVisitEvent</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="FileVisitEvent$$PreVisitDirectory.html" title="Occurs before entries in directory are visited."></a>
-                        <a href="FileVisitEvent$$PreVisitDirectory.html" title="Occurs before entries in directory are visited.">PreVisitDirectory</a>
-                      </li><li class="current-entities indented3">
+                        <a class="object" href="Implicits$.html" title="Provides extension methods to java.io and java.nio."></a>
+                        <a href="Implicits$.html" title="Provides extension methods to java.io and java.nio.">Implicits</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="FileVisitEvent$$VisitFile.html" title="Occurs when file is visited."></a>
-                        <a href="FileVisitEvent$$VisitFile.html" title="Occurs when file is visited.">VisitFile</a>
-                      </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="class" href="" title="Occurs when file could not be visited."></a>
-                        <a href="" title="Occurs when file could not be visited.">VisitFileFailed</a>
+                        <a class="class" href="" title="Provides opaque handle to watch service."></a>
+                        <a href="" title="Provides opaque handle to watch service.">WatchHandle</a>
                       </li>
               </ul>
             </div>
@@ -142,9 +125,9 @@
             <body class="class type">
       <div id="definition">
         <div class="big-circle class">c</div>
-        <p id="owner"><a href="../index.html" class="extype" name="little">little</a>.<a href="index.html" class="extype" name="little.io">io</a>.<a href="FileVisitEvent$.html" class="extype" name="little.io.FileVisitEvent">FileVisitEvent</a></p>
-        <h1>VisitFileFailed<span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html" title="Permalink">
+        <p id="owner"><a href="../index.html" class="extype" name="little">little</a>.<a href="index.html" class="extype" name="little.io">io</a></p>
+        <h1>WatchHandle<span class="permalink">
+      <a href="../../little/io/WatchHandle.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
@@ -153,20 +136,32 @@
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">VisitFileFailed</span><span class="params">(<span name="file">file: <span class="extype" name="java.nio.file.Path">Path</span></span>, <span name="exception">exception: <span class="extype" name="java.io.IOException">IOException</span></span>)</span><span class="result"> extends <a href="FileVisitEvent.html" class="extype" name="little.io.FileVisitEvent">FileVisitEvent</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">WatchHandle</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Occurs when file could not be visited.</p></div><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Provides opaque handle to watch service.</p><p>A handle is obtained via <a href="Implicits$$PathType.html#watch(events:java.nio.file.WatchEvent.Kind[_]*)(watcher:java.nio.file.WatchEvent[_]=&gt;Unit):little.io.WatchHandle" class="extmbr" name="little.io.Implicits.PathType#watch">Implicits.PathType.watch</a>, which registers path
+to watch service.</p><pre><span class="kw">import</span> java.nio.file.Paths
+<span class="kw">import</span> java.nio.file.StandardWatchEventKinds.ENTRY_CREATE
+<span class="kw">import</span> little.io.Implicits.PathType
+
+<span class="kw">val</span> dir = Paths.get(<span class="lit">"."</span>)
+
+<span class="kw">val</span> handle = dir.watch(ENTRY_CREATE) { evt ⇒
+  println(s<span class="lit">"${evt.context} was created."</span>)
+}
+
+<span class="cmt">// Close handle when finished</span>
+<span class="cmt">//handle.close()</span></pre></div><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="FileVisitEvent.html" class="extype" name="little.io.FileVisitEvent">FileVisitEvent</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -192,7 +187,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="little.io.FileVisitEvent.VisitFileFailed"><span>VisitFileFailed</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="little.io.FileVisitEvent"><span>FileVisitEvent</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="little.io.WatchHandle"><span>WatchHandle</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -210,26 +205,7 @@
 
       <div id="template">
         <div id="allMembers">
-        <div id="constructors" class="members">
-              <h3>Instance Constructors</h3>
-              <ol><li name="little.io.FileVisitEvent.VisitFileFailed#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(file:java.nio.file.Path,exception:java.io.IOException):little.io.FileVisitEvent.VisitFileFailed"></a><a id="&lt;init&gt;:VisitFileFailed"></a>
-      <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#&lt;init&gt;(file:java.nio.file.Path,exception:java.io.IOException):little.io.FileVisitEvent.VisitFileFailed" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">new</span>
-      </span>
-      <span class="symbol">
-        <span class="name">VisitFileFailed</span><span class="params">(<span name="file">file: <span class="extype" name="java.nio.file.Path">Path</span></span>, <span name="exception">exception: <span class="extype" name="java.io.IOException">IOException</span></span>)</span>
-      </span>
-      
-      
-    </li></ol>
-            </div>
+        
 
         
 
@@ -241,7 +217,7 @@
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -257,7 +233,7 @@
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html###():Int" title="Permalink">
+      <a href="../../little/io/WatchHandle.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -273,7 +249,7 @@
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -289,7 +265,7 @@
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -305,7 +281,7 @@
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#clone():Object" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -326,10 +302,26 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="little.io.WatchHandle#close" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="close():Unit"></a>
+      <span class="permalink">
+      <a href="../../little/io/WatchHandle.html#close():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">close</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Closes underlying watch service.</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -342,42 +334,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="little.io.FileVisitEvent.VisitFileFailed#exception" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="exception:java.io.IOException"></a><a id="exception:IOException"></a>
+    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#exception:java.io.IOException" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#equals(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">exception</span><span class="result">: <span class="extype" name="java.io.IOException">IOException</span></span>
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
-      
-    </li><li name="little.io.FileVisitEvent.VisitFileFailed#file" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="file:java.nio.file.Path"></a><a id="file:Path"></a>
-      <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#file:java.nio.file.Path" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">file</span><span class="result">: <span class="extype" name="java.nio.file.Path">Path</span></span>
-      </span>
-      
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#finalize():Unit" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -399,7 +375,7 @@
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#getClass():Class[_]" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -415,10 +391,45 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <span class="permalink">
+      <a href="../../little/io/WatchHandle.html#hashCode():Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd><dt>Annotations</dt><dd>
+                <span class="name">@native</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="little.io.WatchHandle#isClosed" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="isClosed:Boolean"></a>
+      <span class="permalink">
+      <a href="../../little/io/WatchHandle.html#isClosed:Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isClosed</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Tests whether underlying watch service is closed.</p>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -434,7 +445,7 @@
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -450,7 +461,7 @@
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#notify():Unit" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -469,7 +480,7 @@
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#notifyAll():Unit" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -488,7 +499,7 @@
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -501,10 +512,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <span class="permalink">
+      <a href="../../little/io/WatchHandle.html#toString():String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#wait():Unit" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -526,7 +553,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -548,7 +575,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/FileVisitEvent$$VisitFileFailed.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../little/io/WatchHandle.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -579,17 +606,7 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.Serializable">
-              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="java.io.Serializable">
-              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="scala.Product">
-              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
-            </div><div class="parent" name="scala.Equals">
-              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
-            </div><div class="parent" name="little.io.FileVisitEvent">
-              <h3>Inherited from <a href="FileVisitEvent.html" class="extype" name="little.io.FileVisitEvent">FileVisitEvent</a></h3>
-            </div><div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
