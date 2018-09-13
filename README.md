@@ -1,6 +1,6 @@
 # little-io
 
-Scala library that provides extension methods to _java.io_ and _java.nio_.
+The Scala library that provides extension methods to _java.io_ and _java.nio_.
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.losizm/little-io_2.12.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.losizm%22%20AND%20a:%22little-io_2.12%22)
 
