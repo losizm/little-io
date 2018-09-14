@@ -285,7 +285,15 @@ object Implicits {
         .readAttributes().group().getName
 
     /**
-     * Gets permissions of file at path.
+     * Gets file permissions at path.
+     *
+     * @param options indicates how symbolic links are handled
+     */
+    def getFilePermissions(options: LinkOption*): FilePermissions =
+      FilePermissionsImpl(Files.getPosixFilePermissions(path, options : _*))
+
+    /**
+     * Gets POSIX file permissions at path.
      *
      * @param options indicates how symbolic links are handled
      */
