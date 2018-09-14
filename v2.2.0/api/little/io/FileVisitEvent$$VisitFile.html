@@ -101,41 +101,50 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="little">little</a></dd></dl></div>
-    </li><li class="current-entities indented2">
+    </li><li name="little.io.FileVisitEvent" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="FileVisitEvent"></a><a id="FileVisitEvent:FileVisitEvent"></a>
+      <span class="permalink">
+      <a href="../../little/io/index.html#FileVisitEvent" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="Contains file visit events." href="FileVisitEvent$.html"><span class="name">FileVisitEvent</span></a>
+      </span>
+      
+      <p class="shortcomment cmt">Contains file visit events.</p><div class="fullcomment"><div class="comment cmt"><p>Contains file visit events.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="little.io">io</a></dd><dt>See also</dt><dd><span class="cmt"><p><a href="Implicits$$PathType.html#walkFileTree(visitor:PartialFunction[little.io.FileVisitEvent,java.nio.file.FileVisitResult]):Unit" class="extmbr" name="little.io.Implicits.PathType#walkFileTree">Implicits.PathType.walkFileTree</a></p></span></dd></dl></div>
+    </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="BufferSize.html" title="Specifies buffer size of I/O operation."></a>
-                        <a href="BufferSize.html" title="Specifies buffer size of I/O operation.">BufferSize</a>
-                      </li><li class="current-entities indented2">
+                        <a class="class" href="FileVisitEvent$$PostVisitDirectory.html" title="Occurs after entries in directory and all of their descendents are visited."></a>
+                        <a href="FileVisitEvent$$PostVisitDirectory.html" title="Occurs after entries in directory and all of their descendents are visited.">PostVisitDirectory</a>
+                      </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="trait" href="FilePermissions.html" title="Represents full set of owner/group/other file permissions."></a>
-                        <a href="FilePermissions.html" title="Represents full set of owner/group/other file permissions.">FilePermissions</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="FileVisitEvent$.html" title="Contains file visit events."></a>
-                        <a class="trait" href="FileVisitEvent.html" title="Occurs when walking file tree."></a>
-                        <a href="FileVisitEvent.html" title="Occurs when walking file tree.">FileVisitEvent</a>
-                      </li><li class="current-entities indented2">
+                        <a class="class" href="FileVisitEvent$$PreVisitDirectory.html" title="Occurs before entries in directory are visited."></a>
+                        <a href="FileVisitEvent$$PreVisitDirectory.html" title="Occurs before entries in directory are visited.">PreVisitDirectory</a>
+                      </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="object" href="" title="Provides extension methods to java.io and java.nio."></a>
-                        <a href="" title="Provides extension methods to java.io and java.nio.">Implicits</a>
-                      </li><li class="current-entities indented2">
+                        <a class="class" href="" title="Occurs when file is visited."></a>
+                        <a href="" title="Occurs when file is visited.">VisitFile</a>
+                      </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="trait" href="PermissionSet.html" title="Represents single set of read/write/execute permissions."></a>
-                        <a href="PermissionSet.html" title="Represents single set of read/write/execute permissions.">PermissionSet</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="WatchHandle.html" title="Provides opaque handle to watch service."></a>
-                        <a href="WatchHandle.html" title="Provides opaque handle to watch service.">WatchHandle</a>
+                        <a class="class" href="FileVisitEvent$$VisitFileFailed.html" title="Occurs when file could not be visited."></a>
+                        <a href="FileVisitEvent$$VisitFileFailed.html" title="Occurs when file could not be visited.">VisitFileFailed</a>
                       </li>
               </ul>
             </div>
           </div>
           <div id="content">
-            <body class="object value">
+            <body class="class type">
       <div id="definition">
-        <div class="big-circle object">o</div>
-        <p id="owner"><a href="../index.html" class="extype" name="little">little</a>.<a href="index.html" class="extype" name="little.io">io</a></p>
-        <h1>Implicits<span class="permalink">
-      <a href="../../little/io/Implicits$.html" title="Permalink">
+        <div class="big-circle class">c</div>
+        <p id="owner"><a href="../index.html" class="extype" name="little">little</a>.<a href="index.html" class="extype" name="little.io">io</a>.<a href="FileVisitEvent$.html" class="extype" name="little.io.FileVisitEvent">FileVisitEvent</a></p>
+        <h1>VisitFile<span class="permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
@@ -145,19 +154,19 @@
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">object</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Implicits</span>
+        <span class="name">VisitFile</span><span class="params">(<span name="file">file: <span class="extype" name="java.nio.file.Path">Path</span></span>, <span name="attributes">attributes: <span class="extype" name="java.nio.file.attribute.BasicFileAttributes">BasicFileAttributes</span></span>)</span><span class="result"> extends <a href="FileVisitEvent.html" class="extype" name="little.io.FileVisitEvent">FileVisitEvent</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Provides extension methods to <code>java.io</code> and <code>java.nio</code>.</p></div><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Occurs when file is visited.</p></div><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="FileVisitEvent.html" class="extype" name="little.io.FileVisitEvent">FileVisitEvent</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -183,7 +192,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="little.io.Implicits"><span>Implicits</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="little.io.FileVisitEvent.VisitFile"><span>VisitFile</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="little.io.FileVisitEvent"><span>FileVisitEvent</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -201,114 +210,28 @@
 
       <div id="template">
         <div id="allMembers">
-        
-
-        <div id="types" class="types members">
-              <h3>Type Members</h3>
-              <ol><li name="little.io.Implicits.FileType" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="FileTypeextendsAnyVal"></a><a id="FileType:FileType"></a>
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="little.io.FileVisitEvent.VisitFile#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(file:java.nio.file.Path,attributes:java.nio.file.attribute.BasicFileAttributes):little.io.FileVisitEvent.VisitFile"></a><a id="&lt;init&gt;:VisitFile"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#FileTypeextendsAnyVal" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#&lt;init&gt;(file:java.nio.file.Path,attributes:java.nio.file.attribute.BasicFileAttributes):little.io.FileVisitEvent.VisitFile" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
-        <span class="modifier">implicit final </span>
-        <span class="kind">class</span>
+        <span class="modifier"></span>
+        <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <a title="Provides extension methods to java.io.File." href="Implicits$$FileType.html"><span class="name">FileType</span></a><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span></span>
+        <span class="name">VisitFile</span><span class="params">(<span name="file">file: <span class="extype" name="java.nio.file.Path">Path</span></span>, <span name="attributes">attributes: <span class="extype" name="java.nio.file.attribute.BasicFileAttributes">BasicFileAttributes</span></span>)</span>
       </span>
       
-      <p class="shortcomment cmt">Provides extension methods to <code>java.io.File</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Provides extension methods to <code>java.io.File</code>.
-</p></div><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p><a href="Implicits$$PathType.html" class="extype" name="little.io.Implicits.PathType">PathType</a></p></span></dd></dl></div>
-    </li><li name="little.io.Implicits.InputStreamType" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="InputStreamType[T&lt;:java.io.InputStream]extendsAnyVal"></a><a id="InputStreamType[T&lt;:InputStream]:InputStreamType[T]"></a>
-      <span class="permalink">
-      <a href="../../little/io/Implicits$.html#InputStreamType[T&lt;:java.io.InputStream]extendsAnyVal" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">implicit final </span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a title="Provides extension methods to java.io.InputStream." href="Implicits$$InputStreamType.html"><span class="name">InputStreamType</span></a><span class="tparams">[<span name="T">T &lt;: <span class="extype" name="java.io.InputStream">InputStream</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span></span>
-      </span>
       
-      <p class="shortcomment cmt">Provides extension methods to <code>java.io.InputStream</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Provides extension methods to <code>java.io.InputStream</code>.
-</p></div><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p><a href="Implicits$$OutputStreamType.html" class="extype" name="little.io.Implicits.OutputStreamType">OutputStreamType</a></p></span></dd></dl></div>
-    </li><li name="little.io.Implicits.OutputStreamType" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="OutputStreamType[T&lt;:java.io.OutputStream]extendsAnyVal"></a><a id="OutputStreamType[T&lt;:OutputStream]:OutputStreamType[T]"></a>
-      <span class="permalink">
-      <a href="../../little/io/Implicits$.html#OutputStreamType[T&lt;:java.io.OutputStream]extendsAnyVal" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">implicit final </span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a title="Provides extension methods to java.io.OutputStream." href="Implicits$$OutputStreamType.html"><span class="name">OutputStreamType</span></a><span class="tparams">[<span name="T">T &lt;: <span class="extype" name="java.io.OutputStream">OutputStream</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">Provides extension methods to <code>java.io.OutputStream</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Provides extension methods to <code>java.io.OutputStream</code>.
-</p></div><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p><a href="Implicits$$InputStreamType.html" class="extype" name="little.io.Implicits.InputStreamType">InputStreamType</a></p></span></dd></dl></div>
-    </li><li name="little.io.Implicits.PathType" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="PathTypeextendsAnyVal"></a><a id="PathType:PathType"></a>
-      <span class="permalink">
-      <a href="../../little/io/Implicits$.html#PathTypeextendsAnyVal" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">implicit final </span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a title="Provides extension methods to java.nio.file.Path." href="Implicits$$PathType.html"><span class="name">PathType</span></a><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">Provides extension methods to <code>java.nio.file.Path</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Provides extension methods to <code>java.nio.file.Path</code>.
-</p></div><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p><a href="Implicits$$FileType.html" class="extype" name="little.io.Implicits.FileType">FileType</a></p></span></dd></dl></div>
-    </li><li name="little.io.Implicits.ReaderType" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ReaderType[T&lt;:java.io.Reader]extendsAnyVal"></a><a id="ReaderType[T&lt;:Reader]:ReaderType[T]"></a>
-      <span class="permalink">
-      <a href="../../little/io/Implicits$.html#ReaderType[T&lt;:java.io.Reader]extendsAnyVal" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">implicit final </span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a title="Provides extension methods to java.io.Reader." href="Implicits$$ReaderType.html"><span class="name">ReaderType</span></a><span class="tparams">[<span name="T">T &lt;: <span class="extype" name="java.io.Reader">Reader</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">Provides extension methods to <code>java.io.Reader</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Provides extension methods to <code>java.io.Reader</code>.
-</p></div><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p><a href="Implicits$$WriterType.html" class="extype" name="little.io.Implicits.WriterType">WriterType</a></p></span></dd></dl></div>
-    </li><li name="little.io.Implicits.WriterType" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="WriterType[T&lt;:java.io.Writer]extendsAnyVal"></a><a id="WriterType[T&lt;:Writer]:WriterType[T]"></a>
-      <span class="permalink">
-      <a href="../../little/io/Implicits$.html#WriterType[T&lt;:java.io.Writer]extendsAnyVal" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">implicit final </span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a title="Provides extension methods to java.io.Writer." href="Implicits$$WriterType.html"><span class="name">WriterType</span></a><span class="tparams">[<span name="T">T &lt;: <span class="extype" name="java.io.Writer">Writer</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">Provides extension methods to <code>java.io.Writer</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Provides extension methods to <code>java.io.Writer</code>.
-</p></div><dl class="attributes block"> <dt>See also</dt><dd><span class="cmt"><p><a href="Implicits$$ReaderType.html" class="extype" name="little.io.Implicits.ReaderType">ReaderType</a></p></span></dd></dl></div>
     </li></ol>
             </div>
+
+        
 
         
 
@@ -318,7 +241,7 @@
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -334,7 +257,7 @@
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html###():Int" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -350,7 +273,7 @@
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -366,7 +289,7 @@
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -379,26 +302,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="little.io.Implicits#bufferSize" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="bufferSize:little.io.BufferSize"></a><a id="bufferSize:BufferSize"></a>
+    </li><li name="little.io.FileVisitEvent.VisitFile#attributes" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="attributes:java.nio.file.attribute.BasicFileAttributes"></a><a id="attributes:BasicFileAttributes"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#bufferSize:little.io.BufferSize" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#attributes:java.nio.file.attribute.BasicFileAttributes" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
-        <span class="modifier">implicit </span>
+        <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">bufferSize</span><span class="result">: <a href="BufferSize.html" class="extype" name="little.io.BufferSize">BufferSize</a></span>
+        <span class="name">attributes</span><span class="result">: <span class="extype" name="java.nio.file.attribute.BasicFileAttributes">BasicFileAttributes</span></span>
       </span>
       
-      <p class="shortcomment cmt">Default buffer size for I/O operations &mdash; i.e., BufferSize(8192).</p>
+      
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#clone():Object" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -422,7 +345,7 @@
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -435,26 +358,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
+    </li><li name="little.io.FileVisitEvent.VisitFile#file" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="file:java.nio.file.Path"></a><a id="file:Path"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#equals(x$1:Any):Boolean" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#file:java.nio.file.Path" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">def</span>
+        <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">file</span><span class="result">: <span class="extype" name="java.nio.file.Path">Path</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+      
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#finalize():Unit" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -476,7 +399,7 @@
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#getClass():Class[_]" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -492,29 +415,10 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="hashCode():Int"></a>
-      <span class="permalink">
-      <a href="../../little/io/Implicits$.html#hashCode():Int" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd><dt>Annotations</dt><dd>
-                <span class="name">@native</span><span class="args">()</span>
-              
-        </dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -530,7 +434,7 @@
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -546,7 +450,7 @@
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#notify():Unit" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -565,7 +469,7 @@
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#notifyAll():Unit" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -584,7 +488,7 @@
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -597,26 +501,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toString():String"></a>
-      <span class="permalink">
-      <a href="../../little/io/Implicits$.html#toString():String" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#wait():Unit" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -638,7 +526,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -660,7 +548,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../little/io/Implicits$.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../little/io/FileVisitEvent$$VisitFile.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -691,7 +579,17 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.Product">
+              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
+            </div><div class="parent" name="scala.Equals">
+              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="little.io.FileVisitEvent">
+              <h3>Inherited from <a href="FileVisitEvent.html" class="extype" name="little.io.FileVisitEvent">FileVisitEvent</a></h3>
+            </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
