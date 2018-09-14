@@ -20,7 +20,6 @@ import java.nio.file._
 import java.nio.file.StandardOpenOption._
 import java.nio.file.attribute._
 
-import scala.collection.convert.ImplicitConversions.`iterable AsScalaIterable`
 import scala.util.Try
 import scala.util.control.NonFatal
 import scala.compat.Platform.EOL
@@ -291,14 +290,6 @@ object Implicits {
      */
     def getFilePermissions(options: LinkOption*): FilePermissions =
       FilePermissionsImpl(Files.getPosixFilePermissions(path, options : _*))
-
-    /**
-     * Gets POSIX file permissions at path.
-     *
-     * @param options indicates how symbolic links are handled
-     */
-    def getPosixFilePermissions(options: LinkOption*): Seq[PosixFilePermission] =
-      Files.getPosixFilePermissions(path, options : _*).toSeq
 
     /**
      * Gets creation time of file at path.
