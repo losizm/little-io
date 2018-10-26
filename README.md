@@ -9,18 +9,18 @@ To use **little-io**, add it as a dependency to your project:
 
 * sbt
 ```scala
-libraryDependencies += "com.github.losizm" %% "little-io" % "2.3.0"
+libraryDependencies += "com.github.losizm" %% "little-io" % "2.3.1"
 ```
 * Gradle
 ```groovy
-compile group: 'com.github.losizm', name: 'little-io_2.12', version: '2.3.0'
+compile group: 'com.github.losizm', name: 'little-io_2.12', version: '2.3.1'
 ```
 * Maven
 ```xml
 <dependency>
   <groupId>com.github.losizm</groupId>
   <artifactId>little-io_2.12</artifactId>
-  <version>2.3.0</version>
+  <version>2.3.1</version>
 </dependency>
 ```
 
@@ -35,11 +35,10 @@ boilerplate of opening and closing a `FileOutputStream` or a `FileWriter`. And
 getting its content is just as concise.
 
 ```scala
-import java.io.File
-// Add methods to java.io.File
-import little.io.Implicits.FileType
+// Add methods to java.io.File and String
+import little.io.Implicits.{ FileType, IoStringType }
 
-val file = new File("greeting.txt")
+val file = "greeting.txt".toFile
 
 // Open writer to file, write text, and close writer
 file.setText("Hello, world!")
@@ -51,11 +50,10 @@ println(file.getText()) // Hello, world!
 Or you can create a file reference and set the file's content all in one swoop.
 
 ```scala
-import java.io.File
-import little.io.Implicits.FileType
+import little.io.Implicits.{ FileType, IoStringType }
 
 // Append text to file and return reference to file
-val file = new File("greeting.txt") << "Hello, world!"
+val file = "greeting.txt".toFile << "Hello, world!"
 
 println(file.getText())
 ```
@@ -63,21 +61,19 @@ println(file.getText())
 The same applies to `java.nio.file.Path`.
 
 ```scala
-import java.nio.file.Paths
-// Add methods to java.nio.file.Path
-import little.io.Implicits.PathType
+// Add methods to String and java.nio.file.Path
+import little.io.Implicits.{ IoStringType, PathType }
 
-val path = Paths.get("greeting.txt") << "Hello, world!"
+val path = "greeting.txt".toPath << "Hello, world!"
 println(path.getText())
 ```
 
 And, if you prefer working with bytes, there are extensions for those too.
 
 ```scala
-import java.io.File
-import little.io.Implicits.FileType
+import little.io.Implicits.{ FileType, IoStringType }
 
-val file = new File("greeting.txt")
+val file = "greeting.txt".toFile
 val data = "Hello, world!".getBytes("utf-8")
 
 file.setBytes(data)
@@ -94,12 +90,11 @@ or a `Writer` to the file to write its content, and you can open an
 management.
 
 ```scala
-import java.nio.file.Paths
 import java.nio.file.StandardOpenOption.CREATE
 // Add methods to java.nio.file.Path and java.io.Writer
-import little.io.Implicits.{ PathType, WriterType }
+import little.io.Implicits.{ IoStringType, PathType, WriterType }
 
-val file = Paths.get("numbers.txt")
+val file = "numbers.txt".toPath
 
 // Open file, write 3 lines of text, and close file
 file.withWriter(CREATE) { out =>
@@ -123,13 +118,10 @@ file.withReader { in =>
 Or, if you'll be reading file content line by line, there's an even simpler way.
 
 ```scala
-import java.nio.file.Paths
-import little.io.Implicits.PathType
-
-val file = Paths.get("numbers.txt")
+import little.io.Implicits.{ IoStringType, PathType }
 
 // Open file, print each line, and close file
-file.forEachLine(line => println(line))
+"numbers.txt".toPath.forEachLine(line => println(line))
 ```
 
 ### Traversing File Directories
@@ -143,12 +135,12 @@ call to an extension method of `Path`, passing in a `PartialFunction` to handle
 the events you're interested in.
 
 ```scala
-import java.nio.file.{ FileVisitResult, Paths }
+import java.nio.file.FileVisitResult
 // Import file events for walking file tree
 import little.io.FileVisitEvent.{ PreVisitDirectory, VisitFile }
-import little.io.Implicits.PathType
+import little.io.Implicits.{ IoStringType, PathType }
 
-val sourceDir = Paths.get("src")
+val sourceDir = "src".toPath
 
 // Traverse directories starting at 'src'
 sourceDir.walkFileTree {
@@ -183,11 +175,10 @@ for file events.
 With **little-io**, it's straight to the point.
 
 ```scala
-import java.nio.file.Paths
 import java.nio.file.StandardWatchEventKinds.ENTRY_CREATE
-import little.io.Implicits.PathType
+import little.io.Implicits.{ IoStringType, PathType }
 
-val dir = Paths.get(".")
+val dir = ".".toPath
 
 // Specify events of interest and supply event handler
 val handle = dir.watch(ENTRY_CREATE) { evt =>
@@ -197,7 +188,6 @@ val handle = dir.watch(ENTRY_CREATE) { evt =>
 // Close handle when finished
 //handle.close()
 ```
-
 
 ## License
 **little-io** is licensed under the Apache License, Version 2. See LICENSE
