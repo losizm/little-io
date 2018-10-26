@@ -1,5 +1,5 @@
 name := "little-io"
-version := "2.3.0"
+version := "2.3.1-SNAPSHOT"
 organization := "com.github.losizm"
 
 scalaVersion := "2.12.6"
@@ -25,7 +25,7 @@ developers := List(
   )
 )
 
-description := "Scala library that provides extension methods to java.io and java.nio"
+description := "The Scala library that provides extension methods to java.io and java.nio"
 licenses := List("Apache License, Version 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
 homepage := Some(url("https://github.com/losizm/little-io"))
 
