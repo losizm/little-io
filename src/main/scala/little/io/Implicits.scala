@@ -32,6 +32,18 @@ object Implicits {
   implicit val bufferSize = BufferSize(8192)
 
   /**
+   * Provides {@code java.io} and {@code java.nio} related extension methods to
+   * {@code String}.
+   */
+  implicit class IoStringType(val s: String) extends AnyVal {
+    /** Converts value to File. */
+    def toFile: File = new File(s)
+
+    /** Converts value to Path. */
+    def toPath: Path = Paths.get(s)
+  }
+
+  /**
    * Provides extension methods to {@code java.io.File}.
    *
    * @see [[PathType]]
