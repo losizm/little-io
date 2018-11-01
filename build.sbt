@@ -2,7 +2,7 @@ name := "little-io"
 version := "2.4.0-SNAPSHOT"
 organization := "com.github.losizm"
 
-scalaVersion := "2.12.6"
+scalaVersion := "2.12.7"
 scalacOptions ++= Seq("-deprecation", "-feature", "-Xcheckinit")
 
 libraryDependencies ++= Seq(
