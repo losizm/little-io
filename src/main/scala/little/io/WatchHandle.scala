@@ -33,8 +33,8 @@ private object WatchExecutionContext extends ExecutionContext {
 /**
  * Provides opaque handle to watch service.
  *
- * A handle is obtained via [[Implicits.PathType.watch]], which registers path
- * to watch service.
+ * A handle is obtained via [[Implicits.PathType.watch PathType.watch]], which
+ * registers path to watch service.
  *
  * {{{
  * import java.nio.file.Paths
@@ -43,12 +43,15 @@ private object WatchExecutionContext extends ExecutionContext {
  *
  * val dir = Paths.get(".")
  *
+ * // Print message when file is created
  * val handle = dir.watch(ENTRY_CREATE) { evt ⇒
  *   println(s"${evt.context} was created.")
  * }
  *
+ * Thread.sleep(60 * 1000)
+ *
  * // Close handle when finished
- * //handle.close()
+ * handle.close()
  * }}}
  */
 final class WatchHandle private[io] (service: WatchService, key: WatchKey, watcher: WatchEvent[_] => Unit) {

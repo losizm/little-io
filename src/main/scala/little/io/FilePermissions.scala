@@ -46,7 +46,7 @@ private case class PermissionSetImpl(read: Boolean, write: Boolean, execute: Boo
 /**
  * Represents full set of owner/group/other file permissions.
  *
- * @see [[Implicits.PathType.getFilePermissions]]
+ * @see [[Implicits.PathType.getFilePermissions PathType.getFilePermissions]]
  */
 trait FilePermissions {
   /** Gets owner permission set. */
@@ -69,4 +69,3 @@ private case class FilePermissionsImpl(perms: JavaSet[PosixFilePermission]) exte
   lazy val toPosixFilePermissions = asScalaSet(perms).toSet
   override lazy val toString = owner.toString + group.toString + other.toString
 }
-

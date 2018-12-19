@@ -447,8 +447,8 @@ object Implicits {
      * }
      * }}}
      *
-     * @see [[FileVisitEvent.PreVisitDirectory]], [[FileVisitEvent.PostVisitDirectory]]
-     *      [[FileVisitEvent.VisitFile]], [[FileVisitEvent.VisitFileFailed]]
+     * @see [[FileVisitEvent.PreVisitDirectory PreVisitEvent]], [[FileVisitEvent.PostVisitDirectory PostVisitDirectory]]
+     *      [[FileVisitEvent.VisitFile VisitFile]], [[FileVisitEvent.VisitFileFailed VisitFileFailed]]
      */
     def walkFileTree(visitor: PartialFunction[FileVisitEvent, FileVisitResult]): Unit =  {
       Files.walkFileTree(path, new FileVisitor[Path] {
