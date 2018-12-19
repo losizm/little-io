@@ -9,18 +9,18 @@ To use **little-io**, add it as a dependency to your project:
 
 * sbt
 ```scala
-libraryDependencies += "com.github.losizm" %% "little-io" % "2.4.0"
+libraryDependencies += "com.github.losizm" %% "little-io" % "2.4.1"
 ```
 * Gradle
 ```groovy
-compile group: 'com.github.losizm', name: 'little-io_2.12', version: '2.4.0'
+compile group: 'com.github.losizm', name: 'little-io_2.12', version: '2.4.1'
 ```
 * Maven
 ```xml
 <dependency>
   <groupId>com.github.losizm</groupId>
   <artifactId>little-io_2.12</artifactId>
-  <version>2.4.0</version>
+  <version>2.4.1</version>
 </dependency>
 ```
 
@@ -32,7 +32,7 @@ Here's a taste of what **little-io** offers.
 
 If you have a reference to a `File`, you can set its content without the
 boilerplate of opening and closing a `FileOutputStream` or a `FileWriter`. And
-getting its content is just as concise.
+getting file content is a breeze.
 
 ```scala
 // Add methods to java.io.File and String
@@ -47,7 +47,7 @@ file.setText("Hello, world!")
 println(file.getText()) // Hello, world!
 ```
 
-Or you can create a file reference and set the file's content all in one swoop.
+You can even create a file reference and set the file content all in one swoop.
 
 ```scala
 import little.io.Implicits.{ FileType, IoStringType }
@@ -131,8 +131,8 @@ tree starting at a particular `Path`. This is carried out by specifying a
 `FileVisitor` as a callback to handle a set of events.
 
 **little-io** makes this feature a little more Scala-like. You make a method
-call to an extension method of `Path`, passing in a `PartialFunction` to handle
-the events you're interested in.
+call to a `Path` extension method, passing in a `PartialFunction` to handle
+events of interest.
 
 ```scala
 import java.nio.file.FileVisitResult
@@ -180,14 +180,21 @@ import little.io.Implicits.{ IoStringType, PathType }
 
 val dir = ".".toPath
 
-// Specify events of interest and supply event handler
+// Print message when file is created
 val handle = dir.watch(ENTRY_CREATE) { evt =>
   println(s"${evt.context} was created.")
 }
 
+Thread.sleep(60 * 1000)
+
 // Close handle when finished
-//handle.close()
+handle.close()
 ```
+
+## API Documentation
+
+See [scaladoc](https://losizm.github.io/little-io/latest/api/little/io/index.html)
+for additional details.
 
 ## License
 **little-io** is licensed under the Apache License, Version 2. See LICENSE
