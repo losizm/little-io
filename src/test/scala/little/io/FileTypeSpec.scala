@@ -53,9 +53,8 @@ class FileTypeSpec extends FlatSpec {
 
     assert(file.getText == text)
 
-    file.forEachLine { (line, number) =>
-      if (number == 1) assert(line == text.split("\n").head)
-      else assert(line == text.split("\n").last)
+    file.forEachLine { line =>
+      assert(text.split("\n").contains(line))
     }
   }
 

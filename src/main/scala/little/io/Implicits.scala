@@ -120,17 +120,6 @@ object Implicits {
       withReader { in => in.forEachLine(f) }
 
     /**
-     * Reads file and invokes supplied function for each line.
-     *
-     * The line content, excluding line separator, and line number are  passed
-     * to function.
-     *
-     * @param f function
-     */
-    def forEachLine(f: (String, Long) => Unit): Unit =
-      withReader { in => in.forEachLine(1)(f) }
-
-    /**
      * Opens InputStream to file and passes it to supplied function. Input
      * stream is closed on function's return.
      *
@@ -387,17 +376,6 @@ object Implicits {
       withReader { in => in.forEachLine(f) }
 
     /**
-     * Reads file at path and invokes supplied function for each line.
-     *
-     * The line content, excluding line separator, and line number are  passed
-     * to function.
-     *
-     * @param f function
-     */
-    def forEachLine(f: (String, Long) => Unit): Unit =
-      withReader { in => in.forEachLine(1)(f) }
-
-    /**
      * Opens directory stream to path and invokes supplied function for each
      * file in directory.
      */
@@ -652,24 +630,6 @@ object Implicits {
       var line: String = null
       while ({ line = reader.readLine(); line != null })
         f(line)
-    }
-
-    /**
-     * Reads content and invokes supplied function for each line.
-     *
-     * The line content, excluding line separator, and line number are passed to
-     * function.
-     *
-     * @param marker used as first line number
-     * @param f function
-     */
-    def forEachLine(marker: Long = 1)(f: (String, Long) => Unit): Unit = {
-      var number = marker
-
-      forEachLine { line =>
-        f(line, number)
-        number += 1
-      }
     }
   }
 

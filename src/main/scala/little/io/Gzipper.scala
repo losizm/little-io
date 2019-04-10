@@ -38,8 +38,7 @@ object Gzipper {
   /**
    * Gzips input stream to output stream.
    *
-   * <strong>Note:</strong> Neither {@code in} nor {@code out} are closed by
-   * this method.
+   * <strong>Note:</strong> This method closes neither `in` nor `out`.
    */
   def gzip(in: InputStream, out: OutputStream)(implicit buffersSize: BufferSize): Unit = {
     val deflate = new GZIPOutputStream(out)
@@ -63,8 +62,7 @@ object Gzipper {
   /**
    * Gunzips input stream to output stream.
    *
-   * <strong>Note:</strong> Neither {@code in} nor {@code out} are closed by
-   * this method.
+   * <strong>Note:</strong> This method closes neither `in` nor `out`.
    */
   def gunzip(in: InputStream, out: OutputStream)(implicit buffersSize: BufferSize): Unit = {
     val inflate = new GZIPInputStream(in)
