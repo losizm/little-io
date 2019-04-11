@@ -120,6 +120,15 @@ object Implicits {
       withReader { in => in.forEachLine(f) }
 
     /**
+     * Gets list of files in directory and passes each file to supplied
+     * function.
+     *
+     * @param f function
+     */
+    def forEachFile(f: File => Unit): Unit =
+      file.toPath.forEachFile("*") { path => f(path.toFile) }
+
+    /**
      * Opens InputStream to file and passes it to supplied function. Input
      * stream is closed on function's return.
      *
