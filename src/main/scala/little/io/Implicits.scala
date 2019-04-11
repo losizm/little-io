@@ -20,6 +20,8 @@ import java.nio.file._
 import java.nio.file.StandardOpenOption._
 import java.nio.file.attribute._
 
+import scala.collection.GenTraversableOnce
+import scala.collection.mutable.ArrayBuffer
 import scala.util.Try
 import scala.util.control.NonFatal
 import scala.compat.Platform.EOL
@@ -124,9 +126,45 @@ object Implicits {
      * function.
      *
      * @param f function
+     *
+     * @throws IOException if file is not a directory
      */
     def forEachFile(f: File => Unit): Unit =
       file.toPath.forEachFile("*") { path => f(path.toFile) }
+
+    /**
+     * Maps each file in directory using supplied function.
+     *
+     * @param f function
+     *
+     * @throws IOException if file is not a directory
+     */
+    def mapFiles[T](f: File => T): Seq[T] =
+      file.toPath.mapFiles { path => f(path.toFile) }
+
+    /**
+     * Builds collection using elements mapped from files in directory.
+     *
+     * @param f function
+     *
+     * @throws IOException if file is not a directory
+     */
+    def flatMapFiles[T](f: File => GenTraversableOnce[T]): Seq[T] =
+      file.toPath.flatMapFiles { path => f(path.toFile) }
+
+    /**
+     * Folds files in directory to single value using given inital value and
+     * binary operator.
+     *
+     * @param init initial value
+     * @param op binary operator
+     *
+     * @return `init` if no files; otherwise, last value returned from `op`
+     *
+     * @throws IOException if file is not a directory
+     */
+    def foldFiles[T](init: T)(op: (T, File) => T): T =
+      file.toPath.foldFiles(init) { (res, path) => op(res, path.toFile) }
 
     /**
      * Opens InputStream to file and passes it to supplied function. Input
@@ -387,6 +425,8 @@ object Implicits {
     /**
      * Opens directory stream to path and invokes supplied function for each
      * file in directory.
+     *
+     * @throws IOException if path is not to a directory
      */
     def forEachFile(f: Path => Unit): Unit =
       forEachFile("*")(f)
@@ -394,6 +434,8 @@ object Implicits {
     /**
      * Opens directory stream to path and invokes supplied function for each
      * file in directory satisfying glob.
+     *
+     * @throws IOException if path is not to a directory
      */
     def forEachFile(glob: String)(f: Path => Unit): Unit = {
       var stream: DirectoryStream[Path] = null
@@ -404,6 +446,48 @@ object Implicits {
       } finally Try(stream.close())
     }
 
+    /**
+     * Maps each file in directory using supplied function.
+     *
+     * @param f function
+     *
+     * @throws IOException if path is not to a directory
+     */
+    def mapFiles[T](f: Path => T): Seq[T] = {
+      var values = new ArrayBuffer[T]
+      path.forEachFile("*") { x => values += f(x) }
+      values
+    }
+
+    /**
+     * Builds collection using elements mapped from files in directory.
+     *
+     * @param f function
+     *
+     * @throws IOException if path is not to a directory
+     */
+    def flatMapFiles[T](f: Path => GenTraversableOnce[T]): Seq[T] = {
+      var values = new ArrayBuffer[T]
+      path.forEachFile("*") { x => f(x).foreach(values.+=) }
+      values
+    }
+
+    /**
+     * Folds files in directory to single value using given inital value and
+     * binary operator.
+     *
+     * @param init initial value
+     * @param op binary operator
+     *
+     * @return `init` if no files; otherwise, last value returned from `op`
+     *
+     * @throws IOException if path is not to a directory
+     */
+    def foldFiles[T](init: T)(op: (T, Path) => T): T = {
+      var result = init
+      path.forEachFile("*") { x => result = op(result, x) }
+      result
+    }
 
     /**
      * Walks file tree starting at path and invokes supplied visitor function
