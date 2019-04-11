@@ -9,18 +9,18 @@ To use **little-io**, add it as a dependency to your project:
 
 * sbt
 ```scala
-libraryDependencies += "com.github.losizm" %% "little-io" % "2.5.0"
+libraryDependencies += "com.github.losizm" %% "little-io" % "2.6.0"
 ```
 * Gradle
 ```groovy
-compile group: 'com.github.losizm', name: 'little-io_2.12', version: '2.5.0'
+compile group: 'com.github.losizm', name: 'little-io_2.12', version: '2.6.0'
 ```
 * Maven
 ```xml
 <dependency>
   <groupId>com.github.losizm</groupId>
   <artifactId>little-io_2.12</artifactId>
-  <version>2.5.0</version>
+  <version>2.6.0</version>
 </dependency>
 ```
 
@@ -122,6 +122,24 @@ import little.io.Implicits.{ IoStringType, PathType }
 
 // Open file, print each line, and close file
 "numbers.txt".toPath.forEachLine(line => println(line))
+```
+
+### Mapping and Folding Files in Directory
+
+If you have a `File` or `Path` reference to a directory, you can map the files
+in the directory. You can also fold the files in the directory to generate a
+single value.
+
+```scala
+import little.io.Implicits.{ FileType, IoStringType }
+
+val home = sys.props("user.home").toFile
+
+// Get file names in home directory
+val fileNames = home.mapFiles(_.getName)
+
+// Total file sizes in home directory
+val totalSize = home.foldFiles(0L) { _ + _.length }
 ```
 
 ### Traversing File Directories
