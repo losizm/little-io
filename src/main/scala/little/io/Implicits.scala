@@ -21,7 +21,7 @@ import java.nio.file.StandardOpenOption._
 import java.nio.file.attribute._
 
 import scala.collection.GenTraversableOnce
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.ListBuffer
 import scala.util.Try
 import scala.util.control.NonFatal
 import scala.compat.Platform.EOL
@@ -457,7 +457,7 @@ object Implicits {
      * @throws IOException if path is not to a directory
      */
     def mapFiles[T](f: Path => T): Seq[T] = {
-      var values = new ArrayBuffer[T]
+      var values = new ListBuffer[T]
       path.forEachFile("*") { x => values += f(x) }
       values
     }
@@ -470,7 +470,7 @@ object Implicits {
      * @throws IOException if path is not to a directory
      */
     def flatMapFiles[T](f: Path => GenTraversableOnce[T]): Seq[T] = {
-      var values = new ArrayBuffer[T]
+      var values = new ListBuffer[T]
       path.forEachFile("*") { x => f(x).foreach(values.+=) }
       values
     }
