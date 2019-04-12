@@ -122,6 +122,42 @@ object Implicits {
       withReader { in => in.forEachLine(f) }
 
     /**
+     * Filters lines in file using supplied predicate.
+     *
+     * @param p predicate
+     */
+    def filterLines(p: String => Boolean): Seq[String] =
+      withReader { in => in.filterLines(p) }
+
+    /**
+     * Maps each line in file using supplied function.
+     *
+     * @param f function
+     */
+    def mapLines[T](f: String => T): Seq[T] =
+      withReader { in => in.mapLines(f) }
+
+    /**
+     * Builds collection using elements mapped from lines in file.
+     *
+     * @param f function
+     */
+    def flatMapLines[T](f: String => GenTraversableOnce[T]): Seq[T] =
+      withReader { in => in.flatMapLines(f) }
+
+    /**
+     * Folds lines in file to single value using given initial value and binary
+     * operator.
+     *
+     * @param init initial value
+     * @param op binary operator
+     *
+     * @return `init` if file is empty; otherwise, last value returned from `op`
+     */
+    def foldLines[T](init: T)(op: (T, String) => T): T =
+      withReader { in => in.foldLines(init)(op) }
+
+    /**
      * Gets list of files in directory and passes each file to supplied
      * function.
      *
@@ -153,7 +189,7 @@ object Implicits {
       file.toPath.flatMapFiles { path => f(path.toFile) }
 
     /**
-     * Folds files in directory to single value using given inital value and
+     * Folds files in directory to single value using given initial value and
      * binary operator.
      *
      * @param init initial value
@@ -426,6 +462,42 @@ object Implicits {
       withReader { in => in.forEachLine(f) }
 
     /**
+     * Filters lines in file using supplied predicate.
+     *
+     * @param p predicate
+     */
+    def filterLines(p: String => Boolean): Seq[String] =
+      withReader { in => in.filterLines(p) }
+
+    /**
+     * Maps each line in file using supplied function.
+     *
+     * @param f function
+     */
+    def mapLines[T](f: String => T): Seq[T] =
+      withReader { in => in.mapLines(f) }
+
+    /**
+     * Builds collection using elements mapped from lines in file.
+     *
+     * @param f function
+     */
+    def flatMapLines[T](f: String => GenTraversableOnce[T]): Seq[T] =
+      withReader { in => in.flatMapLines(f) }
+
+    /**
+     * Folds lines in file to single value using given initial value and binary
+     * operator.
+     *
+     * @param init initial value
+     * @param op binary operator
+     *
+     * @return `init` if file is empty; otherwise, last value returned from `op`
+     */
+    def foldLines[T](init: T)(op: (T, String) => T): T =
+      withReader { in => in.foldLines(init)(op) }
+
+    /**
      * Opens directory stream to path and invokes supplied function for each
      * file in directory.
      *
@@ -476,7 +548,7 @@ object Implicits {
     }
 
     /**
-     * Folds files in directory to single value using given inital value and
+     * Folds files in directory to single value using given initial value and
      * binary operator.
      *
      * @param init initial value
@@ -726,6 +798,54 @@ object Implicits {
       var line: String = null
       while ({ line = reader.readLine(); line != null })
         f(line)
+    }
+
+    /**
+     * Filters lines in reader using supplied predicate.
+     *
+     * @param p predicate
+     */
+    def filterLines(p: String => Boolean): Seq[String] = {
+      var values = new ListBuffer[String]
+      forEachLine { x => if (p(x)) values += x }
+      values
+    }
+
+    /**
+     * Maps each line in reader using supplied function.
+     *
+     * @param f function
+     */
+    def mapLines[T](f: String => T): Seq[T] = {
+      var values = new ListBuffer[T]
+      forEachLine { x => values += f(x) }
+      values
+    }
+
+    /**
+     * Builds collection using elements mapped from lines in reader.
+     *
+     * @param f function
+     */
+    def flatMapLines[T](f: String => GenTraversableOnce[T]): Seq[T] = {
+      var values = new ListBuffer[T]
+      forEachLine { x => f(x).foreach(values.+=) }
+      values
+    }
+
+    /**
+     * Folds lines in reader to single value using given initial value and
+     * binary operator.
+     *
+     * @param init initial value
+     * @param op binary operator
+     *
+     * @return `init` if end of stream; otherwise, last value returned from `op`
+     */
+    def foldLines[T](init: T)(op: (T, String) => T): T = {
+      var result = init
+      forEachLine { x => result = op(result, x) }
+      result
     }
   }
 

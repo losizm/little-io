@@ -71,4 +71,27 @@ class FileTypeSpec extends FlatSpec {
 
     assert(file.getText == "ABC123.!?abcxyz")
   }
+
+  it should "have its lines filtered, mapped, and folded" in {
+    val file = createTempFile()
+
+    file.setText("abc\n123\nxyz\n789")
+
+    val filter = file.filterLines(_.matches("\\d+"))
+    assert { filter.sameElements(Seq("123", "789")) }
+
+    val map = file.mapLines(_.toUpperCase)
+    assert { map.sameElements(Seq("ABC", "123", "XYZ", "789")) }
+
+    val flatMap = file.flatMapLines { line =>
+      line.matches("[a-z]+") match {
+        case true  => Some(line)
+        case false => None
+      }
+    }
+    assert { flatMap.sameElements(Seq("abc", "xyz")) }
+
+    val fold = file.foldLines("") { _ + _ }
+    assert(fold == "abc123xyz789")
+  }
 }

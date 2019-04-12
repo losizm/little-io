@@ -32,7 +32,7 @@ class PathTypeSpec extends FlatSpec {
 
   val text = "Now Peter Piper picked peppers but Run rocks rhymes."
 
-  "Path" should "be written to output stream and read from input stream" in {
+  "File" should "be written to output stream and read from input stream" in {
     val bytes = text.getBytes("utf-8")
     val file = createTempFile()
     
@@ -77,7 +77,30 @@ class PathTypeSpec extends FlatSpec {
     assert(file.getText == "ABC123.!?abcxyz")
   }
 
-  "File" should "be created and deleted" in {
+  it should "have its lines filtered, mapped, and folded" in {
+    val file = createTempFile()
+
+    file.setText("abc\n123\nxyz\n789")
+
+    val filter = file.filterLines(_.matches("\\d+"))
+    assert { filter.sameElements(Seq("123", "789")) }
+
+    val map = file.mapLines(_.toUpperCase)
+    assert { map.sameElements(Seq("ABC", "123", "XYZ", "789")) }
+
+    val flatMap = file.flatMapLines { line =>
+      line.matches("[a-z]+") match {
+        case true  => Some(line)
+        case false => None
+      }
+    }
+    assert { flatMap.sameElements(Seq("abc", "xyz")) }
+
+    val fold = file.foldLines("") { _ + _ }
+    assert(fold == "abc123xyz789")
+  }
+
+  it should "be created and deleted" in {
     val file = createTempFile() << "a regular file"
 
     assert(file.exists())
