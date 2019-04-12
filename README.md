@@ -9,18 +9,18 @@ To use **little-io**, add it as a dependency to your project:
 
 * sbt
 ```scala
-libraryDependencies += "com.github.losizm" %% "little-io" % "2.6.0"
+libraryDependencies += "com.github.losizm" %% "little-io" % "2.7.0"
 ```
 * Gradle
 ```groovy
-compile group: 'com.github.losizm', name: 'little-io_2.12', version: '2.6.0'
+compile group: 'com.github.losizm', name: 'little-io_2.12', version: '2.7.0'
 ```
 * Maven
 ```xml
 <dependency>
   <groupId>com.github.losizm</groupId>
   <artifactId>little-io_2.12</artifactId>
-  <version>2.6.0</version>
+  <version>2.7.0</version>
 </dependency>
 ```
 
@@ -124,10 +124,34 @@ import little.io.Implicits.{ IoStringType, PathType }
 "numbers.txt".toPath.forEachLine(line => println(line))
 ```
 
+### Filtering, Mapping, and Folding Lines in File
+
+There are other comprehension methods for processing files line by line. You can
+filter and map the lines in a file to build a collection. Or you can fold the
+lines to a single value.
+
+```scala
+import little.io.Implicits._
+
+val file = "test.txt".toFile << "abc\n123\nxyz\n789"
+
+// Filter lines with numbers only
+val filtered = file.filterLines(_.matches("\\d+"))
+assert { filtered.sameElements(Seq("123", "789")) }
+
+// Map lines to uppercase
+val mapped = file.mapLines(_.toUpperCase)
+assert { mapped.sameElements(Seq("ABC", "123", "XYZ", "789")) }
+
+// Fold lines to single, concatenated string
+val folded = file.foldLines("") { _ + _ }
+assert(folded == "abc123xyz789")
+```
+
 ### Mapping and Folding Files in Directory
 
 If you have a `File` or `Path` reference to a directory, you can map the files
-in the directory. You can also fold the files in the directory to generate a
+in the directory. And you can fold the files in the directory to generate a
 single value.
 
 ```scala
