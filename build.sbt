@@ -1,5 +1,5 @@
 name := "little-io"
-version := "2.7.0"
+version := "2.8.0"
 organization := "com.github.losizm"
 
 scalaVersion := "2.12.8"
