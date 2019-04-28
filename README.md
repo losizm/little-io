@@ -9,18 +9,18 @@ To use **little-io**, add it as a dependency to your project:
 
 * sbt
 ```scala
-libraryDependencies += "com.github.losizm" %% "little-io" % "2.7.0"
+libraryDependencies += "com.github.losizm" %% "little-io" % "2.8.0"
 ```
 * Gradle
 ```groovy
-compile group: 'com.github.losizm', name: 'little-io_2.12', version: '2.7.0'
+compile group: 'com.github.losizm', name: 'little-io_2.12', version: '2.8.0'
 ```
 * Maven
 ```xml
 <dependency>
   <groupId>com.github.losizm</groupId>
   <artifactId>little-io_2.12</artifactId>
-  <version>2.7.0</version>
+  <version>2.8.0</version>
 </dependency>
 ```
 
@@ -231,6 +231,80 @@ Thread.sleep(60 * 1000)
 
 // Close handle when finished
 handle.close()
+```
+
+### File Compression
+
+The `Compressor` object provides various compression methods. For example, you
+can compress a file using `gzip`.
+
+```scala
+import java.io.File
+import little.io.BufferSize
+import little.io.Compressor.gzip
+
+// Specify buffer size for I/O operations
+implicit val bufferSize = BufferSize(1024)
+
+// Specify input and output files
+val in = new File("/path/to/file.txt")
+val out = new File("/path/to/file.txt.gz")
+
+// Gzip input to output
+gzip(in, out)
+```
+
+And decompress it with `gunzip`.
+
+```scala
+import java.io.File
+import little.io.BufferSize
+import little.io.Compressor.gunzip
+
+// Specify buffer size for I/O operations
+implicit val bufferSize = BufferSize(1024)
+
+// Specify input and output files
+val in = new File("/path/to/file.txt.gz")
+val out = new File("/path/to/file.txt")
+
+// Gunzip input to output
+gunzip(in, out)
+```
+
+Or, to build an archive, you can `zip` a directory.
+
+```scala
+import java.io.{ File, FileFilter }
+import little.io.Compressor.zip
+
+// Specify input directory and output file
+val in = new File("./src")
+val out = new File("/tmp/src.zip")
+
+// Define filter for scala files
+implicit val scalaFileFilter: FileFilter = { file: File =>
+  file.isDirectory || file.getName.endsWith(".scala")
+}
+
+// Zips all .scala files
+zip(in, out)
+```
+
+And extract the files to directory using `unzip`.
+
+```scala
+import java.io.{ File, FileFilter }
+import little.io.Compressor.unzip
+
+// Specify input file and output directory
+val in = new File("/tmp/src.zip")
+val out = new File("/tmp/src")
+
+implicit val filter = little.io.AcceptAnyFile
+
+// Zips all files
+unzip(in, out)
 ```
 
 ## API Documentation
