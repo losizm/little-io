@@ -29,8 +29,8 @@ object TestFile {
     file
   }
 
-  def createTempFile(dir: File = getTempDir()): File = {
-    val file = Files.createTempFile(dir.toPath, "little-io-", ".txt").toFile
+  def createTempFile(dir: File = getTempDir(), suffix: String = ".txt"): File = {
+    val file = Files.createTempFile(dir.toPath, "little-io-", suffix).toFile
     file.deleteOnExit()
     file
   }

@@ -15,26 +15,16 @@
  */
 package little.io
 
-import org.scalatest.FlatSpec
+import java.nio.file.{ Path, PathMatcher }
 
-import Gzipper._
-import Implicits.FileType
-import TestFile._
-
-class GzipperSpec extends FlatSpec {
-  val text = "Now Peter Piper picked peppers\nbut Run rocks rhymes."
-
-  "Data" should "be gzipped and gunzipped" in {
-    implicit val bufferSize = BufferSize(32)
-
-    val in = createTempFile() << text
-    val gzipped = createTempFile()
-    val gunzipped = createTempFile()
-
-    gzip(in, gzipped)
-    assert(in.getText != gzipped.getText)
-
-    gunzip(gzipped, gunzipped)
-    assert(in.getText == gunzipped.getText)
-  }
+/** Implementation of `PathMatcher` that matches any path. */
+object MatchAnyPath extends PathMatcher {
+  /**
+   * Tests whether path matches.
+   *
+   * @param path path
+   *
+   * @return true
+   */
+  def matches(path: Path): Boolean = true
 }
