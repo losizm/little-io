@@ -367,8 +367,7 @@ object Implicits {
      * @param options indicates how symbolic links are handled
      */
     def getGroupName(options: LinkOption*): String =
-      Files.getFileAttributeView(path, classOf[PosixFileAttributeView], options : _*)
-        .readAttributes().group().getName
+      Files.readAttributes(path, classOf[PosixFileAttributes], options : _*).group().getName
 
     /**
      * Gets file permissions at path.
@@ -384,8 +383,7 @@ object Implicits {
      * @param options indicates how symbolic links are handled
      */
     def getCreationTime(options: LinkOption*): FileTime =
-      Files.getFileAttributeView(path, classOf[PosixFileAttributeView], options : _*)
-        .readAttributes().creationTime()
+      Files.readAttributes(path, classOf[PosixFileAttributes], options : _*).creationTime()
 
     /**
      * Gets last access time of file at path.
@@ -393,8 +391,7 @@ object Implicits {
      * @param options indicates how symbolic links are handled
      */
     def getLastAccessTime(options: LinkOption*): FileTime =
-      Files.getFileAttributeView(path, classOf[PosixFileAttributeView], options : _*)
-        .readAttributes().lastAccessTime()
+      Files.readAttributes(path, classOf[PosixFileAttributes], options : _*).lastAccessTime()
 
     /**
      * Gets last modified time of file at path.
