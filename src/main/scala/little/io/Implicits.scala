@@ -159,15 +159,14 @@ object Implicits {
       withReader { in => in.foldLines(init)(op) }
 
     /**
-     * Gets list of files in directory and passes each file to supplied
-     * function.
+     * Invokes supplied function for each file in directory.
      *
      * @param f function
      *
      * @throws IOException if file is not a directory
      */
     def forEachFile(f: File => Unit): Unit =
-      file.toPath.forEachFile("*") { path => f(path.toFile) }
+      file.toPath.forEachFile { path => f(path.toFile) }
 
     /**
      * Maps each file in directory using supplied function.
@@ -514,20 +513,28 @@ object Implicits {
      * Opens directory stream to path and invokes supplied function for each
      * file in directory.
      *
-     * @throws IOException if path is not to a directory
-     */
-    def forEachFile(f: Path => Unit): Unit =
-      forEachFile("*")(f)
-
-    /**
-     * Opens directory stream to path and invokes supplied function for each
-     * file in directory satisfying glob.
+     * @param f function
      *
      * @throws IOException if path is not to a directory
      */
-    def forEachFile(glob: String)(f: Path => Unit): Unit = {
+    def forEachFile(f: Path => Unit): Unit = {
       var stream: DirectoryStream[Path] = null
+      try {
+        stream = Files.newDirectoryStream(path)
+        stream.forEach(f(_))
+      } finally Try(stream.close())
+    }
 
+    /**
+     * Invokes supplied function for each file in directory satisfying glob.
+     *
+     * @param glob glob pattern
+     * @param f function
+     *
+     * @throws IOException if path is not to a directory
+     */
+    def forFiles(glob: String)(f: Path => Unit): Unit = {
+      var stream: DirectoryStream[Path] = null
       try {
         stream = Files.newDirectoryStream(path, glob)
         stream.forEach(f(_))
@@ -543,7 +550,7 @@ object Implicits {
      */
     def mapFiles[T](f: Path => T): Seq[T] = {
       var values = new ListBuffer[T]
-      path.forEachFile("*") { x => values += f(x) }
+      path.forEachFile { x => values += f(x) }
       values
     }
 
@@ -556,7 +563,7 @@ object Implicits {
      */
     def flatMapFiles[T](f: Path => GenTraversableOnce[T]): Seq[T] = {
       var values = new ListBuffer[T]
-      path.forEachFile("*") { x => f(x).foreach(values.+=) }
+      path.forEachFile { x => f(x).foreach(values.+=) }
       values
     }
 
@@ -573,7 +580,7 @@ object Implicits {
      */
     def foldFiles[T](init: T)(op: (T, Path) => T): T = {
       var result = init
-      path.forEachFile("*") { x => result = op(result, x) }
+      path.forEachFile { x => result = op(result, x) }
       result
     }
 

@@ -150,7 +150,7 @@ class PathTypeSpec extends FlatSpec {
     assert(count == 2)
 
     count = 0
-    dir.forEachFile("little-io-*.txt") { file =>
+    dir.forFiles("little-io-*.txt") { file =>
       val name = file.getFileName.toString
       assert(name.startsWith("little-io-"))
       assert(name.endsWith(".txt"))
