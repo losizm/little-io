@@ -369,6 +369,22 @@ object Implicits {
       withReader { in => in.forEach(f) }
 
     /**
+     * Gets file permissions at path.
+     *
+     * @param options link options
+     */
+    def getFilePermissions(options: LinkOption*): FilePermissions =
+      FilePermissionsImpl(Files.getPosixFilePermissions(path, options : _*))
+
+    /**
+     * Sets file permissions at path.
+     *
+     * @param perms file permissions
+     */
+    def setFilePermissions(perms: FilePermissions): Unit =
+      Files.setPosixFilePermissions(path, perms.toPosixFilePermissions)
+
+    /**
      * Gets owner name of file at path.
      *
      * @param options indicates how symbolic links are handled
@@ -383,14 +399,6 @@ object Implicits {
      */
     def getGroupName(options: LinkOption*): String =
       Files.readAttributes(path, classOf[PosixFileAttributes], options : _*).group().getName
-
-    /**
-     * Gets file permissions at path.
-     *
-     * @param options indicates how symbolic links are handled
-     */
-    def getFilePermissions(options: LinkOption*): FilePermissions =
-      FilePermissionsImpl(Files.getPosixFilePermissions(path, options : _*))
 
     /**
      * Gets creation time of file at path.

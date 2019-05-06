@@ -82,6 +82,14 @@ class PathTypeSpec extends FlatSpec {
     assert(new String(chars, "UTF-8") == text)
   }
 
+  it should "have its file permissions set" in {
+    val file = createTempFile()
+    val perms = FilePermissions("rwxr-x---")
+
+    file.setFilePermissions(perms)
+    assert(file.getFilePermissions() == perms)
+  }
+
   it should "have its content set to bytes and text" in {
     val file = createTempFile()
 
