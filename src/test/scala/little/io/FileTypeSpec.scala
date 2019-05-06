@@ -30,7 +30,7 @@ class FileTypeSpec extends FlatSpec {
   "File" should "be written to output stream and read from input stream" in {
     val bytes = text.getBytes("utf-8")
     val file = createTempFile()
-    
+
     file.withOutputStream(out => out.write(bytes))
 
     file.withInputStream { in =>
@@ -43,7 +43,7 @@ class FileTypeSpec extends FlatSpec {
 
   it should "be written to writer and read from reader" in {
     val file = createTempFile()
-    
+
     file.withWriter(writer => writer.append(text))
 
     file.withReader { reader =>
@@ -56,6 +56,18 @@ class FileTypeSpec extends FlatSpec {
     file.forEachLine { line =>
       assert(text.split("\n").contains(line))
     }
+  }
+
+  it should "be written to and read from random access file" in {
+    val bytes = text.getBytes("utf-8")
+    val file = createTempFile()
+
+    file.withRandomAccess("rw") { f => f.write(bytes) }
+
+    val chars = new Array[Byte](bytes.length)
+    file.withRandomAccess("r") { f => f.read(chars) }
+
+    assert(new String(chars, "utf-8") == text)
   }
 
   it should "have its content set to bytes and text" in {

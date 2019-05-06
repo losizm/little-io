@@ -16,7 +16,9 @@
 package little.io
 
 import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, StringReader, StringWriter }
+import java.nio.ByteBuffer
 import java.nio.file.{ Files, FileVisitResult }
+import java.nio.file.StandardOpenOption._
 import java.nio.file.StandardWatchEventKinds._
 
 import scala.util.Try
@@ -35,7 +37,7 @@ class PathTypeSpec extends FlatSpec {
   "File" should "be written to output stream and read from input stream" in {
     val bytes = text.getBytes("utf-8")
     val file = createTempFile()
-    
+
     file.withOutputStream() { out => out.write(bytes) }
 
     file.withInputStream() { in =>
@@ -48,7 +50,7 @@ class PathTypeSpec extends FlatSpec {
 
   it should "be written to writer and read from reader" in {
     val file = createTempFile()
-    
+
     file.withWriter() { writer => writer.append(text) }
 
     file.withReader { reader =>
@@ -61,6 +63,23 @@ class PathTypeSpec extends FlatSpec {
     file.forEachLine { line =>
       assert(text.split("\n").contains(line))
     }
+  }
+
+  it should "be written to and read from channel" in {
+    val file = createTempFile()
+    val buffer = ByteBuffer.allocate(256)
+
+    buffer.put(text.getBytes("utf-8")).flip()
+    file.withChannel(WRITE) { channel => channel.write(buffer) }
+
+    buffer.clear()
+    file.withChannel(READ) { channel => channel.read(buffer) }
+    buffer.flip()
+
+    val chars = new Array[Byte](buffer.limit)
+    buffer.get(chars)
+
+    assert(new String(chars, "UTF-8") == text)
   }
 
   it should "have its content set to bytes and text" in {

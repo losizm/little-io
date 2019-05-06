@@ -16,6 +16,7 @@
 package little.io
 
 import java.io._
+import java.nio.channels.FileChannel
 import java.nio.file._
 import java.nio.file.StandardOpenOption._
 import java.nio.file.attribute._
@@ -280,6 +281,21 @@ object Implicits {
     def withWriter[T](append: Boolean)(f: BufferedWriter => T): T =
       if (append) file.toPath.withWriter(CREATE, APPEND)(f)
       else file.toPath.withWriter(CREATE, TRUNCATE_EXISTING)(f)
+
+    /**
+     * Opens RandomAccessFile with specified access mode and passes it to
+     * function. File is closed on function's return.
+     *
+     * @param mode access mode
+     * @param f function
+     *
+     * @return value from supplied function
+     */
+    def withRandomAccess[T](mode: String)(f: RandomAccessFile => T): T = {
+      val raf = new RandomAccessFile(file, mode)
+      try f(raf)
+      finally Try(raf.close())
+    }
   }
 
   /**
@@ -681,6 +697,21 @@ object Implicits {
       val out = Files.newBufferedWriter(path, options : _*)
       try f(out)
       finally Try(out.close())
+    }
+
+    /**
+     * Opens FileChannel with specified open options and passes it to function.
+     * Channel is closed on function's return.
+     *
+     * @param options open options
+     * @param f function
+     *
+     * @return value from supplied function
+     */
+    def withChannel[T](options: OpenOption*)(f: FileChannel => T): T = {
+      val channel = FileChannel.open(path, options : _*)
+      try f(channel)
+      finally Try(channel.close())
     }
   }
 
