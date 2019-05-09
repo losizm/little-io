@@ -53,7 +53,7 @@ class PathTypeSpec extends FlatSpec {
 
     file.withWriter() { writer => writer.append(text) }
 
-    file.withReader { reader =>
+    file.withReader() { reader =>
       val writer = new StringWriter() << reader
       assert(writer.toString == text)
     }

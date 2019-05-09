@@ -66,7 +66,7 @@ object Implicits {
      * @return file
      */
     def <<(text: String): File =
-      withWriter(true) { out => out.append(text); file }
+      withWriter(true) { out => out.write(text); file }
 
     /**
      * Appends contents of supplied InputStream to file.
@@ -85,16 +85,20 @@ object Implicits {
       withWriter(true) { out => out << in; file }
 
     /** Reads file and returns its bytes. */
-    def getBytes(): Array[Byte] = file.toPath.getBytes
+    def getBytes(): Array[Byte] =
+      withInputStream { in => in.getBytes() }
 
     /** Sets file content to supplied bytes. */
-    def setBytes(bytes: Array[Byte]): Unit = file.toPath.setBytes(bytes)
+    def setBytes(bytes: Array[Byte]): Unit =
+      withOutputStream { out => out.write(bytes) }
 
     /** Reads file and returns its text. */
-    def getText(): String = file.toPath.getText
+    def getText(): String =
+      withReader { in => in.getText() }
 
     /** Sets file content to supplied text. */
-    def setText(text: String): Unit = file.toPath.setText(text)
+    def setText(text: String): Unit =
+      withWriter { out => out.write(text) }
 
     /**
      * Reads file and invokes supplied function for each line.
@@ -150,7 +154,10 @@ object Implicits {
      * @throws IOException if file is not a directory
      */
     def forEachFile(f: File => Unit): Unit =
-      file.toPath.forEachFile { path => f(path.toFile) }
+      file.listFiles match {
+        case null  =>
+        case files => files.foreach(f)
+      }
 
     /**
      * Maps each file in directory using supplied function.
@@ -160,7 +167,10 @@ object Implicits {
      * @throws IOException if file is not a directory
      */
     def mapFiles[T](f: File => T): Seq[T] =
-      file.toPath.mapFiles { path => f(path.toFile) }
+      file.listFiles match {
+        case null  => Nil
+        case files => files.map(f)
+      }
 
     /**
      * Builds collection using elements mapped from files in directory.
@@ -170,7 +180,10 @@ object Implicits {
      * @throws IOException if file is not a directory
      */
     def flatMapFiles[T](f: File => GenTraversableOnce[T]): Seq[T] =
-      file.toPath.flatMapFiles { path => f(path.toFile) }
+      file.listFiles match {
+        case null  => Nil
+        case files => files.flatMap(f)
+      }
 
     /**
      * Folds files in directory to single value using given initial value and
@@ -184,7 +197,10 @@ object Implicits {
      * @throws IOException if file is not a directory
      */
     def foldFiles[T](init: T)(op: (T, File) => T): T =
-      file.toPath.foldFiles(init) { (res, path) => op(res, path.toFile) }
+      file.listFiles match {
+        case null  => init
+        case files => files.foldLeft(init)(op)
+      }
 
     /**
      * Opens InputStream to file and passes it to supplied function. Input
@@ -208,7 +224,11 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withOutputStream[T](f: OutputStream => T): T = withOutputStream(false)(f)
+    def withOutputStream[T](f: OutputStream => T): T = {
+      val out = new FileOutputStream(file)
+      try f(out)
+      finally Try(out.close())
+    }
 
     /**
      * Opens OutputStream to file and passes it to supplied function. Output
@@ -236,8 +256,11 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withReader[T](f: BufferedReader => T): T =
-      file.toPath.withReader(f)
+    def withReader[T](f: BufferedReader => T): T = {
+      val reader = new BufferedReader(new FileReader(file))
+      try f(reader)
+      finally Try(reader.close())
+    }
 
     /**
      * Opens BufferedWriter to file and passes it to supplied function. Writer
@@ -247,7 +270,11 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withWriter[T](f: BufferedWriter => T): T = withWriter(false)(f)
+    def withWriter[T](f: BufferedWriter => T): T = {
+      val writer = new BufferedWriter(new FileWriter(file))
+      try f(writer)
+      finally Try(writer.close())
+    }
 
     /**
      * Opens BufferedWriter to file and passes it to supplied function. Writer
@@ -261,9 +288,11 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withWriter[T](append: Boolean)(f: BufferedWriter => T): T =
-      if (append) file.toPath.withWriter(CREATE, APPEND)(f)
-      else file.toPath.withWriter(CREATE, TRUNCATE_EXISTING)(f)
+    def withWriter[T](append: Boolean)(f: BufferedWriter => T): T = {
+      val writer = new BufferedWriter(new FileWriter(file, append))
+      try f(writer)
+      finally Try(writer.close())
+    }
 
     /**
      * Opens RandomAccessFile with specified access mode and passes it to
@@ -301,7 +330,7 @@ object Implicits {
      * @return path
      */
     def <<(text: String): Path =
-      withWriter(CREATE, APPEND) { out => out.append(text); path }
+      withWriter(CREATE, APPEND) { out => out.write(text); path }
 
     /**
      * Appends contents of supplied InputStream to file.
@@ -334,7 +363,7 @@ object Implicits {
 
     /** Sets file content to supplied text. */
     def setText(text: String): Unit =
-      withWriter(CREATE, TRUNCATE_EXISTING) { out => out.append(text) }
+      withWriter(CREATE, TRUNCATE_EXISTING) { out => out.write(text) }
 
     /**
      * Gets file permissions at path.
@@ -447,7 +476,7 @@ object Implicits {
      * @param f function
      */
     def forEachLine(f: String => Unit): Unit =
-      withReader { in => in.forEachLine(f) }
+      withReader() { in => in.forEachLine(f) }
 
     /**
      * Filters lines in file using supplied predicate.
@@ -455,7 +484,7 @@ object Implicits {
      * @param p predicate
      */
     def filterLines(p: String => Boolean): Seq[String] =
-      withReader { in => in.filterLines(p) }
+      withReader() { in => in.filterLines(p) }
 
     /**
      * Maps each line in file using supplied function.
@@ -463,7 +492,7 @@ object Implicits {
      * @param f function
      */
     def mapLines[T](f: String => T): Seq[T] =
-      withReader { in => in.mapLines(f) }
+      withReader() { in => in.mapLines(f) }
 
     /**
      * Builds collection using elements mapped from lines in file.
@@ -471,7 +500,7 @@ object Implicits {
      * @param f function
      */
     def flatMapLines[T](f: String => GenTraversableOnce[T]): Seq[T] =
-      withReader { in => in.flatMapLines(f) }
+      withReader() { in => in.flatMapLines(f) }
 
     /**
      * Folds lines in file to single value using given initial value and binary
@@ -483,7 +512,7 @@ object Implicits {
      * @return `init` if file is empty; otherwise, last value returned from `op`
      */
     def foldLines[T](init: T)(op: (T, String) => T): T =
-      withReader { in => in.foldLines(init)(op) }
+      withReader() { in => in.foldLines(init)(op) }
 
     /**
      * Opens directory stream to path and invokes supplied function for each
@@ -524,11 +553,10 @@ object Implicits {
      *
      * @throws IOException if path is not to a directory
      */
-    def mapFiles[T](f: Path => T): Seq[T] = {
-      var values = new ListBuffer[T]
-      path.forEachFile { x => values += f(x) }
-      values
-    }
+    def mapFiles[T](f: Path => T): Seq[T] =
+      foldFiles(new ListBuffer[T]) { (values, file) =>
+        values += f(file)
+      }
 
     /**
      * Builds collection using elements mapped from files in directory.
@@ -537,11 +565,11 @@ object Implicits {
      *
      * @throws IOException if path is not to a directory
      */
-    def flatMapFiles[T](f: Path => GenTraversableOnce[T]): Seq[T] = {
-      var values = new ListBuffer[T]
-      path.forEachFile { x => f(x).foreach(values.+=) }
-      values
-    }
+    def flatMapFiles[T](f: Path => GenTraversableOnce[T]): Seq[T] =
+      foldFiles(new ListBuffer[T]) { (values, file) =>
+        f(file).foreach(values.+=)
+        values
+      }
 
     /**
      * Folds files in directory to single value using given initial value and
@@ -556,7 +584,7 @@ object Implicits {
      */
     def foldFiles[T](init: T)(op: (T, Path) => T): T = {
       var result = init
-      path.forEachFile { x => result = op(result, x) }
+      forEachFile { x => result = op(result, x) }
       result
     }
 
@@ -627,7 +655,7 @@ object Implicits {
      * Opens InputStream to file at path and passes it to supplied function.
      * Input stream is closed on function's return.
      *
-     * @param options options for how to open file
+     * @param options open options
      * @param f function
      *
      * @return value from supplied function
@@ -642,7 +670,7 @@ object Implicits {
      * Opens OutputStream to file at path and passes it to supplied function.
      * Output stream is closed on function's return.
      *
-     * @param options options for how to open or create file
+     * @param options open options
      * @param f function
      *
      * @return value from supplied function
@@ -657,33 +685,35 @@ object Implicits {
      * Opens BufferedReader to file at path and passes it to supplied function.
      * Reader is closed on function's return.
      *
+     * @param options open options
      * @param f function
      *
      * @return value from supplied function
      */
-    def withReader[T](f: BufferedReader => T): T = {
-      val reader = Files.newBufferedReader(path)
-      try f(reader)
-      finally Try(reader.close())
-    }
+    def withReader[T](options: OpenOption*)(f: BufferedReader => T): T =
+      withInputStream(options : _*) { in =>
+        val reader = new BufferedReader(new InputStreamReader(in))
+        try f(reader)
+        finally Try(reader.close())
+      }
 
     /**
      * Opens BufferedWriter to file at path and passes it to supplied function.
      * Writer is closed on function's return.
      *
-     * @param options options for how to open or create file
+     * @param options open options
      * @param f function
      *
      * @return value from supplied function
      */
     def withWriter[T](options: OpenOption*)(f: BufferedWriter => T): T = {
-      val out = Files.newBufferedWriter(path, options : _*)
-      try f(out)
-      finally Try(out.close())
+      val writer = Files.newBufferedWriter(path, options : _*)
+      try f(writer)
+      finally Try(writer.close())
     }
 
     /**
-     * Opens FileChannel with specified open options and passes it to function.
+     * Opens FileChannel to file at path and passes it to supplied function.
      * Channel is closed on function's return.
      *
      * @param options open options
@@ -841,7 +871,7 @@ object Implicits {
      *
      * @return out
      */
-    def <<(text: String): T = { out.append(text); out }
+    def <<(text: String): T = { out.write(text); out }
 
     /**
      * Appends contents of supplied reader.
@@ -859,7 +889,7 @@ object Implicits {
       out
     }
 
-    /** Writes text followed by platform's line separator. */
+    /** Writes text followed by default line separator. */
     def writeLine(text: String): Unit = out << text << EOL
   }
 }
