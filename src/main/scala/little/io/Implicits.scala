@@ -97,22 +97,6 @@ object Implicits {
     def setText(text: String): Unit = file.toPath.setText(text)
 
     /**
-     * Reads file content into byte buffer and passes it along with its
-     * effective length to supplied function. The function is invoked repeatedly
-     * until all content is consumed.
-     */
-    def readBytes(f: (Array[Byte], Int) => Unit)(implicit bufferSize: BufferSize): Unit =
-      withInputStream { in => in.forEach(f) }
-
-    /**
-     * Reads file content into character buffer and passes it along with its
-     * effective length to supplied function. The function is invoked repeatedly
-     * until all content is consumed.
-     */
-    def readChars(f: (Array[Char], Int) => Unit)(implicit bufferSize: BufferSize): Unit =
-      withReader { in => in.forEach(f) }
-
-    /**
      * Reads file and invokes supplied function for each line.
      *
      * The line content, excluding line separator, is passed to function.
@@ -351,22 +335,6 @@ object Implicits {
     /** Sets file content to supplied text. */
     def setText(text: String): Unit =
       withWriter(CREATE, TRUNCATE_EXISTING) { out => out.append(text) }
-
-    /**
-     * Reads file content into byte buffer and passes it along with its
-     * effective length to supplied function. The function is invoked repeatedly
-     * until all content is consumed.
-     */
-    def readBytes(f: (Array[Byte], Int) => Unit)(implicit bufferSize: BufferSize): Unit =
-      withInputStream() { in => in.forEach(f) }
-
-    /**
-     * Reads file content into character buffer and passes it along with its
-     * effective length to supplied function. The function is invoked repeatedly
-     * until all content is consumed.
-     */
-    def readChars(f: (Array[Char], Int) => Unit)(implicit bufferSize: BufferSize): Unit =
-      withReader { in => in.forEach(f) }
 
     /**
      * Gets file permissions at path.
@@ -739,28 +707,13 @@ object Implicits {
     /** Gets remaining bytes. */
     def getBytes(): Array[Byte] = {
       val out = new ByteArrayOutputStream
-      forEach { (buf, len) => out.write(buf, 0, len) }
+      val buf = new Array[Byte](bufferSize.value)
+      var len = 0
+
+      while ({ len = in.read(buf); len != -1 })
+        out.write(buf, 0, len)
       out.toByteArray
     }
-
-    /**
-     * Reads content into supplied byte buffer and passes it along with its
-     * effective length to supplied function. The function is invoked repeatedly
-     * until all content is consumed.
-     */
-    def forEach(buffer: Array[Byte])(f: (Array[Byte], Int) => Unit): Unit = {
-      var length = 0
-      while ({ length = in.read(buffer); length != -1 })
-        f(buffer, length)
-    }
-
-    /**
-     * Reads content into byte buffer and passes it along with its effective
-     * length to supplied function. The function is invoked repeatedly until all
-     * content is consumed.
-     */
-    def forEach(f: (Array[Byte], Int) => Unit)(implicit bufferSize: BufferSize): Unit =
-      forEach(new Array[Byte](bufferSize.value))(f)
   }
 
   /**
@@ -802,28 +755,13 @@ object Implicits {
     /** Gets remaining text. */
     def getText(): String = {
       val out = new StringBuilder
-      forEach { (buf, len) => out.appendAll(buf, 0, len) }
+      val buf = new Array[Char](bufferSize.value)
+      var len = 0
+
+      while ({ len = in.read(buf); len != -1 })
+        out.appendAll(buf, 0, len)
       out.toString
     }
-
-    /**
-     * Reads content into supplied character buffer and passes it along with its
-     * effective length to supplied function. The function is invoked repeatedly
-     * until all content is consumed.
-     */
-    def forEach(buffer: Array[Char])(f: (Array[Char], Int) => Unit): Unit = {
-      var length = 0
-      while ({ length = in.read(buffer); length != -1 })
-        f(buffer, length)
-    }
-
-    /**
-     * Reads content into character buffer and passes it along with its
-     * effective length to supplied function. The function is invoked repeatedly
-     * until all content is consumed.
-     */
-    def forEach(f: (Array[Char], Int) => Unit)(implicit bufferSize: BufferSize): Unit =
-      forEach(new Array[Char](bufferSize.value))(f)
 
     /**
      * Reads content and invokes supplied function for each line.
@@ -922,7 +860,6 @@ object Implicits {
     }
 
     /** Writes text followed by platform's line separator. */
-    def writeLine(text: String): Unit =
-      out << text << EOL
+    def writeLine(text: String): Unit = out << text << EOL
   }
 }

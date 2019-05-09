@@ -22,21 +22,11 @@ import org.scalatest.FlatSpec
 import Implicits._
 
 class InputStreamTypeSpec extends FlatSpec {
-  "InputStream" should "read bytes into buffer" in {
-    implicit val bufferSize = BufferSize(8)
-
+  "InputStream" should "read all bytes" in {
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
     val in = new ByteArrayInputStream(text.getBytes)
-    val out = new ByteArrayOutputStream()
 
-    in.forEach { (buf, len) => out.write(buf, 0, len) }
-
-    assert(out.toString == text)
-  }
-
-  it should "read all bytes" in {
-    val text = "Now Peter Piper picked peppers but Run rocks rhymes."
-    val in = new ByteArrayInputStream(text.getBytes)
-    assert(new String(in.getBytes) == text)
+    try assert(new String(in.getBytes) == text)
+    finally in.close()
   }
 }
