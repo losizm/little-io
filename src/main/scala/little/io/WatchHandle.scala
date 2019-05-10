@@ -24,8 +24,11 @@ import scala.util.Try
 private object WatchExecutionContext extends ExecutionContext {
   private val threadCount = new AtomicLong(0)
 
-  def execute(runner: Runnable): Unit =
-    new Thread(runner, s"WatchHandle-${threadCount.incrementAndGet}").start()
+  def execute(runner: Runnable): Unit = {
+    val thread = new Thread(runner, s"little-io-WatchHandle-${threadCount.incrementAndGet}")
+    thread.setDaemon(true)
+    thread.start()
+  }
 
   def reportFailure(cause: Throwable): Unit = ()
 }
@@ -55,17 +58,16 @@ private object WatchExecutionContext extends ExecutionContext {
  * }}}
  */
 final class WatchHandle private[io] (service: WatchService, key: WatchKey, watcher: WatchEvent[_] => Unit) {
-  private implicit val ec = WatchExecutionContext
+  private implicit val wec = WatchExecutionContext
   private var closed = false
 
   Future {
-    while (!closed) {
+    while (!closed)
       Try {
         val taken = service.take()
         taken.pollEvents().forEach(event => watcher(event))
         taken.reset()
       }
-    }
   } onComplete {
     case result => if (!closed) close()
   }

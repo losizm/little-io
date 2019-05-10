@@ -17,7 +17,7 @@ package little.io
 
 import java.io.{ File, FileFilter }
 
-/** Implementation of `FileFilter` that accepts any file. */
+/** Implementation of `java.io.FileFilter` that accepts any file. */
 object AcceptAnyFile extends FileFilter {
   /**
    * Tests whether file is accepted.

@@ -17,7 +17,7 @@ package little.io
 
 import java.nio.file.{ Path, PathMatcher }
 
-/** Implementation of `PathMatcher` that matches any path. */
+/** Implementation of `java.nio.file.PathMatcher` that matches any path. */
 object MatchAnyPath extends PathMatcher {
   /**
    * Tests whether path matches.
