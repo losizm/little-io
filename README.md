@@ -9,18 +9,18 @@ To use **little-io**, add it as a dependency to your project:
 
 * sbt
 ```scala
-libraryDependencies += "com.github.losizm" %% "little-io" % "2.8.0"
+libraryDependencies += "com.github.losizm" %% "little-io" % "3.0.0"
 ```
 * Gradle
 ```groovy
-compile group: 'com.github.losizm', name: 'little-io_2.12', version: '2.8.0'
+compile group: 'com.github.losizm', name: 'little-io_2.12', version: '3.0.0'
 ```
 * Maven
 ```xml
 <dependency>
   <groupId>com.github.losizm</groupId>
   <artifactId>little-io_2.12</artifactId>
-  <version>2.8.0</version>
+  <version>3.0.0</version>
 </dependency>
 ```
 
@@ -30,9 +30,7 @@ Here's a taste of what **little-io** offers.
 
 ### Getting and Setting File Content
 
-If you have a reference to a `File`, you can set its content without the
-boilerplate of opening and closing a `FileOutputStream` or a `FileWriter`. And
-getting file content is a breeze.
+If you have a reference to a `File`, you can easily get and set its content.
 
 ```scala
 // Add methods to java.io.File and String
@@ -40,10 +38,10 @@ import little.io.Implicits.{ FileType, IoStringType }
 
 val file = "greeting.txt".toFile
 
-// Open writer to file, write text, and close writer
+// Open writer to file, set content, and close writer
 file.setText("Hello, world!")
 
-// Open reader to file, read text, and close reader
+// Open reader to file, get content, and close reader
 println(file.getText()) // Hello, world!
 ```
 
@@ -90,14 +88,12 @@ or a `Writer` to the file to write its content, and you can open an
 management.
 
 ```scala
-import java.nio.file.StandardOpenOption.CREATE
-// Add methods to java.nio.file.Path and java.io.Writer
-import little.io.Implicits.{ IoStringType, PathType, WriterType }
+import little.io.Implicits.{ FileType, IoStringType, WriterType }
 
-val file = "numbers.txt".toPath
+val file = "numbers.txt".toFile
 
 // Open file, write 3 lines of text, and close file
-file.withWriter(CREATE) { out =>
+file.withWriter { out =>
   out write "One\n"
 
   // WriterType adds writeLine to Writer
@@ -118,10 +114,10 @@ file.withReader { in =>
 Or, if you'll be reading file content line by line, there's an even simpler way.
 
 ```scala
-import little.io.Implicits.{ IoStringType, PathType }
+import little.io.Implicits.{ FileType, IoStringType }
 
 // Open file, print each line, and close file
-"numbers.txt".toPath.forEachLine(line => println(line))
+"numbers.txt".toFile.forEachLine(println)
 ```
 
 ### Filtering, Mapping, and Folding Lines in File
@@ -185,7 +181,7 @@ import little.io.Implicits.{ IoStringType, PathType }
 val sourceDir = "src".toPath
 
 // Traverse directories starting at 'src'
-sourceDir.walkFileTree {
+sourceDir.withVisitor {
   // Go deeper if not 'test' directory
   case PreVisitDirectory(dir, attrs) =>
     if (dir.getFileName.toString == "test")
@@ -220,10 +216,10 @@ With **little-io**, it's straight to the point.
 import java.nio.file.StandardWatchEventKinds.ENTRY_CREATE
 import little.io.Implicits.{ IoStringType, PathType }
 
-val dir = ".".toPath
+val dir = "/tmp".toPath
 
 // Print message when file is created
-val handle = dir.watch(ENTRY_CREATE) { evt =>
+val handle = dir.withWatcher(ENTRY_CREATE) { evt =>
   println(s"${evt.context} was created.")
 }
 
@@ -275,36 +271,32 @@ gunzip(in, out)
 Or, to build an archive, you can `zip` a directory.
 
 ```scala
-import java.io.{ File, FileFilter }
+import java.io.File
 import little.io.Compressor.zip
 
 // Specify input directory and output file
 val in = new File("./src")
 val out = new File("/tmp/src.zip")
 
-// Define filter for scala files
-implicit val scalaFileFilter: FileFilter = { file: File =>
+// Zip .scala files in all directories
+zip(in, out) { file =>
   file.isDirectory || file.getName.endsWith(".scala")
 }
-
-// Zips all .scala files
-zip(in, out)
 ```
 
-And extract the files to directory using `unzip`.
+And extract the files to a directory using `unzip`.
 
 ```scala
-import java.io.{ File, FileFilter }
+import java.io.File
+import little.io.AcceptAnyFile
 import little.io.Compressor.unzip
 
 // Specify input file and output directory
 val in = new File("/tmp/src.zip")
 val out = new File("/tmp/src")
 
-implicit val filter = little.io.AcceptAnyFile
-
 // Zips all files
-unzip(in, out)
+unzip(in, out)(AcceptAnyFile)
 ```
 
 ## API Documentation
