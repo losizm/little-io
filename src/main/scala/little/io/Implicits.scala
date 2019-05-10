@@ -341,9 +341,6 @@ object Implicits {
     def <<(in: Reader)(implicit bufferSize: BufferSize): Path =
       withWriter(CREATE, APPEND) { out => out << in; path }
 
-    /** Gets size in bytes of file at path. */
-    def getSize(): Long = Files.size(path)
-
     /** Reads file at path and returns its bytes. */
     def getBytes(): Array[Byte] = Files.readAllBytes(path)
 
