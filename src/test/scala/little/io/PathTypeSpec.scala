@@ -127,23 +127,6 @@ class PathTypeSpec extends FlatSpec {
     assert(fold == "abc123xyz789")
   }
 
-  it should "be created and deleted" in {
-    val file = createTempFile() << "a regular file"
-
-    assert(file.exists())
-    assert(!file.notExists())
-    assert(file.isRegularFile())
-    assert(!file.isDirectory())
-    assert(!file.isSymbolicLink)
-    assert(!file.isHidden)
-    assert(file.isReadable)
-    assert(file.isWritable)
-    assert(!file.isExecutable)
-    assert(Files.deleteIfExists(file))
-    assert(!file.exists())
-    assert(file.notExists())
-  }
-
   "Directory" should "be scanned" in {
     val dir = createTempDir()
     val subdir = createTempDir(dir)

@@ -148,9 +148,10 @@ object Implicits {
     /**
      * Invokes supplied function for each file in directory.
      *
-     * @param f function
+     * <strong>Note:</strong> Supplied function is not invoked if file is not a
+     * directory.
      *
-     * @throws IOException if file is not a directory
+     * @param f function
      */
     def forEachFile(f: File => Unit): Unit =
       file.listFiles match {
@@ -161,9 +162,10 @@ object Implicits {
     /**
      * Maps each file in directory using supplied function.
      *
-     * @param f function
+     * <strong>Note:</strong> Supplied function is not invoked if file is not a
+     * directory. In which case, an empty collection is returned.
      *
-     * @throws IOException if file is not a directory
+     * @param f function
      */
     def mapFiles[T](f: File => T): Seq[T] =
       file.listFiles match {
@@ -174,9 +176,10 @@ object Implicits {
     /**
      * Builds collection using elements mapped from files in directory.
      *
-     * @param f function
+     * <strong>Note:</strong> Supplied function is not invoked if file is not a
+     * directory. In which case, an empty collection is returned.
      *
-     * @throws IOException if file is not a directory
+     * @param f function
      */
     def flatMapFiles[T](f: File => GenTraversableOnce[T]): Seq[T] =
       file.listFiles match {
@@ -188,12 +191,13 @@ object Implicits {
      * Folds files in directory to single value using given initial value and
      * binary operator.
      *
+     * <strong>Note:</strong> Supplied binary operator is not invoked if file is
+     * not a directory. In which case, the initial value is returned.
+     *
      * @param init initial value
      * @param op binary operator
      *
      * @return `init` if no files; otherwise, last value returned from `op`
-     *
-     * @throws IOException if file is not a directory
      */
     def foldFiles[T](init: T)(op: (T, File) => T): T =
       file.listFiles match {
@@ -371,93 +375,6 @@ object Implicits {
      */
     def setFilePermissions(perms: FilePermissions): Unit =
       Files.setPosixFilePermissions(path, perms.toPosixFilePermissions)
-
-    /**
-     * Gets owner name of file at path.
-     *
-     * @param options indicates how symbolic links are handled
-     */
-    def getOwnerName(options: LinkOption*): String =
-      Files.getOwner(path, options : _*).getName
-
-    /**
-     * Gets group name of file at path.
-     *
-     * @param options indicates how symbolic links are handled
-     */
-    def getGroupName(options: LinkOption*): String =
-      Files.readAttributes(path, classOf[PosixFileAttributes], options : _*).group().getName
-
-    /**
-     * Gets creation time of file at path.
-     *
-     * @param options indicates how symbolic links are handled
-     */
-    def getCreationTime(options: LinkOption*): FileTime =
-      Files.readAttributes(path, classOf[PosixFileAttributes], options : _*).creationTime()
-
-    /**
-     * Gets last access time of file at path.
-     *
-     * @param options indicates how symbolic links are handled
-     */
-    def getLastAccessTime(options: LinkOption*): FileTime =
-      Files.readAttributes(path, classOf[PosixFileAttributes], options : _*).lastAccessTime()
-
-    /**
-     * Gets last modified time of file at path.
-     *
-     * @param options indicates how symbolic links are handled
-     */
-    def getLastModifiedTime(options: LinkOption*): FileTime =
-      Files.getLastModifiedTime(path, options : _*)
-
-    /**
-     * Tests whether file at path exists.
-     *
-     * @param options indicates how symbolic links are handled
-     */
-    def exists(options: LinkOption*): Boolean =
-      Files.exists(path, options : _*)
-
-    /**
-     * Tests whether file at path does not exist.
-     *
-     * @param options indicates how symbolic links are handled
-     */
-    def notExists(options: LinkOption*): Boolean =
-      Files.notExists(path, options : _*)
-
-    /**
-     * Tests whether file at path is a regular file.
-     *
-     * @param options indicates how symbolic links are handled
-     */
-    def isRegularFile(options: LinkOption*): Boolean =
-      Files.isRegularFile(path, options : _*)
-
-    /**
-     * Tests whether file at path is a directory.
-     *
-     * @param options indicates how symbolic links are handled
-     */
-    def isDirectory(options: LinkOption*): Boolean =
-      Files.isDirectory(path, options : _*)
-
-    /** Tests whether file at path is a symbolic link. */
-    def isSymbolicLink: Boolean = Files.isSymbolicLink(path)
-
-    /** Tests whether file at path is hidden. */
-    def isHidden: Boolean = Files.isHidden(path)
-
-    /** Tests whether file at path is readable. */
-    def isReadable: Boolean = Files.isReadable(path)
-
-    /** Tests whether file at path is writable. */
-    def isWritable: Boolean = Files.isWritable(path)
-
-    /** Tests whether file at path is executable. */
-    def isExecutable: Boolean = Files.isExecutable(path)
 
     /**
      * Reads file at path and invokes supplied function for each line.
