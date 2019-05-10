@@ -159,7 +159,7 @@ class PathTypeSpec extends FlatSpec {
     var postDirCount = 0
     var fileCount = 0
 
-    dir.walkFileTree {
+    dir.withVisitor {
       case PreVisitDirectory(path, _) =>
         preDirCount += 1
         assert(path == dir || path == subdir)
@@ -191,7 +191,7 @@ class PathTypeSpec extends FlatSpec {
     var postDirCount = 0
     var fileCount = 0
 
-    dir.walkFileTree {
+    dir.withVisitor {
       case PreVisitDirectory(path, _) =>
         preDirCount += 1
         assert(path == dir || path == subdir)

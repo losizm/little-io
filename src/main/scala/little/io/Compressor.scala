@@ -201,7 +201,7 @@ object Compressor {
       val zipStream = new ZipOutputStream(outStream)
 
       try {
-        in.walkFileTree {
+        in.withVisitor {
           case PreVisitDirectory(dir, _) =>
             matcher.matches(dir) match {
               case true  => FileVisitResult.CONTINUE

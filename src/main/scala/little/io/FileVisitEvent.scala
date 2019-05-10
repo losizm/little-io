@@ -22,14 +22,14 @@ import java.nio.file.attribute.BasicFileAttributes
 /**
  * Occurs when walking file tree.
  *
- * @see [[Implicits.PathType.walkFileTree PathType.walkFileTree]]
+ * @see [[Implicits.PathType.withVisitor PathType.withVisitor]]
  */
 sealed trait FileVisitEvent
 
 /**
  * Contains file visit events.
  *
- * @see [[Implicits.PathType.walkFileTree PathType.walkFileTree]]
+ * @see [[Implicits.PathType.withVisitor PathType.withVisitor]]
  */
 object FileVisitEvent {
   /** Occurs before entries in directory are visited. */

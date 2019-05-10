@@ -505,7 +505,7 @@ object Implicits {
      *
      * val sourceDir = Paths.get("src")
      *
-     * sourceDir.walkFileTree {
+     * sourceDir.withVisitor {
      *   case PreVisitDirectory(dir, attrs) ⇒
      *     if (dir.getFileName.toString == "test")
      *       FileVisitResult.SKIP_SUBTREE
@@ -520,10 +520,12 @@ object Implicits {
      * }
      * }}}
      *
+     * @param visitor file visitor
+     *
      * @see [[FileVisitEvent.PreVisitDirectory PreVisitEvent]], [[FileVisitEvent.PostVisitDirectory PostVisitDirectory]]
      *      [[FileVisitEvent.VisitFile VisitFile]], [[FileVisitEvent.VisitFileFailed VisitFileFailed]]
      */
-    def walkFileTree(visitor: PartialFunction[FileVisitEvent, FileVisitResult]): Unit =  {
+    def withVisitor(visitor: PartialFunction[FileVisitEvent, FileVisitResult]): Unit =  {
       Files.walkFileTree(path, new FileVisitor[Path] {
         def preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult =
           visitor.applyOrElse(PreVisitDirectory(dir, attrs),
@@ -544,11 +546,14 @@ object Implicits {
     }
 
     /**
-     * Watch file at path for specified events.
+     * Watchs file at path for specified events.
+     *
+     * @param events kinds of events to watch
+     * @param watcher event watcher
      *
      * @return watch handle
      */
-    def watch(events: WatchEvent.Kind[_]*)(watcher: WatchEvent[_] => Unit): WatchHandle = {
+    def withWatcher(events: WatchEvent.Kind[_]*)(watcher: WatchEvent[_] => Unit): WatchHandle = {
       val service = path.getFileSystem.newWatchService()
       try new WatchHandle(service, path.register(service, events : _*), watcher)
       catch { case NonFatal(e) => service.close(); throw e }
