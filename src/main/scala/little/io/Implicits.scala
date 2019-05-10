@@ -29,14 +29,13 @@ import scala.compat.Platform.EOL
 
 import FileVisitEvent._
 
-/** Provides extension methods to {@code java.io} and {@code java.nio}. */
+/** Provides extension methods to `java.io` and `java.nio`. */
 object Implicits {
   /** Default buffer size for I/O operations &mdash; i.e., BufferSize(8192). */
   implicit val bufferSize = BufferSize(8192)
 
   /**
-   * Provides {@code java.io} and {@code java.nio} related extension methods to
-   * {@code String}.
+   * Provides `java.io` and `java.nio` related extension methods to `String`.
    */
   implicit class IoStringType(val s: String) extends AnyVal {
     /** Converts value to File. */
@@ -47,7 +46,7 @@ object Implicits {
   }
 
   /**
-   * Provides extension methods to {@code java.io.File}.
+   * Provides extension methods to `java.io.File`.
    *
    * @see [[PathType]]
    */
@@ -155,7 +154,7 @@ object Implicits {
      */
     def forEachFile(f: File => Unit): Unit =
       file.listFiles match {
-        case null  =>
+        case null  => ()
         case files => files.foreach(f)
       }
 
@@ -224,19 +223,15 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withOutputStream[T](f: OutputStream => T): T = {
-      val out = new FileOutputStream(file)
-      try f(out)
-      finally Try(out.close())
-    }
+    def withOutputStream[T](f: OutputStream => T): T =
+      withOutputStream(false)(f)
 
     /**
      * Opens OutputStream to file and passes it to supplied function. Output
      * stream is closed on function's return.
      *
-     * @param append if {@code true}, output is appended to end of file;
-     * otherwise, if {@code false}, file is truncated and output is written at
-     * beginning of file
+     * @param append if `true`, output is appended to end of file; otherwise, if
+     * `false`, file is truncated and output is written at beginning of file
      *
      * @param f function
      *
@@ -270,19 +265,15 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withWriter[T](f: BufferedWriter => T): T = {
-      val writer = new BufferedWriter(new FileWriter(file))
-      try f(writer)
-      finally Try(writer.close())
-    }
+    def withWriter[T](f: BufferedWriter => T): T =
+      withWriter(false)(f)
 
     /**
      * Opens BufferedWriter to file and passes it to supplied function. Writer
      * is closed on function's return.
      *
-     * @param append if {@code true}, output is appended to end of file;
-     * otherwise, if {@code false}, file is truncated and output is written at
-     * beginning of file
+     * @param append if `true`, output is appended to end of file; otherwise, if
+     * `false`, file is truncated and output is written at beginning of file
      *
      * @param f function
      *
@@ -311,7 +302,7 @@ object Implicits {
   }
 
   /**
-   * Provides extension methods to {@code java.nio.file.Path}.
+   * Provides extension methods to `java.nio.file.Path`.
    *
    * @see [[FileType]]
    */
@@ -593,7 +584,7 @@ object Implicits {
      * for each event encountered.
      *
      * If supplied visitor does not handle an event, then it is treated as if
-     * it returned {@code FileVisitResult.CONTINUE}.
+     * it returned `FileVisitResult.CONTINUE`.
      *
      * {{{
      * import java.nio.file.{ FileVisitResult, Paths }
@@ -729,7 +720,7 @@ object Implicits {
   }
 
   /**
-   * Provides extension methods to {@code java.io.InputStream}.
+   * Provides extension methods to `java.io.InputStream`.
    *
    * @see [[OutputStreamType]]
    */
@@ -747,7 +738,7 @@ object Implicits {
   }
 
   /**
-   * Provides extension methods to {@code java.io.OutputStream}.
+   * Provides extension methods to `java.io.OutputStream`.
    *
    * @see [[InputStreamType]]
    */
@@ -767,30 +758,30 @@ object Implicits {
      * @return out
      */
     def <<(in: InputStream)(implicit bufferSize: BufferSize): T  = {
-      val buffer = new Array[Byte](bufferSize.value)
-      var length = 0
+      val buf = new Array[Byte](bufferSize.value)
+      var len = 0
 
-      while ({ length = in.read(buffer); length != -1 })
-        out.write(buffer, 0, length)
+      while ({ len = in.read(buf); len != -1 })
+        out.write(buf, 0, len)
       out
     }
   }
 
   /**
-   * Provides extension methods to {@code java.io.Reader}.
+   * Provides extension methods to `java.io.Reader`.
    *
    * @see [[WriterType]]
    */
-  implicit class ReaderType[T <: Reader](val in: T) extends AnyVal {
+  implicit class ReaderType[T <: Reader](val reader: T) extends AnyVal {
     /** Gets remaining text. */
     def getText(): String = {
-      val out = new StringBuilder
-      val buf = new Array[Char](bufferSize.value)
-      var len = 0
+      val writer = new StringWriter
+      val buffer = new Array[Char](bufferSize.value)
+      var length = 0
 
-      while ({ len = in.read(buf); len != -1 })
-        out.appendAll(buf, 0, len)
-      out.toString
+      while ({ length = reader.read(buffer); length != -1 })
+        writer.write(buffer, 0, length)
+      writer.toString
     }
 
     /**
@@ -801,18 +792,18 @@ object Implicits {
      * @param f function
      */
     def forEachLine(f: String => Unit): Unit = {
-      val reader = in match {
+      val in = reader match {
         case in: BufferedReader => in
-        case in => new BufferedReader(in)
+        case _ => new BufferedReader(reader)
       }
 
       var line: String = null
-      while ({ line = reader.readLine(); line != null })
+      while ({ line = in.readLine(); line != null })
         f(line)
     }
 
     /**
-     * Filters lines in reader using supplied predicate.
+     * Filters lines reader reader using supplied predicate.
      *
      * @param p predicate
      */
@@ -823,7 +814,7 @@ object Implicits {
     }
 
     /**
-     * Maps each line in reader using supplied function.
+     * Maps each line reader reader using supplied function.
      *
      * @param f function
      */
@@ -834,7 +825,7 @@ object Implicits {
     }
 
     /**
-     * Builds collection using elements mapped from lines in reader.
+     * Builds collection using elements mapped from lines reader reader.
      *
      * @param f function
      */
@@ -845,7 +836,7 @@ object Implicits {
     }
 
     /**
-     * Folds lines in reader to single value using given initial value and
+     * Folds lines reader reader to single value using given initial value and
      * binary operator.
      *
      * @param init initial value
@@ -861,35 +852,35 @@ object Implicits {
   }
 
   /**
-   * Provides extension methods to {@code java.io.Writer}.
+   * Provides extension methods to `java.io.Writer`.
    *
    * @see [[ReaderType]]
    */
-  implicit class WriterType[T <: Writer](val out: T) extends AnyVal {
+  implicit class WriterType[T <: Writer](val writer: T) extends AnyVal {
     /**
      * Appends text to writer.
      *
-     * @return out
+     * @return writer
      */
-    def <<(text: String): T = { out.write(text); out }
+    def <<(text: String): T = { writer.write(text); writer }
 
     /**
      * Appends contents of supplied reader.
      *
      * @param in reader from which characters are read
      *
-     * @return out
+     * @return writer
      */
     def <<(in: Reader)(implicit bufferSize: BufferSize): T = {
       val buffer = new Array[Char](bufferSize.value)
       var length = 0
 
       while ({ length = in.read(buffer); length != -1 })
-        out.write(buffer, 0, length)
-      out
+        writer.write(buffer, 0, length)
+      writer
     }
 
     /** Writes text followed by default line separator. */
-    def writeLine(text: String): Unit = out << text << EOL
+    def writeLine(text: String): Unit = writer << text << EOL
   }
 }
