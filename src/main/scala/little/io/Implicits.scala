@@ -34,9 +34,7 @@ object Implicits {
   /** Default buffer size for I/O operations &mdash; i.e., BufferSize(8192). */
   implicit val bufferSize = BufferSize(8192)
 
-  /**
-   * Provides `java.io` and `java.nio` related extension methods to `String`.
-   */
+  /** Provides extension methods to `String`. */
   implicit class IoStringType(val s: String) extends AnyVal {
     /** Converts value to File. */
     def toFile: File = new File(s)
@@ -148,42 +146,42 @@ object Implicits {
     /**
      * Invokes supplied function for each file in directory.
      *
-     * <strong>Note:</strong> Supplied function is not invoked if file is not a
-     * directory.
-     *
      * @param f function
+     *
+     * @throws IOException if file is not directory or if directory listing is
+     *  not available
      */
     def forEachFile(f: File => Unit): Unit =
       file.listFiles match {
-        case null  => ()
+        case null  => throw new FileNotFoundException(s"$file (No directory listing)")
         case files => files.foreach(f)
       }
 
     /**
      * Maps each file in directory using supplied function.
      *
-     * <strong>Note:</strong> Supplied function is not invoked if file is not a
-     * directory. In which case, an empty collection is returned.
-     *
      * @param f function
+     *
+     * @throws IOException if file is not directory or if directory listing is
+     *  not available
      */
     def mapFiles[T](f: File => T): Seq[T] =
       file.listFiles match {
-        case null  => Nil
+        case null  => throw new FileNotFoundException(s"$file (No directory listing)")
         case files => files.map(f)
       }
 
     /**
      * Builds collection using elements mapped from files in directory.
      *
-     * <strong>Note:</strong> Supplied function is not invoked if file is not a
-     * directory. In which case, an empty collection is returned.
-     *
      * @param f function
+     *
+     * @throws IOException if file is not directory or if directory listing is
+     *  not available
      */
     def flatMapFiles[T](f: File => GenTraversableOnce[T]): Seq[T] =
       file.listFiles match {
-        case null  => Nil
+        case null  => throw new FileNotFoundException(s"$file (No directory listing)")
         case files => files.flatMap(f)
       }
 
@@ -191,17 +189,17 @@ object Implicits {
      * Folds files in directory to single value using given initial value and
      * binary operator.
      *
-     * <strong>Note:</strong> Supplied binary operator is not invoked if file is
-     * not a directory. In which case, the initial value is returned.
-     *
      * @param init initial value
      * @param op binary operator
      *
      * @return `init` if no files; otherwise, last value returned from `op`
+     *
+     * @throws IOException if file is not directory or if directory listing is
+     *  not available
      */
     def foldFiles[T](init: T)(op: (T, File) => T): T =
       file.listFiles match {
-        case null  => init
+        case null  => throw new FileNotFoundException(s"$file (No directory listing)")
         case files => files.foldLeft(init)(op)
       }
 
