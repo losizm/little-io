@@ -15,29 +15,16 @@
  */
 package little.io
 
-import java.nio.file._
+import java.nio.file.{ WatchEvent, WatchKey, WatchService }
 import java.util.concurrent.atomic.AtomicLong
 
 import scala.concurrent.{ ExecutionContext, Future }
 import scala.util.Try
 
-private object WatchExecutionContext extends ExecutionContext {
-  private val threadCount = new AtomicLong(0)
-
-  def execute(runner: Runnable): Unit = {
-    val thread = new Thread(runner, s"little-io-WatchHandle-${threadCount.incrementAndGet}")
-    thread.setDaemon(true)
-    thread.start()
-  }
-
-  def reportFailure(cause: Throwable): Unit = ()
-}
-
 /**
- * Provides opaque handle to watch service.
+ * Provides opaque handle to watcher.
  *
- * A handle is obtained via [[Implicits.PathType.withWatcher PathType.withWatcher]],
- * which registers path to watch service.
+ * A handle is obtained via [[Implicits.PathType.withWatcher PathType.withWatcher]].
  *
  * {{{
  * import java.nio.file.Paths
@@ -59,26 +46,42 @@ private object WatchExecutionContext extends ExecutionContext {
  */
 final class WatchHandle private[io] (service: WatchService, key: WatchKey, watcher: WatchEvent[_] => Unit) {
   private implicit val wec = WatchExecutionContext
+
+  @volatile
   private var closed = false
 
   Future {
-    while (!closed)
-      Try {
+    try
+      while (!closed) {
         val taken = service.take()
         taken.pollEvents().forEach(event => watcher(event))
-        taken.reset()
+        if (!taken.reset()) close()
       }
-  } onComplete {
-    case result => if (!closed) close()
+    finally {
+      if (!closed) close()
+    }
   }
 
-  /** Closes underlying watch service. */
+  /** Closes underlying watcher. */
   def close(): Unit = {
+    closed = true
+
     Try(key.cancel())
     Try(service.close())
-    closed = true
   }
 
-  /** Tests whether underlying watch service is closed. */
+  /** Tests whether underlying watcher is closed. */
   def isClosed: Boolean = closed
+}
+
+private object WatchExecutionContext extends ExecutionContext {
+  private val threadCount = new AtomicLong(0)
+
+  def execute(runner: Runnable): Unit = {
+    val thread = new Thread(runner, s"little-io-WatchHandle-${threadCount.incrementAndGet}")
+    thread.setDaemon(true)
+    thread.start()
+  }
+
+  def reportFailure(cause: Throwable): Unit = ()
 }
