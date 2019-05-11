@@ -19,7 +19,7 @@ import java.io._
 import java.nio.channels.FileChannel
 import java.nio.file._
 import java.nio.file.StandardOpenOption._
-import java.nio.file.attribute._
+import java.nio.file.attribute.BasicFileAttributes
 
 import scala.collection.GenTraversableOnce
 import scala.collection.mutable.ListBuffer
@@ -354,22 +354,6 @@ object Implicits {
     /** Sets file content to supplied text. */
     def setText(text: String): Unit =
       withWriter(CREATE, TRUNCATE_EXISTING) { out => out.write(text) }
-
-    /**
-     * Gets file permissions at path.
-     *
-     * @param options link options
-     */
-    def getFilePermissions(options: LinkOption*): FilePermissions =
-      FilePermissionsImpl(Files.getPosixFilePermissions(path, options : _*))
-
-    /**
-     * Sets file permissions at path.
-     *
-     * @param perms file permissions
-     */
-    def setFilePermissions(perms: FilePermissions): Unit =
-      Files.setPosixFilePermissions(path, perms.toPosixFilePermissions)
 
     /**
      * Reads file at path and invokes supplied function for each line.
