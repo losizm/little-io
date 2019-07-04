@@ -17,8 +17,6 @@ package little.io
 
 import java.io.{ StringReader, StringWriter }
 
-import scala.compat.Platform.EOL
-
 import org.scalatest.FlatSpec
 
 import Implicits._
@@ -31,7 +29,7 @@ class WriterTypeSpec extends FlatSpec {
     assert(writer.toString == (text * 2))
 
     writer.writeLine(text)
-    assert(writer.toString == (text * 3) + EOL)
+    assert(writer.toString == (text * 3) + sys.props("line.separator"))
   }
 }
 
