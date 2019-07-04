@@ -7,21 +7,8 @@ The Scala library that provides extension methods to _java.io_ and _java.nio_.
 ## Getting Started
 To use **little-io**, add it as a dependency to your project:
 
-* sbt
 ```scala
-libraryDependencies += "com.github.losizm" %% "little-io" % "3.0.1"
-```
-* Gradle
-```groovy
-compile group: 'com.github.losizm', name: 'little-io_2.12', version: '3.0.1'
-```
-* Maven
-```xml
-<dependency>
-  <groupId>com.github.losizm</groupId>
-  <artifactId>little-io_2.12</artifactId>
-  <version>3.0.1</version>
-</dependency>
+libraryDependencies += "com.github.losizm" %% "little-io" % "3.1.0"
 ```
 
 ## A Taste of little-io
