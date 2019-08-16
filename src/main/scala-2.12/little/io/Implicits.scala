@@ -35,7 +35,7 @@ object Implicits {
   implicit val bufferSize = BufferSize(8192)
 
   /** Provides extension methods to `String`. */
-  implicit class IoStringType(val s: String) extends AnyVal {
+  implicit class IoStringType(private val s: String) extends AnyVal {
     /** Converts value to File. */
     def toFile: File = new File(s)
 
@@ -48,7 +48,7 @@ object Implicits {
    *
    * @see [[PathType]]
    */
-  implicit class FileType(val file: File) extends AnyVal {
+  implicit class FileType(private val file: File) extends AnyVal {
     /**
      * Appends supplied bytes to file.
      *
@@ -308,7 +308,7 @@ object Implicits {
    *
    * @see [[FileType]]
    */
-  implicit class PathType(val path: Path) extends AnyVal {
+  implicit class PathType(private val path: Path) extends AnyVal {
     /**
      * Appends supplied bytes to file.
      *
@@ -625,7 +625,7 @@ object Implicits {
    *
    * @see [[OutputStreamType]]
    */
-  implicit class InputStreamType[T <: InputStream](val in: T) extends AnyVal {
+  implicit class InputStreamType[T <: InputStream](private val in: T) extends AnyVal {
     /** Gets remaining bytes. */
     def getBytes(): Array[Byte] = {
       val out = new ByteArrayOutputStream
@@ -643,7 +643,7 @@ object Implicits {
    *
    * @see [[InputStreamType]]
    */
-  implicit class OutputStreamType[T <: OutputStream](val out: T) extends AnyVal {
+  implicit class OutputStreamType[T <: OutputStream](private val out: T) extends AnyVal {
     /**
      * Appends bytes to output stream.
      *
@@ -673,7 +673,7 @@ object Implicits {
    *
    * @see [[WriterType]]
    */
-  implicit class ReaderType[T <: Reader](val reader: T) extends AnyVal {
+  implicit class ReaderType[T <: Reader](private val reader: T) extends AnyVal {
     /** Gets remaining text. */
     def getText(): String = {
       val writer = new StringWriter
@@ -757,7 +757,7 @@ object Implicits {
    *
    * @see [[ReaderType]]
    */
-  implicit class WriterType[T <: Writer](val writer: T) extends AnyVal {
+  implicit class WriterType[T <: Writer](private val writer: T) extends AnyVal {
     /**
      * Appends text to writer.
      *
