@@ -2,10 +2,10 @@ name := "little-io"
 version := "3.3.0-SNAPSHOT"
 organization := "com.github.losizm"
 
-scalaVersion := "2.13.0"
+scalaVersion := "2.13.1"
 scalacOptions ++= Seq("-deprecation", "-feature", "-Xcheckinit")
 
-crossScalaVersions := Seq("2.12.8")
+crossScalaVersions := Seq("2.12.10")
 
 unmanagedSourceDirectories in Compile += {
   val sourceDir = (sourceDirectory in Compile).value
