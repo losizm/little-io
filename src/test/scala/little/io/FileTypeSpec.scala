@@ -15,7 +15,7 @@
  */
 package little.io
 
-import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, StringReader, StringWriter }
+import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, File, StringReader, StringWriter }
 
 import org.scalatest.FlatSpec
 
@@ -105,5 +105,16 @@ class FileTypeSpec extends FlatSpec {
 
     val fold = file.foldLines("") { _ + _ }
     assert(fold == "abc123xyz789")
+  }
+
+  it should "be created with a child path" in {
+    val f = new File("/a/b/c")
+
+    assert { f / "x" / "y" / "z" == new File("/a/b/c/x/y/z") }
+
+    assert { (f / "/x" / "/y" / "/z").getCanonicalFile == new File("/a/b/c/x/y/z") }
+    assert { (f / "../x" / "/y" / "/z").getCanonicalFile == new File("/a/b/x/y/z") }
+    assert { (f / "../x" / "../y" / "/z").getCanonicalFile == new File("/a/b/y/z") }
+    assert { (f / "../x" / "../y" / "../z").getCanonicalFile == new File("/a/b/z") }
   }
 }

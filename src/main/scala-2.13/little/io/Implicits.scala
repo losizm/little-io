@@ -50,6 +50,13 @@ object Implicits {
    */
   implicit class FileType(private val file: File) extends AnyVal {
     /**
+     * Creates new file appending child path.
+     *
+     * @return file
+     */
+    def /(child: String): File = new File(file, child)
+
+    /**
      * Appends supplied bytes to file.
      *
      * @return file
@@ -309,6 +316,13 @@ object Implicits {
    * @see [[FileType]]
    */
   implicit class PathType(private val path: Path) extends AnyVal {
+    /**
+     * Creates new file appending child path.
+     *
+     * @return file
+     */
+    def /(child: String): Path = Paths.get(path.toString, child)
+
     /**
      * Appends supplied bytes to file.
      *

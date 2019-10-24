@@ -17,7 +17,7 @@ package little.io
 
 import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, StringReader, StringWriter }
 import java.nio.ByteBuffer
-import java.nio.file.{ Files, FileVisitResult }
+import java.nio.file.{ Files, FileVisitResult, Paths }
 import java.nio.file.StandardOpenOption._
 import java.nio.file.StandardWatchEventKinds._
 
@@ -117,6 +117,17 @@ class PathTypeSpec extends FlatSpec {
 
     val fold = file.foldLines("") { _ + _ }
     assert(fold == "abc123xyz789")
+  }
+
+  it should "be created with a child path" in {
+    val p = Paths.get("/a/b/c")
+
+    assert { p / "x" / "y" / "z" == Paths.get("/a/b/c/x/y/z") }
+
+    assert { (p / "/x" / "/y" / "/z").normalize() == Paths.get("/a/b/c/x/y/z") }
+    assert { (p / "../x" / "/y" / "/z").normalize() == Paths.get("/a/b/x/y/z") }
+    assert { (p / "../x" / "../y" / "/z").normalize() == Paths.get("/a/b/y/z") }
+    assert { (p / "../x" / "../y" / "../z").normalize() == Paths.get("/a/b/z") }
   }
 
   "Directory" should "be scanned" in {
