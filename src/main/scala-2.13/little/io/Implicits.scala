@@ -104,6 +104,9 @@ object Implicits {
     def setText(text: String): Unit =
       withWriter { out => out.write(text) }
 
+    /** Gets lines in file. */
+    def getLines(): Seq[String] = mapLines(identity)
+
     /**
      * Reads file and invokes supplied function for each line.
      *
@@ -368,6 +371,9 @@ object Implicits {
     /** Sets file content to supplied text. */
     def setText(text: String): Unit =
       withWriter(CREATE, TRUNCATE_EXISTING) { out => out.write(text) }
+
+    /** Gets lines in file. */
+    def getLines(): Seq[String] = mapLines(identity)
 
     /**
      * Reads file at path and invokes supplied function for each line.
@@ -698,6 +704,9 @@ object Implicits {
         writer.write(buffer, 0, length)
       writer.toString
     }
+
+    /** Gets lines in file. */
+    def getLines(): Seq[String] = mapLines(identity)
 
     /**
      * Reads content and invokes supplied function for each line.

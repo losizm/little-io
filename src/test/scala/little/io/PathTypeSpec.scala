@@ -101,6 +101,8 @@ class PathTypeSpec extends FlatSpec {
 
     file.setText("abc\n123\nxyz\n789")
 
+    assert { file.getLines() == Seq("abc", "123", "xyz", "789") }
+
     val filter = file.filterLines(_.matches("\\d+"))
     assert { filter.sameElements(Seq("123", "789")) }
 
