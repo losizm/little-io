@@ -1,5 +1,5 @@
 name := "little-io"
-version := "3.3.0-SNAPSHOT"
+version := "3.3.0"
 organization := "com.github.losizm"
 
 description := "The Scala library that provides extension methods to java.io and java.nio"
