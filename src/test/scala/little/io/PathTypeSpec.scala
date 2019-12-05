@@ -132,6 +132,23 @@ class PathTypeSpec extends FlatSpec {
     assert { (p / "../x" / "../y" / "../z").normalize() == Paths.get("/a/b/z") }
   }
 
+  "PrintWriter" should "be created from file" in {
+    val file = createTempFile()
+
+    file.withPrintWriter()(writer => writer.print(text))
+
+    file.withReader() { reader =>
+      val writer = new StringWriter() << reader
+      assert(writer.toString == text)
+    }
+
+    assert(file.getText == text)
+
+    file.forEachLine { line =>
+      assert(text.split("\n").contains(line))
+    }
+  }
+
   "Directory" should "be scanned" in {
     val dir = createTempDir()
     val subdir = createTempDir(dir)

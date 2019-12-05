@@ -119,4 +119,21 @@ class FileTypeSpec extends FlatSpec {
     assert { (f / "../x" / "../y" / "/z").getCanonicalFile == new File("/a/b/y/z") }
     assert { (f / "../x" / "../y" / "../z").getCanonicalFile == new File("/a/b/z") }
   }
+
+  "PrintWriter" should "be created from file" in {
+    val file = createTempFile()
+
+    file.withPrintWriter(writer => writer.print(text))
+
+    file.withReader { reader =>
+      val writer = new StringWriter() << reader
+      assert(writer.toString == text)
+    }
+
+    assert(file.getText == text)
+
+    file.forEachLine { line =>
+      assert(text.split("\n").contains(line))
+    }
+  }
 }

@@ -298,6 +298,34 @@ object Implicits {
     }
 
     /**
+     * Opens PrintWriter to file and passes it to supplied function. Writer
+     * is closed on function's return.
+     *
+     * @param f function
+     *
+     * @return value from supplied function
+     */
+    def withPrintWriter[T](f: PrintWriter => T): T =
+      withPrintWriter(false)(f)
+
+    /**
+     * Opens PrintWriter to file and passes it to supplied function. Writer
+     * is closed on function's return.
+     *
+     * @param append if `true`, output is appended to end of file; otherwise, if
+     * `false`, file is truncated and output is written at beginning of file
+     *
+     * @param f function
+     *
+     * @return value from supplied function
+     */
+    def withPrintWriter[T](append: Boolean)(f: PrintWriter => T): T = {
+      val writer = new PrintWriter(new FileWriter(file, append))
+      try f(writer)
+      finally Try(writer.close())
+    }
+
+    /**
      * Opens RandomAccessFile with specified access mode and passes it to
      * function. File is closed on function's return.
      *
@@ -623,6 +651,22 @@ object Implicits {
       try f(writer)
       finally Try(writer.close())
     }
+
+    /**
+     * Opens PrintWriter to file at path and passes it to supplied function.
+     * Writer is closed on function's return.
+     *
+     * @param options open options
+     * @param f function
+     *
+     * @return value from supplied function
+     */
+    def withPrintWriter[T](options: OpenOption*)(f: PrintWriter => T): T =
+      withOutputStream(options : _*) { out =>
+        val writer = new PrintWriter(out)
+        try f(writer)
+        finally Try(writer.close())
+      }
 
     /**
      * Opens FileChannel to file at path and passes it to supplied function.
