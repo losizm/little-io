@@ -35,7 +35,7 @@ import scala.util.Try
  *
  * // Print message when file is created
  * val handle = dir.withWatcher(ENTRY_CREATE) { evt ⇒
- *   println(s"${evt.context} was created.")
+ *   println(s"\${evt.context} was created.")
  * }
  *
  * Thread.sleep(60 * 1000)

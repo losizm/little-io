@@ -514,12 +514,12 @@ object Implicits {
      *     if (dir.getFileName.toString == "test")
      *       FileVisitResult.SKIP_SUBTREE
      *     else {
-     *       println(s"Listing files in ${dir.getFileName} directory...")
+     *       println(s"Listing files in \${dir.getFileName} directory...")
      *       FileVisitResult.CONTINUE
      *     }
      *
      *   case VisitFile(file, attrs) ⇒
-     *     println(s"${file.getFileName} is ${attrs.size} bytes.")
+     *     println(s"\${file.getFileName} is \${attrs.size} bytes.")
      *     FileVisitResult.CONTINUE
      * }
      * }}}
