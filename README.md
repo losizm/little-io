@@ -120,11 +120,11 @@ val file = "test.txt".toFile << "abc\n123\nxyz\n789"
 
 // Filter lines with numbers only
 val filtered = file.filterLines(_.matches("\\d+"))
-assert { filtered.sameElements(Seq("123", "789")) }
+assert { filtered == Seq("123", "789") }
 
 // Map lines to uppercase
 val mapped = file.mapLines(_.toUpperCase)
-assert { mapped.sameElements(Seq("ABC", "123", "XYZ", "789")) }
+assert { mapped == Seq("ABC", "123", "XYZ", "789") }
 
 // Fold lines to single, concatenated string
 val folded = file.foldLines("") { _ + _ }
@@ -282,7 +282,7 @@ import little.io.Compressor.unzip
 val in = new File("/tmp/src.zip")
 val out = new File("/tmp/src")
 
-// Zips all files
+// Unzip all files
 unzip(in, out)(AcceptAnyFile)
 ```
 
