@@ -65,12 +65,12 @@ object Implicits {
       withOutputStream(true) { out => out.write(bytes); file }
 
     /**
-     * Appends supplied text to file.
+     * Appends supplied characters to file.
      *
      * @return file
      */
-    def <<(text: String): File =
-      withWriter(true) { out => out.write(text); file }
+    def <<(chars: CharSequence): File =
+      withWriter(true) { out => out.append(chars); file }
 
     /**
      * Appends contents of supplied InputStream to file.
@@ -363,12 +363,12 @@ object Implicits {
       withOutputStream(CREATE, APPEND) { out => out.write(bytes); path }
 
     /**
-     * Appends supplied text to file.
+     * Appends supplied characters to file.
      *
      * @return path
      */
-    def <<(text: String): Path =
-      withWriter(CREATE, APPEND) { out => out.write(text); path }
+    def <<(chars: CharSequence): Path =
+      withWriter(CREATE, APPEND) { out => out.append(chars); path }
 
     /**
      * Appends contents of supplied InputStream to file.
@@ -709,7 +709,7 @@ object Implicits {
    */
   implicit class OutputStreamType[T <: OutputStream](private val out: T) extends AnyVal {
     /**
-     * Appends bytes to output stream.
+     * Appends supplied bytes to output stream.
      *
      * @return out
      */
@@ -804,7 +804,7 @@ object Implicits {
     }
 
     /**
-     * Folds lines reader reader to single value using given initial value and
+     * Folds lines from reader to single value using given initial value and
      * binary operator.
      *
      * @param init initial value
@@ -826,11 +826,11 @@ object Implicits {
    */
   implicit class WriterType[T <: Writer](private val writer: T) extends AnyVal {
     /**
-     * Appends text to writer.
+     * Appends supplied characters to writer.
      *
      * @return writer
      */
-    def <<(text: String): T = { writer.write(text); writer }
+    def <<(chars: CharSequence): T = { writer.append(chars); writer }
 
     /**
      * Appends contents of supplied reader.
