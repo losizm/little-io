@@ -2,13 +2,13 @@
 
 The Scala library that provides extension methods to _java.io_ and _java.nio_.
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.losizm/little-io_2.12.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.losizm%22%20AND%20a:%22little-io_2.12%22)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.losizm/little-io_2.13.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.losizm%22%20AND%20a:%22little-io_2.13%22)
 
 ## Getting Started
 To use **little-io**, add it as a dependency to your project:
 
 ```scala
-libraryDependencies += "com.github.losizm" %% "little-io" % "3.4.0"
+libraryDependencies += "com.github.losizm" %% "little-io" % "4.0.0"
 ```
 
 ## A Taste of little-io
@@ -17,7 +17,7 @@ Here's a taste of what **little-io** offers.
 
 ### Getting and Setting File Content
 
-If you have a reference to a `File`, you can easily get and set its content.
+If you have a `File`, you can easily get and set its content.
 
 ```scala
 // Add methods to java.io.File and String
@@ -32,7 +32,7 @@ file.setText("Hello, world!")
 println(file.getText()) // Hello, world!
 ```
 
-You can even create a file reference and set the file content all in one swoop.
+You can create a file and set its content all in one swoop.
 
 ```scala
 import little.io.Implicits.{ FileType, IoStringType }
@@ -53,7 +53,8 @@ val path = "greeting.txt".toPath << "Hello, world!"
 println(path.getText())
 ```
 
-And, if you prefer working with bytes, there are extensions for those too.
+And, if you prefer working with bytes, there are extension methods for those
+too.
 
 ```scala
 import little.io.Implicits.{ FileType, IoStringType }
@@ -69,10 +70,9 @@ println(new String(file.getBytes(), "utf-8"))
 
 ### Reading and Writing File Content
 
-If you have a reference to a `File` or a `Path`, you can open an `OutputStream`
-or a `Writer` to the file to write its content, and you can open an
-`InputStream` or a `Reader` to read its content, all with automatic resource
-management.
+If you have a `File` or a `Path`, you can open an `OutputStream` or a `Writer`
+to write its content, and you can open an `InputStream` or a `Reader` to read
+its content, all with automatic resource management.
 
 ```scala
 import little.io.Implicits.{ FileType, IoStringType, WriterType }
@@ -133,9 +133,9 @@ assert(folded == "abc123xyz789")
 
 ### Mapping and Folding Files in Directory
 
-If you have a `File` or `Path` reference to a directory, you can map the files
-in the directory. And you can fold the files in the directory to generate a
-single value.
+If you have a `File` or `Path` to a directory, you can map the files in the
+directory. And you can fold the files in the directory to generate a single
+value.
 
 ```scala
 import little.io.Implicits.{ FileType, IoStringType }
@@ -193,7 +193,7 @@ modified, and deleted files.
 
 With pure Java, you create a `Path` to a directory, create a `WatchService`
 using a reference to the path's `FileSystem`, and then register the path with
-the service while specifying the kinds of `WatchEvent`s you wish to track. A
+the service while specifying the kinds of `WatchEvent` you wish to track. A
 `WatchKey` is returned when the path is registered, and you use this key to poll
 for file events.
 
@@ -292,5 +292,5 @@ See [scaladoc](https://losizm.github.io/little-io/latest/api/little/io/index.htm
 for additional details.
 
 ## License
-**little-io** is licensed under the Apache License, Version 2. See LICENSE
+**little-io** is licensed under the Apache License, Version 2. See [LICENSE](LICENSE)
 file for more information.
