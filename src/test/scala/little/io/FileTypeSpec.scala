@@ -77,9 +77,13 @@ class FileTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     assert(file.getText() == "abc123.!?")
 
     file.setBytes("ABC".getBytes)
-    file << "123" << ".!?".getBytes << new ByteArrayInputStream("abc".getBytes) << new StringReader("xyz")
+    file << "123"
+    file << ".!?".getBytes
+    file << new ByteArrayInputStream("abc".getBytes)
+    file << new StringReader("xyz")
+    file << "foobarbaz".toCharArray
 
-    assert(file.getText() == "ABC123.!?abcxyz")
+    assert(file.getText() == "ABC123.!?abcxyzfoobarbaz")
   }
 
   it should "have its lines filtered, mapped, and folded" in {

@@ -69,6 +69,17 @@ object Implicits {
      *
      * @return file
      */
+    def <<(chars: Array[Char]): File =
+      withWriter(true) { out =>
+        out.write(chars)
+        file
+      }
+
+    /**
+     * Appends supplied characters to file.
+     *
+     * @return file
+     */
     def <<(chars: CharSequence): File =
       withWriter(true) { out => out.append(chars); file }
 
@@ -361,6 +372,17 @@ object Implicits {
      */
     def <<(bytes: Array[Byte]): Path =
       withOutputStream(CREATE, APPEND) { out => out.write(bytes); path }
+
+    /**
+     * Appends supplied characters to file.
+     *
+     * @return path
+     */
+    def <<(chars: Array[Char]): Path =
+      withWriter(CREATE, APPEND) { out =>
+        out.write(chars)
+        path
+      }
 
     /**
      * Appends supplied characters to file.
@@ -825,6 +847,16 @@ object Implicits {
    * @see [[ReaderType]]
    */
   implicit class WriterType[T <: Writer](private val writer: T) extends AnyVal {
+    /**
+     * Appends supplied characters to writer.
+     *
+     * @return writer
+     */
+    def <<(chars: Array[Char]): T = {
+      writer.write(chars)
+      writer
+    }
+
     /**
      * Appends supplied characters to writer.
      *

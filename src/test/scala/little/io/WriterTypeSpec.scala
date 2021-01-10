@@ -23,11 +23,11 @@ class WriterTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
   "Writer" should "write characters from Reader" in {
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
     val reader = new StringReader(text)
-    val writer = new StringWriter() << reader << text
-    assert(writer.toString == (text * 2))
+    val writer = new StringWriter() << reader << text << text.toCharArray
+    assert(writer.toString == (text * 3))
 
     writer.writeLine(text)
-    assert(writer.toString == (text * 3) + sys.props("line.separator"))
+    assert(writer.toString == (text * 4) + sys.props("line.separator"))
   }
 }
 
