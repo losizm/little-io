@@ -54,11 +54,15 @@ final class WatchHandle private[io] (service: WatchService, key: WatchKey, watch
     try
       while (!closed) {
         val taken = service.take()
-        taken.pollEvents().forEach(event => watcher(event))
-        if (!taken.reset()) close()
+
+        taken.pollEvents().forEach(watcher(_))
+
+        if (!taken.reset())
+          close()
       }
     finally {
-      if (!closed) close()
+      if (!closed)
+        close()
     }
   }
 
@@ -71,7 +75,8 @@ final class WatchHandle private[io] (service: WatchService, key: WatchKey, watch
   }
 
   /** Tests whether underlying watcher is closed. */
-  def isClosed: Boolean = closed
+  def isClosed: Boolean =
+    closed
 }
 
 private object WatchExecutionContext extends ExecutionContext {

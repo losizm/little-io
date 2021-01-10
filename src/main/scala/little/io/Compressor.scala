@@ -46,7 +46,9 @@ object Compressor {
    */
   def gzip(in: Path, out: Path)(implicit bufferSize: BufferSize): Unit =
     in.withInputStream() { inStream =>
-      out.withOutputStream() { outStream => gzip(inStream, outStream) }
+      out.withOutputStream() { outStream =>
+        gzip(inStream, outStream)
+      }
     }
 
   /**
@@ -84,7 +86,9 @@ object Compressor {
    */
   def gunzip(in: Path, out: Path)(implicit bufferSize: BufferSize): Unit =
     in.withInputStream() { inStream =>
-      out.withOutputStream() { outStream => gunzip(inStream, outStream) }
+      out.withOutputStream() { outStream =>
+        gunzip(inStream, outStream)
+      }
     }
 
   /**
@@ -121,7 +125,9 @@ object Compressor {
    */
   def deflate(in: Path, out: Path)(implicit bufferSize: BufferSize): Unit =
     in.withInputStream() { inStream =>
-      out.withOutputStream() { outStream => deflate(inStream, outStream) }
+      out.withOutputStream() { outStream =>
+        deflate(inStream, outStream)
+      }
     }
 
   /**
@@ -159,7 +165,9 @@ object Compressor {
    */
   def inflate(in: Path, out: Path)(implicit bufferSize: BufferSize): Unit =
     in.withInputStream() { inStream =>
-      out.withOutputStream() { outStream => inflate(inStream, outStream) }
+      out.withOutputStream() { outStream =>
+        inflate(inStream, outStream)
+      }
     }
 
   /**
@@ -185,7 +193,9 @@ object Compressor {
    * @param filter file filter
    */
   def zip(in: File, out: File)(implicit filter: FileFilter): Unit =
-    zip(in.toPath, out.toPath) { path => filter.accept(path.toFile) }
+    zip(in.toPath, out.toPath) { path =>
+      filter.accept(path.toFile)
+    }
 
   /**
    * Zips all files in input directory (recursive) to output file.
@@ -231,7 +241,9 @@ object Compressor {
    * @param filter file filter
    */
   def unzip(in: File, out: File)(implicit filter: FileFilter): Unit =
-    unzip(in.toPath, out.toPath) { path => filter.accept(path.toFile) }
+    unzip(in.toPath, out.toPath) { path =>
+      filter.accept(path.toFile)
+    }
 
   /**
    * Unzips input file to output directory.
@@ -269,8 +281,10 @@ object Compressor {
   }
 
   private def createDirectory(path: Path): Unit =
-    if (!Files.isDirectory(path)) Files.createDirectory(path)
+    if (!Files.isDirectory(path))
+      Files.createDirectory(path)
 
   private def createDirectories(path: Path): Unit =
-    if (!Files.isDirectory(path)) Files.createDirectories(path)
+    if (!Files.isDirectory(path))
+      Files.createDirectories(path)
 }

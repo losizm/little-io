@@ -54,7 +54,8 @@ object Implicits {
      *
      * @return file
      */
-    def /(child: String): File = new File(file, child)
+    def /(child: String): File =
+      new File(file, child)
 
     /**
      * Appends supplied bytes to file.
@@ -62,7 +63,10 @@ object Implicits {
      * @return file
      */
     def <<(bytes: Array[Byte]): File =
-      withOutputStream(true) { out => out.write(bytes); file }
+      withOutputStream(true) { out =>
+        out.write(bytes)
+        file
+      }
 
     /**
      * Appends supplied characters to file.
@@ -81,7 +85,10 @@ object Implicits {
      * @return file
      */
     def <<(chars: CharSequence): File =
-      withWriter(true) { out => out.append(chars); file }
+      withWriter(true) { out =>
+        out.append(chars)
+        file
+      }
 
     /**
      * Appends contents of supplied InputStream to file.
@@ -89,7 +96,10 @@ object Implicits {
      * @return file
      */
     def <<(in: InputStream)(implicit bufferSize: BufferSize): File =
-      withOutputStream(true) { out => out << in; file }
+      withOutputStream(true) { out =>
+        out << in
+        file
+      }
 
     /**
      * Appends contents of supplied Reader to file.
@@ -97,26 +107,30 @@ object Implicits {
      * @return file
      */
     def <<(in: Reader)(implicit bufferSize: BufferSize): File =
-      withWriter(true) { out => out << in; file }
+      withWriter(true) { out =>
+        out << in
+        file
+      }
 
     /** Reads file and returns its bytes. */
     def getBytes(): Array[Byte] =
-      withInputStream { in => in.getBytes() }
+      withInputStream(_.getBytes())
 
     /** Sets file content to supplied bytes. */
     def setBytes(bytes: Array[Byte]): Unit =
-      withOutputStream { out => out.write(bytes) }
+      withOutputStream(_.write(bytes))
 
     /** Reads file and returns its text. */
     def getText(): String =
-      withReader { in => in.getText() }
+      withReader(_.getText())
 
     /** Sets file content to supplied text. */
     def setText(text: String): Unit =
-      withWriter { out => out.write(text) }
+      withWriter(_.write(text))
 
     /** Gets lines in file. */
-    def getLines(): Seq[String] = mapLines(identity)
+    def getLines(): Seq[String] =
+      mapLines(identity)
 
     /**
      * Reads file and invokes supplied function for each line.
@@ -126,7 +140,7 @@ object Implicits {
      * @param f function
      */
     def forEachLine(f: String => Unit): Unit =
-      withReader { in => in.forEachLine(f) }
+      withReader(_.forEachLine(f))
 
     /**
      * Filters lines in file using supplied predicate.
@@ -134,7 +148,7 @@ object Implicits {
      * @param p predicate
      */
     def filterLines(p: String => Boolean): Seq[String] =
-      withReader { in => in.filterLines(p) }
+      withReader(_.filterLines(p))
 
     /**
      * Maps each line in file using supplied function.
@@ -142,7 +156,7 @@ object Implicits {
      * @param f function
      */
     def mapLines[T](f: String => T): Seq[T] =
-      withReader { in => in.mapLines(f) }
+      withReader(_.mapLines(f))
 
     /**
      * Builds collection using elements mapped from lines in file.
@@ -150,7 +164,7 @@ object Implicits {
      * @param f function
      */
     def flatMapLines[T](f: String => Iterable[T]): Seq[T] =
-      withReader { in => in.flatMapLines(f) }
+      withReader(_.flatMapLines(f))
 
     /**
      * Folds lines in file to single value using given initial value and binary
@@ -162,7 +176,7 @@ object Implicits {
      * @return `init` if file is empty; otherwise, last value returned from `op`
      */
     def foldLines[T](init: T)(op: (T, String) => T): T =
-      withReader { in => in.foldLines(init)(op) }
+      withReader(_.foldLines(init)(op))
 
     /**
      * Invokes supplied function for each file in directory.
@@ -363,7 +377,8 @@ object Implicits {
      *
      * @return file
      */
-    def /(child: String): Path = Paths.get(path.toString, child)
+    def /(child: String): Path =
+      Paths.get(path.toString, child)
 
     /**
      * Appends supplied bytes to file.
@@ -371,7 +386,10 @@ object Implicits {
      * @return path
      */
     def <<(bytes: Array[Byte]): Path =
-      withOutputStream(CREATE, APPEND) { out => out.write(bytes); path }
+      withOutputStream(CREATE, APPEND) { out =>
+        out.write(bytes)
+        path
+      }
 
     /**
      * Appends supplied characters to file.
@@ -390,7 +408,10 @@ object Implicits {
      * @return path
      */
     def <<(chars: CharSequence): Path =
-      withWriter(CREATE, APPEND) { out => out.append(chars); path }
+      withWriter(CREATE, APPEND) { out =>
+        out.append(chars)
+        path
+      }
 
     /**
      * Appends contents of supplied InputStream to file.
@@ -398,7 +419,10 @@ object Implicits {
      * @return path
      */
     def <<(in: InputStream)(implicit bufferSize: BufferSize): Path =
-      withOutputStream(CREATE, APPEND) { out => out << in; path }
+      withOutputStream(CREATE, APPEND) { out =>
+        out << in
+        path
+      }
 
     /**
      * Appends contents of supplied Reader to file.
@@ -406,24 +430,30 @@ object Implicits {
      * @return path
      */
     def <<(in: Reader)(implicit bufferSize: BufferSize): Path =
-      withWriter(CREATE, APPEND) { out => out << in; path }
+      withWriter(CREATE, APPEND) { out =>
+        out << in
+        path
+      }
 
     /** Reads file at path and returns its bytes. */
-    def getBytes(): Array[Byte] = Files.readAllBytes(path)
+    def getBytes(): Array[Byte] =
+      Files.readAllBytes(path)
 
     /** Sets file content to supplied bytes. */
     def setBytes(bytes: Array[Byte]): Unit =
-      withOutputStream(CREATE, TRUNCATE_EXISTING) { out => out.write(bytes) }
+      withOutputStream(CREATE, TRUNCATE_EXISTING)(_.write(bytes))
 
     /** Reads file at path and returns its text. */
-    def getText(): String = new String(getBytes())
+    def getText(): String =
+      new String(getBytes())
 
     /** Sets file content to supplied text. */
     def setText(text: String): Unit =
-      withWriter(CREATE, TRUNCATE_EXISTING) { out => out.write(text) }
+      withWriter(CREATE, TRUNCATE_EXISTING)(_.write(text))
 
     /** Gets lines in file. */
-    def getLines(): Seq[String] = mapLines(identity)
+    def getLines(): Seq[String] =
+      mapLines(identity)
 
     /**
      * Reads file at path and invokes supplied function for each line.
@@ -433,7 +463,7 @@ object Implicits {
      * @param f function
      */
     def forEachLine(f: String => Unit): Unit =
-      withReader() { in => in.forEachLine(f) }
+      withReader()(_.forEachLine(f))
 
     /**
      * Filters lines in file using supplied predicate.
@@ -441,7 +471,7 @@ object Implicits {
      * @param p predicate
      */
     def filterLines(p: String => Boolean): Seq[String] =
-      withReader() { in => in.filterLines(p) }
+      withReader()(_.filterLines(p))
 
     /**
      * Maps each line in file using supplied function.
@@ -449,7 +479,7 @@ object Implicits {
      * @param f function
      */
     def mapLines[T](f: String => T): Seq[T] =
-      withReader() { in => in.mapLines(f) }
+      withReader()(_.mapLines(f))
 
     /**
      * Builds collection using elements mapped from lines in file.
@@ -457,7 +487,7 @@ object Implicits {
      * @param f function
      */
     def flatMapLines[T](f: String => Iterable[T]): Seq[T] =
-      withReader() { in => in.flatMapLines(f) }
+      withReader()(_.flatMapLines(f))
 
     /**
      * Folds lines in file to single value using given initial value and binary
@@ -469,7 +499,7 @@ object Implicits {
      * @return `init` if file is empty; otherwise, last value returned from `op`
      */
     def foldLines[T](init: T)(op: (T, String) => T): T =
-      withReader() { in => in.foldLines(init)(op) }
+      withReader()(_.foldLines(init)(op))
 
     /**
      * Opens directory stream to path and invokes supplied function for each
@@ -541,7 +571,9 @@ object Implicits {
      */
     def foldFiles[T](init: T)(op: (T, Path) => T): T = {
       var result = init
-      forEachFile { x => result = op(result, x) }
+      forEachFile { x =>
+        result = op(result, x)
+      }
       result
     }
 
@@ -609,8 +641,14 @@ object Implicits {
      */
     def withWatcher(events: WatchEvent.Kind[_]*)(watcher: WatchEvent[_] => Unit): WatchHandle = {
       val service = path.getFileSystem.newWatchService()
-      try new WatchHandle(service, path.register(service, events : _*), watcher)
-      catch { case NonFatal(e) => service.close(); throw e }
+
+      try
+        new WatchHandle(service, path.register(service, events : _*), watcher)
+      catch {
+        case NonFatal(e) =>
+          service.close()
+          throw e
+      }
     }
 
     /**
@@ -735,7 +773,10 @@ object Implicits {
      *
      * @return out
      */
-    def <<(bytes: Array[Byte]): T = { out.write(bytes); out }
+    def <<(bytes: Array[Byte]): T = {
+      out.write(bytes)
+      out
+    }
 
     /**
      * Appends contents of supplied input stream.
@@ -744,7 +785,7 @@ object Implicits {
      *
      * @return out
      */
-    def <<(in: InputStream)(implicit bufferSize: BufferSize): T  = {
+    def <<(in: InputStream)(implicit bufferSize: BufferSize): T = {
       val buf = new Array[Byte](bufferSize.value)
       var len = 0
 
@@ -772,7 +813,8 @@ object Implicits {
     }
 
     /** Gets lines in file. */
-    def getLines(): Seq[String] = mapLines(identity)
+    def getLines(): Seq[String] =
+      mapLines(identity)
 
     /**
      * Reads content and invokes supplied function for each line.
@@ -799,7 +841,10 @@ object Implicits {
      */
     def filterLines(p: String => Boolean): Seq[String] = {
       var values = new ListBuffer[String]
-      forEachLine { x => if (p(x)) values += x }
+      forEachLine { x =>
+        if (p(x))
+          values += x
+      }
       values.toSeq
     }
 
@@ -810,7 +855,9 @@ object Implicits {
      */
     def mapLines[T](f: String => T): Seq[T] = {
       var values = new ListBuffer[T]
-      forEachLine { x => values += f(x) }
+      forEachLine { x =>
+        values += f(x)
+      }
       values.toSeq
     }
 
@@ -821,7 +868,9 @@ object Implicits {
      */
     def flatMapLines[T](f: String => Iterable[T]): Seq[T] = {
       var values = new ListBuffer[T]
-      forEachLine { x => f(x).foreach(values.+=) }
+      forEachLine { x =>
+        f(x).foreach(values.+=)
+      }
       values.toSeq
     }
 
@@ -836,7 +885,9 @@ object Implicits {
      */
     def foldLines[T](init: T)(op: (T, String) => T): T = {
       var result = init
-      forEachLine { x => result = op(result, x) }
+      forEachLine { x =>
+        result = op(result, x)
+      }
       result
     }
   }
@@ -862,7 +913,10 @@ object Implicits {
      *
      * @return writer
      */
-    def <<(chars: CharSequence): T = { writer.append(chars); writer }
+    def <<(chars: CharSequence): T = {
+      writer.append(chars)
+      writer
+    }
 
     /**
      * Appends contents of supplied reader.
@@ -881,6 +935,7 @@ object Implicits {
     }
 
     /** Writes text followed by default line separator. */
-    def writeLine(text: String): Unit = writer << text << EOL
+    def writeLine(text: String): Unit =
+      writer.append(text).append(EOL)
   }
 }
