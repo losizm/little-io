@@ -26,7 +26,7 @@ class ReaderTypeSpec extends FlatSpec {
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
     val in = new StringReader(text)
 
-    try assert(in.getText == text)
+    try assert(in.getText() == text)
     finally in.close()
   }
 }

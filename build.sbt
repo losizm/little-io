@@ -1,15 +1,19 @@
-name := "little-io"
-version := "3.4.0"
 organization := "com.github.losizm"
+name         := "little-io"
+version      := "4.0.0-SNAPSHOT"
+description  := "The Scala library that provides extension methods to java.io and java.nio"
+homepage     := Some(url("https://github.com/losizm/little-io"))
+licenses     := List("Apache License, Version 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
 
-description := "The Scala library that provides extension methods to java.io and java.nio"
-licenses := List("Apache License, Version 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
-homepage := Some(url("https://github.com/losizm/little-io"))
+scalaVersion       := "2.13.4"
+crossScalaVersions := Seq("2.12.12")
 
-scalaVersion := "2.13.1"
 scalacOptions ++= Seq("-deprecation", "-feature", "-Xcheckinit")
 
-crossScalaVersions := Seq("2.12.10")
+Compile / doc / scalacOptions ++= Seq(
+  "-doc-title",   name.value,
+  "-doc-version", version.value
+)
 
 Compile / unmanagedSourceDirectories += {
   sourceDirectory.value / s"scala-${scalaBinaryVersion.value}"
@@ -39,7 +43,8 @@ pomIncludeRepository := { _ => false }
 
 publishTo := {
   val nexus = "https://oss.sonatype.org"
-  if (isSnapshot.value) Some("snaphsots" at s"$nexus/content/repositories/snapshots")
-  else Some("releases" at s"$nexus/service/local/staging/deploy/maven2")
+  isSnapshot.value match {
+    case true  => Some("snaphsots" at s"$nexus/content/repositories/snapshots")
+    case false => Some("releases"  at s"$nexus/service/local/staging/deploy/maven2")
+  }
 }
-

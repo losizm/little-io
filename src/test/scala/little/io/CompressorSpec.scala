@@ -34,10 +34,10 @@ class CompressorSpec extends FlatSpec {
     val gunzipped = createTempFile()
 
     gzip(in, gzipped)
-    assert(in.getText != gzipped.getText)
+    assert(in.getText() != gzipped.getText())
 
     gunzip(gzipped, gunzipped)
-    assert(in.getText == gunzipped.getText)
+    assert(in.getText() == gunzipped.getText())
   }
 
   it should "be deflated and inflated" in {
@@ -48,10 +48,10 @@ class CompressorSpec extends FlatSpec {
     val inflated = createTempFile()
 
     deflate(in, deflated)
-    assert(in.getText != deflated.getText)
+    assert(in.getText() != deflated.getText())
 
     inflate(deflated, inflated)
-    assert(in.getText == inflated.getText)
+    assert(in.getText() == inflated.getText())
   }
 
   it should "be zipped and unzipped" in {
@@ -69,6 +69,6 @@ class CompressorSpec extends FlatSpec {
     finally zipFile.close()
 
     unzip(zipped, unzipped)
-    unzipped.forEachFile(f => assert(f.getText == in.getText))
+    unzipped.forEachFile(f => assert(f.getText() == in.getText()))
   }
 }

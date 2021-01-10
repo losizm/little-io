@@ -24,9 +24,9 @@ import Implicits._
 class InputStreamTypeSpec extends FlatSpec {
   "InputStream" should "read all bytes" in {
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
-    val in = new ByteArrayInputStream(text.getBytes)
+    val in = new ByteArrayInputStream(text.getBytes())
 
-    try assert(new String(in.getBytes) == text)
+    try assert(new String(in.getBytes()) == text)
     finally in.close()
   }
 }

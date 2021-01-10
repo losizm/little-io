@@ -45,7 +45,7 @@ class PathTypeSpec extends FlatSpec {
       assert(out.toByteArray.corresponds(bytes)(_ == _))
     }
 
-    assert(file.getBytes.corresponds(bytes)(_ == _))
+    assert(file.getBytes().corresponds(bytes)(_ == _))
   }
 
   it should "be written to writer and read from reader" in {
@@ -58,7 +58,7 @@ class PathTypeSpec extends FlatSpec {
       assert(writer.toString == text)
     }
 
-    assert(file.getText == text)
+    assert(file.getText() == text)
 
     file.forEachLine { line =>
       assert(text.split("\n").contains(line))
@@ -88,12 +88,12 @@ class PathTypeSpec extends FlatSpec {
     file.setText("abc")
     file << "123".getBytes << ".!?"
 
-    assert(file.getText == "abc123.!?")
+    assert(file.getText() == "abc123.!?")
 
     file.setBytes("ABC".getBytes)
     file << "123" << ".!?".getBytes << new ByteArrayInputStream("abc".getBytes) << new StringReader("xyz")
 
-    assert(file.getText == "ABC123.!?abcxyz")
+    assert(file.getText() == "ABC123.!?abcxyz")
   }
 
   it should "have its lines filtered, mapped, and folded" in {
@@ -142,7 +142,7 @@ class PathTypeSpec extends FlatSpec {
       assert(writer.toString == text)
     }
 
-    assert(file.getText == text)
+    assert(file.getText() == text)
 
     file.forEachLine { line =>
       assert(text.split("\n").contains(line))
