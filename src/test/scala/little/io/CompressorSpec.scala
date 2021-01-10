@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Carlos Conyers
+ * Copyright 2021 Carlos Conyers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,11 @@ package little.io
 
 import java.util.zip.ZipFile
 
-import org.scalatest.FlatSpec
-
 import Compressor._
 import Implicits.FileType
 import TestFile._
 
-class CompressorSpec extends FlatSpec {
+class CompressorSpec extends org.scalatest.flatspec.AnyFlatSpec {
   val text = "Now Peter Piper picked peppers\nbut Run rocks rhymes."
 
   "File" should "be gzipped and gunzipped" in {

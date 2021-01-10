@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Carlos Conyers
+ * Copyright 2021 Carlos Conyers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,11 @@ import java.nio.file.StandardWatchEventKinds._
 
 import scala.util.Try
 
-import org.scalatest.FlatSpec
-
 import Implicits._
 import FileVisitEvent._
 import TestPath._
 
-class PathTypeSpec extends FlatSpec {
+class PathTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
   implicit val bufferSize = BufferSize(64)
 
   val text = "Now Peter Piper picked peppers but Run rocks rhymes."

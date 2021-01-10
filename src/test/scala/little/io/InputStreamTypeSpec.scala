@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Carlos Conyers
+ * Copyright 2021 Carlos Conyers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,9 @@ package little.io
 
 import java.io.{ ByteArrayInputStream, ByteArrayOutputStream }
 
-import org.scalatest.FlatSpec
-
 import Implicits._
 
-class InputStreamTypeSpec extends FlatSpec {
+class InputStreamTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
   "InputStream" should "read all bytes" in {
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
     val in = new ByteArrayInputStream(text.getBytes())

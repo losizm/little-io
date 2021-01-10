@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Carlos Conyers
+ * Copyright 2021 Carlos Conyers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,9 @@ package little.io
 
 import java.io.{ StringReader, StringWriter }
 
-import org.scalatest.FlatSpec
-
 import Implicits._
 
-class WriterTypeSpec extends FlatSpec {
+class WriterTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
   "Writer" should "write characters from Reader" in {
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
     val reader = new StringReader(text)
