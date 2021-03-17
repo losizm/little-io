@@ -22,13 +22,21 @@ import scala.sys.{ props => sysProps }
 import Implicits.IoStringType
 
 class IoStringTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
-  s"String" should "be converted to File" in {
+  it should "convert String to File" in {
     val file = sysProps("java.io.tmpdir").toFile
     assert(file.isDirectory)
   }
 
-  it should "be converted to Path" in {
+  it should "convert String to Path" in {
     val path = sysProps("java.io.tmpdir").toPath
     assert(Files.isDirectory(path))
+  }
+
+  it should "convert String to and from URL-encoded String" in {
+    val decoded = "https://github.com/losizm"
+    val encoded = "https%3A%2F%2Fgithub.com%2Flosizm"
+
+    assert(decoded.toUrlEncoded == encoded)
+    assert(encoded.toUrlDecoded == decoded)
   }
 }

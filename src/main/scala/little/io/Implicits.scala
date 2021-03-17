@@ -16,6 +16,7 @@
 package little.io
 
 import java.io._
+import java.net.{ URLDecoder, URLEncoder }
 import java.nio.channels.FileChannel
 import java.nio.file._
 import java.nio.file.StandardOpenOption._
@@ -36,11 +37,43 @@ object Implicits {
 
   /** Provides extension methods to `String`. */
   implicit class IoStringType(private val s: String) extends AnyVal {
-    /** Converts value to File. */
+    /** Converts string to File. */
     def toFile: File = new File(s)
 
-    /** Converts value to Path. */
+    /** Converts string to Path. */
     def toPath: Path = Paths.get(s)
+
+    /**
+     * Converts string to URL-encoded value using UTF-8 character encoding.
+     *
+     * @param charset character encoding
+     */
+    def toUrlEncoded: String =
+      URLEncoder.encode(s, "UTF-8")
+
+    /**
+     * Converts string to URL-encoded value using specified character encoding.
+     *
+     * @param charset character encoding
+     */
+    def toUrlEncoded(charset: String): String =
+      URLEncoder.encode(s, charset)
+
+    /**
+     * Converts string to URL-decoded value using UTF-8 character encoding.
+     *
+     * @param charset character encoding
+     */
+    def toUrlDecoded: String =
+      URLDecoder.decode(s, "UTF-8")
+
+    /**
+     * Converts string to URL-decoded value using specified character encoding.
+     *
+     * @param charset character encoding
+     */
+    def toUrlDecoded(charset: String): String =
+      URLDecoder.decode(s, charset)
   }
 
   /**
