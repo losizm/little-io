@@ -21,6 +21,7 @@ import java.nio.channels.FileChannel
 import java.nio.file._
 import java.nio.file.StandardOpenOption._
 import java.nio.file.attribute.BasicFileAttributes
+import java.util.Base64
 
 import scala.collection.mutable.ListBuffer
 import scala.util.Try
@@ -31,9 +32,30 @@ import FileVisitEvent._
 /** Provides extension methods to `java.io` and `java.nio`. */
 object Implicits {
   private val EOL = sys.props("line.separator")
+  private val Base64Encoder = Base64.getEncoder()
+  private val Base64Decoder = Base64.getDecoder()
 
   /** Default buffer size for I/O operations &mdash; i.e., BufferSize(8192). */
   implicit val bufferSize = BufferSize(8192)
+
+  /** Provides extension methods to `Array[Byte]`. */
+  implicit class IoByteArrayType(private val bytes: Array[Byte]) extends AnyVal {
+    /**
+     * Converts bytes to base64 encoded array.
+     *
+     * @return newly-allocated array with encoded bytes
+     */
+    def toBase64Encoded: Array[Byte] =
+      Base64Encoder.encode(bytes)
+
+    /**
+     * Converts bytes to base64 decoded array.
+     *
+     * @return newly-allocated array with decoded bytes
+     */
+    def toBase64Decoded: Array[Byte] =
+      Base64Decoder.decode(bytes)
+  }
 
   /** Provides extension methods to `String`. */
   implicit class IoStringType(private val s: String) extends AnyVal {
