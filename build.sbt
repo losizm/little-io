@@ -1,12 +1,12 @@
 organization := "com.github.losizm"
 name         := "little-io"
-version      := "4.1.0"
+version      := "4.2.0"
 description  := "The Scala library that provides extension methods to java.io and java.nio"
 homepage     := Some(url("https://github.com/losizm/little-io"))
 licenses     := List("Apache License, Version 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
 
-scalaVersion       := "2.13.4"
-crossScalaVersions := Seq("2.12.12")
+scalaVersion       := "2.13.5"
+crossScalaVersions := Seq("2.12.13")
 
 scalacOptions ++= Seq("-deprecation", "-feature", "-Xcheckinit")
 
@@ -19,7 +19,7 @@ Compile / unmanagedSourceDirectories += {
   sourceDirectory.value / s"scala-${scalaBinaryVersion.value}"
 }
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.2" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.5" % "test"
 
 developers := List(
   Developer(
