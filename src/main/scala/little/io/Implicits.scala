@@ -238,8 +238,8 @@ object Implicits {
      *
      * @param f function
      *
-     * @throws IOException if file is not directory or if directory listing is
-     *  not available
+     * @throws java.io.IOException if file is not directory or if directory
+     * listing is not available
      */
     def forEachFile(f: File => Unit): Unit =
       file.listFiles match {
@@ -252,8 +252,8 @@ object Implicits {
      *
      * @param f function
      *
-     * @throws IOException if file is not directory or if directory listing is
-     *  not available
+     * @throws java.io.IOException if file is not directory or if directory
+     * listing is not available
      */
     def mapFiles[T](f: File => T): Seq[T] =
       file.listFiles match {
@@ -266,8 +266,8 @@ object Implicits {
      *
      * @param f function
      *
-     * @throws IOException if file is not directory or if directory listing is
-     *  not available
+     * @throws java.io.IOException if file is not directory or if directory
+     * listing is not available
      */
     def flatMapFiles[T](f: File => Iterable[T]): Seq[T] =
       file.listFiles match {
@@ -284,8 +284,8 @@ object Implicits {
      *
      * @return `init` if no files; otherwise, last value returned from `op`
      *
-     * @throws IOException if file is not directory or if directory listing is
-     *  not available
+     * @throws java.io.IOException if file is not directory or if directory
+     * listing is not available
      */
     def foldFiles[T](init: T)(op: (T, File) => T): T =
       file.listFiles match {
@@ -562,7 +562,7 @@ object Implicits {
      *
      * @param f function
      *
-     * @throws IOException if path is not to a directory
+     * @throws java.io.IOException if path is not to a directory
      */
     def forEachFile(f: Path => Unit): Unit = {
       var stream: DirectoryStream[Path] = null
@@ -578,7 +578,7 @@ object Implicits {
      * @param glob glob pattern
      * @param f function
      *
-     * @throws IOException if path is not to a directory
+     * @throws java.io.IOException if path is not to a directory
      */
     def forFiles(glob: String)(f: Path => Unit): Unit = {
       var stream: DirectoryStream[Path] = null
@@ -593,7 +593,7 @@ object Implicits {
      *
      * @param f function
      *
-     * @throws IOException if path is not to a directory
+     * @throws java.io.IOException if path is not to a directory
      */
     def mapFiles[T](f: Path => T): Seq[T] =
       foldFiles(new ListBuffer[T]) { (values, file) =>
@@ -605,7 +605,7 @@ object Implicits {
      *
      * @param f function
      *
-     * @throws IOException if path is not to a directory
+     * @throws java.io.IOException if path is not to a directory
      */
     def flatMapFiles[T](f: Path => Iterable[T]): Seq[T] =
       foldFiles(new ListBuffer[T]) { (values, file) =>
@@ -622,7 +622,7 @@ object Implicits {
      *
      * @return `init` if no files; otherwise, last value returned from `op`
      *
-     * @throws IOException if path is not to a directory
+     * @throws java.io.IOException if path is not to a directory
      */
     def foldFiles[T](init: T)(op: (T, Path) => T): T = {
       var result = init
