@@ -8,7 +8,7 @@ The Scala library that provides extension methods to _java.io_ and _java.nio_.
 To use **little-io**, add it as a dependency to your project:
 
 ```scala
-libraryDependencies += "com.github.losizm" %% "little-io" % "4.1.0"
+libraryDependencies += "com.github.losizm" %% "little-io" % "4.2.0"
 ```
 
 ## A Taste of little-io
@@ -32,7 +32,7 @@ file.setText("Hello, world!")
 println(file.getText()) // Hello, world!
 ```
 
-You can create a file and set its content all in one swoop.
+And here's another way of going at it.
 
 ```scala
 import little.io.Implicits.{ FileType, IoStringType }
@@ -70,9 +70,9 @@ println(new String(file.getBytes(), "utf-8"))
 
 ### Reading and Writing File Content
 
-If you have a `File` or a `Path`, you can open an `OutputStream` or a `Writer`
-to write its content, and you can open an `InputStream` or a `Reader` to read
-its content, all with automatic resource management.
+If you have a `File` or `Path`, you can open an `OutputStream` or `Writer` to
+write its content, and you can open an `InputStream` or `Reader` to read its
+content, all with automatic resource management.
 
 ```scala
 import little.io.Implicits.{ FileType, IoStringType, WriterType }
@@ -110,8 +110,8 @@ import little.io.Implicits.{ FileType, IoStringType }
 ### Filtering, Mapping, and Folding Lines in File
 
 There are other comprehension methods for processing files line by line. You can
-filter and map the lines in a file to build a collection. Or you can fold the
-lines to a single value.
+filter and map the lines in a file to build a collection. Or you can fold them
+to a single value.
 
 ```scala
 import little.io.Implicits._
@@ -134,8 +134,7 @@ assert(folded == "abc123xyz789")
 ### Mapping and Folding Files in Directory
 
 If you have a `File` or `Path` to a directory, you can map the files in the
-directory. And you can fold the files in the directory to generate a single
-value.
+directory. Or you can fold them to generate a single value.
 
 ```scala
 import little.io.Implicits.{ FileType, IoStringType }
