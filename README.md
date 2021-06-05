@@ -292,4 +292,4 @@ for additional details.
 
 ## License
 **little-io** is licensed under the Apache License, Version 2. See [LICENSE](LICENSE)
-file for more information.
+for more information.
