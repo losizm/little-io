@@ -1,6 +1,6 @@
 organization := "com.github.losizm"
 name         := "little-io"
-version      := "5.0.0-SNAPSHOT"
+version      := "5.0.0"
 description  := "The Scala library that provides extension methods to java.io and java.nio"
 homepage     := Some(url("https://github.com/losizm/little-io"))
 licenses     := List("Apache License, Version 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
