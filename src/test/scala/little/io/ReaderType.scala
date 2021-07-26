@@ -17,14 +17,13 @@ package little.io
 
 import java.io.{ StringReader, StringWriter }
 
-import Implicits._
+import Implicits.*
 
-class ReaderTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
+class ReaderTypeSpec extends org.scalatest.flatspec.AnyFlatSpec:
   "Reader" should "read all text" in {
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
-    val in = new StringReader(text)
+    val in = StringReader(text)
 
     try assert(in.getText() == text)
     finally in.close()
   }
-}

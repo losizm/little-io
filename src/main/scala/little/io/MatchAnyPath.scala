@@ -18,7 +18,7 @@ package little.io
 import java.nio.file.{ Path, PathMatcher }
 
 /** Implementation of `java.nio.file.PathMatcher` that matches any path. */
-object MatchAnyPath extends PathMatcher {
+object MatchAnyPath extends PathMatcher:
   /**
    * Tests whether path matches.
    *
@@ -27,4 +27,3 @@ object MatchAnyPath extends PathMatcher {
    * @return true
    */
   def matches(path: Path): Boolean = true
-}

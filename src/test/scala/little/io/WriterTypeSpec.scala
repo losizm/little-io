@@ -17,17 +17,15 @@ package little.io
 
 import java.io.{ StringReader, StringWriter }
 
-import Implicits._
+import Implicits.{ *, given }
 
-class WriterTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
+class WriterTypeSpec extends org.scalatest.flatspec.AnyFlatSpec:
   "Writer" should "write characters from Reader" in {
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
-    val reader = new StringReader(text)
-    val writer = new StringWriter() << reader << text << text.toCharArray
+    val reader = StringReader(text)
+    val writer = StringWriter() << reader << text << text.toCharArray
     assert(writer.toString == (text * 3))
 
     writer.writeLine(text)
     assert(writer.toString == (text * 4) + sys.props("line.separator"))
   }
-}
-

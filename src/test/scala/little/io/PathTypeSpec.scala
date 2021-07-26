@@ -18,17 +18,17 @@ package little.io
 import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, StringReader, StringWriter }
 import java.nio.ByteBuffer
 import java.nio.file.{ Files, FileVisitResult, Paths }
-import java.nio.file.StandardOpenOption._
-import java.nio.file.StandardWatchEventKinds._
+import java.nio.file.StandardOpenOption.*
+import java.nio.file.StandardWatchEventKinds.*
 
 import scala.util.Try
 
-import Implicits._
-import FileVisitEvent._
-import TestPath._
+import Implicits.*
+import FileVisitEvent.*
+import TestPath.*
 
-class PathTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
-  implicit val bufferSize = BufferSize(64)
+class PathTypeSpec extends org.scalatest.flatspec.AnyFlatSpec:
+  given BufferSize = BufferSize(64)
 
   val text = "Now Peter Piper picked peppers but Run rocks rhymes."
 
@@ -39,7 +39,7 @@ class PathTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     file.withOutputStream() { out => out.write(bytes) }
 
     file.withInputStream() { in =>
-      val out = new ByteArrayOutputStream() << in
+      val out = ByteArrayOutputStream() << in
       assert(out.toByteArray.corresponds(bytes)(_ == _))
     }
 
@@ -52,7 +52,7 @@ class PathTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     file.withWriter() { writer => writer.append(text) }
 
     file.withReader() { reader =>
-      val writer = new StringWriter() << reader
+      val writer = StringWriter() << reader
       assert(writer.toString == text)
     }
 
@@ -77,7 +77,7 @@ class PathTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     val chars = new Array[Byte](buffer.limit)
     buffer.get(chars)
 
-    assert(new String(chars, "UTF-8") == text)
+    assert(String(chars, "UTF-8") == text)
   }
 
   it should "have its content set to bytes and text" in {
@@ -91,8 +91,8 @@ class PathTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     file.setBytes("ABC".getBytes)
     file << "123"
     file << ".!?".getBytes
-    file << new ByteArrayInputStream("abc".getBytes)
-    file << new StringReader("xyz")
+    file << ByteArrayInputStream("abc".getBytes)
+    file << StringReader("xyz")
     file << "foobarbaz".toCharArray
 
     assert(file.getText() == "ABC123.!?abcxyzfoobarbaz")
@@ -140,7 +140,7 @@ class PathTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     file.withPrintWriter()(writer => writer.print(text))
 
     file.withReader() { reader =>
-      val writer = new StringWriter() << reader
+      val writer = StringWriter() << reader
       assert(writer.toString == text)
     }
 
@@ -219,7 +219,8 @@ class PathTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
       case PreVisitDirectory(path, _) =>
         preDirCount += 1
         assert(path == dir || path == subdir)
-        if (path == subdir) FileVisitResult.SKIP_SUBTREE
+        if path == subdir then
+          FileVisitResult.SKIP_SUBTREE
         else FileVisitResult.CONTINUE
 
       case VisitFile(path, _) =>
@@ -237,4 +238,3 @@ class PathTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     assert(postDirCount == 1)
     assert(fileCount == 1)
   }
-}

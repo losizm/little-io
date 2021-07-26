@@ -21,7 +21,7 @@ import scala.sys.{ props => sysProps }
 
 import Implicits.IoStringType
 
-class IoStringTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
+class IoStringTypeSpec extends org.scalatest.flatspec.AnyFlatSpec:
   it should "convert String to File" in {
     val file = sysProps("java.io.tmpdir").toFile
     assert(file.isDirectory)
@@ -39,4 +39,3 @@ class IoStringTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     assert(decoded.toUrlEncoded == encoded)
     assert(encoded.toUrlDecoded == decoded)
   }
-}

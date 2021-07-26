@@ -34,7 +34,7 @@ import scala.util.Try
  * val dir = Paths.get(".")
  *
  * // Print message when file is created
- * val handle = dir.withWatcher(ENTRY_CREATE) { evt ⇒
+ * val handle = dir.withWatcher(ENTRY_CREATE) { evt =>
  *   println(s"\${evt.context} was created.")
  * }
  *
@@ -44,49 +44,42 @@ import scala.util.Try
  * handle.close()
  * }}}
  */
-final class WatchHandle private[io] (service: WatchService, key: WatchKey, watcher: WatchEvent[_] => Unit) {
-  private implicit val wec = WatchExecutionContext
+final class WatchHandle private[io] (service: WatchService, key: WatchKey, watcher: WatchEvent[_] => Unit):
+  given ExecutionContext = WatchExecutionContext
 
   @volatile
   private var closed = false
 
   Future {
     try
-      while (!closed) {
+      while !closed do
         val taken = service.take()
 
         taken.pollEvents().forEach(watcher(_))
 
-        if (!taken.reset())
+        if !taken.reset() then
           close()
-      }
-    finally {
-      if (!closed)
+    finally
+      if !closed then
         close()
-    }
   }
 
   /** Closes underlying watcher. */
-  def close(): Unit = {
+  def close(): Unit =
     closed = true
-
     Try(key.cancel())
     Try(service.close())
-  }
 
   /** Tests whether underlying watcher is closed. */
   def isClosed: Boolean =
     closed
-}
 
-private object WatchExecutionContext extends ExecutionContext {
+private object WatchExecutionContext extends ExecutionContext:
   private val threadCount = new AtomicLong(0)
 
-  def execute(runner: Runnable): Unit = {
+  def execute(runner: Runnable): Unit =
     val thread = new Thread(runner, s"little-io-WatchHandle-${threadCount.incrementAndGet}")
     thread.setDaemon(true)
     thread.start()
-  }
 
   def reportFailure(cause: Throwable): Unit = ()
-}

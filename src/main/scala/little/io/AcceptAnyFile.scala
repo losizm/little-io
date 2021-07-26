@@ -18,7 +18,7 @@ package little.io
 import java.io.{ File, FileFilter }
 
 /** Implementation of `java.io.FileFilter` that accepts any file. */
-object AcceptAnyFile extends FileFilter {
+object AcceptAnyFile extends FileFilter:
   /**
    * Tests whether file is accepted.
    *
@@ -27,4 +27,3 @@ object AcceptAnyFile extends FileFilter {
    * @return true
    */
   def accept(file: File): Boolean = true
-}

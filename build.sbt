@@ -5,21 +5,13 @@ description  := "The Scala library that provides extension methods to java.io an
 homepage     := Some(url("https://github.com/losizm/little-io"))
 licenses     := List("Apache License, Version 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
 
-scalaVersion       := "2.13.5"
-crossScalaVersions := Seq("2.12.13")
+scalaVersion := "3.0.1"
 
-scalacOptions ++= Seq("-deprecation", "-feature", "-Xcheckinit")
+scalacOptions ++= Seq("-deprecation", "-feature", "-new-syntax", "-Xfatal-warnings", "-Yno-experimental")
 
-Compile / doc / scalacOptions ++= Seq(
-  "-doc-title",   name.value,
-  "-doc-version", version.value
-)
+Compile / doc / scalacOptions ++= Seq("-project-version", version.value)
 
-Compile / unmanagedSourceDirectories += {
-  sourceDirectory.value / s"scala-${scalaBinaryVersion.value}"
-}
-
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.5" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % "test"
 
 developers := List(
   Developer(

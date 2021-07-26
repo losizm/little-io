@@ -2,13 +2,13 @@
 
 The Scala library that provides extension methods to _java.io_ and _java.nio_.
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.losizm/little-io_2.13.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.losizm%22%20AND%20a:%22little-io_2.13%22)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.losizm/little-io_3.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.losizm%22%20AND%20a:%22little-io_3%22)
 
 ## Getting Started
-To use **little-io**, add it as a dependency to your project:
+To get started, add **little-io** as a dependency to your project:
 
 ```scala
-libraryDependencies += "com.github.losizm" %% "little-io" % "4.2.0"
+libraryDependencies += "com.github.losizm" %% "little-io" % "5.0.0"
 ```
 
 ## A Taste of little-io
@@ -65,7 +65,7 @@ val data = "Hello, world!".getBytes("utf-8")
 file.setBytes(data)
 file << "\n" << data.reverse
 
-println(new String(file.getBytes(), "utf-8"))
+println(String(file.getBytes(), "utf-8"))
 ```
 
 ### Reading and Writing File Content
@@ -114,7 +114,7 @@ filter and map the lines in a file to build a collection. Or you can fold them
 to a single value.
 
 ```scala
-import little.io.Implicits._
+import little.io.Implicits.*
 
 val file = "test.txt".toFile << "abc\n123\nxyz\n789"
 
@@ -170,12 +170,11 @@ val sourceDir = "src".toPath
 sourceDir.withVisitor {
   // Go deeper if not 'test' directory
   case PreVisitDirectory(dir, attrs) =>
-    if (dir.getFileName.toString == "test")
+    if dir.getFileName.toString == "test" then
       FileVisitResult.SKIP_SUBTREE
-    else {
+    else
       println(s"Listing files in ${dir.getFileName} directory...")
       FileVisitResult.CONTINUE
-    }
 
   // Print file name and size
   case VisitFile(file, attrs) =>
@@ -209,10 +208,10 @@ val handle = dir.withWatcher(ENTRY_CREATE) { evt =>
   println(s"${evt.context} was created.")
 }
 
-Thread.sleep(60 * 1000)
-
-// Close handle when finished
-handle.close()
+try
+  Thread.sleep(60 * 1000)
+finally
+  handle.close() // Close handle when finished
 ```
 
 ### File Compression
@@ -226,11 +225,11 @@ import little.io.BufferSize
 import little.io.Compressor.gzip
 
 // Specify buffer size for I/O operations
-implicit val bufferSize = BufferSize(1024)
+given BufferSize = BufferSize(1024)
 
 // Specify input and output files
-val in = new File("/path/to/file.txt")
-val out = new File("/path/to/file.txt.gz")
+val in  = File("/path/to/file.txt")
+val out = File("/path/to/file.txt.gz")
 
 // Gzip input to output
 gzip(in, out)
@@ -244,11 +243,11 @@ import little.io.BufferSize
 import little.io.Compressor.gunzip
 
 // Specify buffer size for I/O operations
-implicit val bufferSize = BufferSize(1024)
+given BufferSize = BufferSize(1024)
 
 // Specify input and output files
-val in = new File("/path/to/file.txt.gz")
-val out = new File("/path/to/file.txt")
+val in  = File("/path/to/file.txt.gz")
+val out = File("/path/to/file.txt")
 
 // Gunzip input to output
 gunzip(in, out)
@@ -257,17 +256,19 @@ gunzip(in, out)
 Or, to build an archive, you can `zip` a directory.
 
 ```scala
-import java.io.File
+import java.io.{ File, FileFilter }
 import little.io.Compressor.zip
 
 // Specify input directory and output file
-val in = new File("./src")
-val out = new File("/tmp/src.zip")
+val in  = File("./src")
+val out = File("/tmp/src.zip")
+
+// Set file filter
+given FileFilter = file =>
+  file.isDirectory || file.getName.endsWith(".scala")
 
 // Zip .scala files in all directories
-zip(in, out) { file =>
-  file.isDirectory || file.getName.endsWith(".scala")
-}
+zip(in, out)
 ```
 
 And extract the files to a directory using `unzip`.
@@ -278,16 +279,16 @@ import little.io.AcceptAnyFile
 import little.io.Compressor.unzip
 
 // Specify input file and output directory
-val in = new File("/tmp/src.zip")
-val out = new File("/tmp/src")
+val in  = File("/tmp/src.zip")
+val out = File("/tmp/src")
 
 // Unzip all files
-unzip(in, out)(AcceptAnyFile)
+unzip(in, out)(using AcceptAnyFile)
 ```
 
 ## API Documentation
 
-See [scaladoc](https://losizm.github.io/little-io/latest/api/little/io/index.html)
+See [scaladoc](https://losizm.github.io/little-io/latest/api/little/io.html)
 for additional details.
 
 ## License

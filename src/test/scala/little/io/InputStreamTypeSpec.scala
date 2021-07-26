@@ -17,9 +17,9 @@ package little.io
 
 import java.io.{ ByteArrayInputStream, ByteArrayOutputStream }
 
-import Implicits._
+import Implicits.*
 
-class InputStreamTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
+class InputStreamTypeSpec extends org.scalatest.flatspec.AnyFlatSpec:
   "InputStream" should "read all bytes" in {
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
     val in = new ByteArrayInputStream(text.getBytes())
@@ -27,4 +27,3 @@ class InputStreamTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     try assert(new String(in.getBytes()) == text)
     finally in.close()
   }
-}

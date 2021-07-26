@@ -19,24 +19,21 @@ import java.io.File
 import java.nio.file.{ Files, Path }
 import scala.util.Properties
 
-object TestFile {
+object TestFile:
   def getTempDir(): File =
-    new File(Properties.tmpDir)
+    File(Properties.tmpDir)
 
-  def createTempDir(dir: File = getTempDir()): File = {
+  def createTempDir(dir: File = getTempDir()): File =
     val file = Files.createTempDirectory(dir.toPath, "little-io-").toFile
     file.deleteOnExit()
     file
-  }
 
-  def createTempFile(dir: File = getTempDir(), suffix: String = ".txt"): File = {
+  def createTempFile(dir: File = getTempDir(), suffix: String = ".txt"): File =
     val file = Files.createTempFile(dir.toPath, "little-io-", suffix).toFile
     file.deleteOnExit()
     file
-  }
-}
 
-object TestPath {
+object TestPath:
   def getTempDir(): Path =
     TestFile.getTempDir().toPath
 
@@ -45,4 +42,3 @@ object TestPath {
 
   def createTempFile(dir: Path = getTempDir()): Path =
     TestFile.createTempFile(dir.toFile).toPath
-}

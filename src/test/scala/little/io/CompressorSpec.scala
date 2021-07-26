@@ -15,17 +15,18 @@
  */
 package little.io
 
+import java.io.FileFilter
 import java.util.zip.ZipFile
 
-import Compressor._
+import Compressor.*
 import Implicits.FileType
-import TestFile._
+import TestFile.*
 
-class CompressorSpec extends org.scalatest.flatspec.AnyFlatSpec {
+class CompressorSpec extends org.scalatest.flatspec.AnyFlatSpec:
   val text = "Now Peter Piper picked peppers\nbut Run rocks rhymes."
 
   "File" should "be gzipped and gunzipped" in {
-    implicit val bufferSize = BufferSize(32)
+    given BufferSize = BufferSize(32)
 
     val in = createTempFile() << text
     val gzipped = createTempFile()
@@ -39,7 +40,7 @@ class CompressorSpec extends org.scalatest.flatspec.AnyFlatSpec {
   }
 
   it should "be deflated and inflated" in {
-    implicit val bufferSize = BufferSize(32)
+    given BufferSize = BufferSize(32)
 
     val in = createTempFile() << text
     val deflated = createTempFile()
@@ -53,7 +54,7 @@ class CompressorSpec extends org.scalatest.flatspec.AnyFlatSpec {
   }
 
   it should "be zipped and unzipped" in {
-    implicit val filter = AcceptAnyFile
+    given FileFilter = AcceptAnyFile
 
     val src = createTempDir()
     val in = createTempFile(src) << text
@@ -61,7 +62,7 @@ class CompressorSpec extends org.scalatest.flatspec.AnyFlatSpec {
     val unzipped = createTempDir()
 
     zip(src, zipped)
-    val zipFile = new ZipFile(zipped)
+    val zipFile = ZipFile(zipped)
 
     try assert(zipFile.size == 1)
     finally zipFile.close()
@@ -69,4 +70,3 @@ class CompressorSpec extends org.scalatest.flatspec.AnyFlatSpec {
     unzip(zipped, unzipped)
     unzipped.forEachFile(f => assert(f.getText() == in.getText()))
   }
-}

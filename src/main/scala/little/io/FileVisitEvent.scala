@@ -20,29 +20,21 @@ import java.nio.file.Path
 import java.nio.file.attribute.BasicFileAttributes
 
 /**
- * Occurs when walking file tree.
+ * Defines file visit events.
  *
  * @see [[Implicits.PathType.withVisitor PathType.withVisitor]]
  */
-sealed trait FileVisitEvent
-
-/**
- * Contains file visit events.
- *
- * @see [[Implicits.PathType.withVisitor PathType.withVisitor]]
- */
-object FileVisitEvent {
+enum FileVisitEvent:
   /** Occurs before entries in directory are visited. */
-  case class PreVisitDirectory(directory: Path, attributes: BasicFileAttributes) extends FileVisitEvent
+  case PreVisitDirectory(directory: Path, attributes: BasicFileAttributes) extends FileVisitEvent
 
   /**
    * Occurs after entries in directory and all of their descendents are visited.
    */
-  case class PostVisitDirectory(directory: Path, exception: Option[IOException]) extends FileVisitEvent
+  case PostVisitDirectory(directory: Path, exception: Option[IOException]) extends FileVisitEvent
 
   /** Occurs when file is visited. */
-  case class VisitFile(file: Path, attributes: BasicFileAttributes) extends FileVisitEvent
+  case VisitFile(file: Path, attributes: BasicFileAttributes) extends FileVisitEvent
 
   /** Occurs when file could not be visited. */
-  case class VisitFileFailed(file: Path, exception: IOException) extends FileVisitEvent
-}
+  case VisitFileFailed(file: Path, exception: IOException) extends FileVisitEvent

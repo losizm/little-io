@@ -17,16 +17,16 @@ package little.io
 
 import java.io.{ File, FileFilter, InputStream, OutputStream }
 import java.nio.file.{ Files, FileVisitResult, Path, Paths, PathMatcher }
-import java.nio.file.StandardOpenOption._
-import java.util.zip._
+import java.nio.file.StandardOpenOption.*
+import java.util.zip.*
 
 import scala.util.Try
 
-import FileVisitEvent._
+import FileVisitEvent.*
 import Implicits.{ OutputStreamType, PathType }
 
 /** Includes compression methods. */
-object Compressor {
+object Compressor:
   /**
    * Gzips input file to output file.
    *
@@ -34,7 +34,7 @@ object Compressor {
    * @param out output file
    * @param bufferSize buffer size used in I/O operations
    */
-  def gzip(in: File, out: File)(implicit bufferSize: BufferSize): Unit =
+  def gzip(in: File, out: File)(using bufferSize: BufferSize): Unit =
     gzip(in.toPath, out.toPath)
 
   /**
@@ -44,7 +44,7 @@ object Compressor {
    * @param out output file
    * @param bufferSize buffer size used in I/O operations
    */
-  def gzip(in: Path, out: Path)(implicit bufferSize: BufferSize): Unit =
+  def gzip(in: Path, out: Path)(using bufferSize: BufferSize): Unit =
     in.withInputStream() { inStream =>
       out.withOutputStream() { outStream =>
         gzip(inStream, outStream)
@@ -54,18 +54,17 @@ object Compressor {
   /**
    * Gzips input stream to output stream.
    *
-   * <strong>Note:</strong> This method does not close input and output streams.
-   *
    * @param in input stream
    * @param out output stream
    * @param bufferSize buffer size used in I/O operations
+   *
+   * @note This method does not close input and output streams.
    */
-  def gzip(in: InputStream, out: OutputStream)(implicit bufferSize: BufferSize): Unit = {
-    val deflate = new GZIPOutputStream(out)
+  def gzip(in: InputStream, out: OutputStream)(using bufferSize: BufferSize): Unit =
+    val deflate = GZIPOutputStream(out)
     deflate << in
     deflate.finish()
     deflate.flush()
-  }
 
   /**
    * Gunzips input file to output file.
@@ -74,7 +73,7 @@ object Compressor {
    * @param out output file
    * @param bufferSize buffer size used in I/O operations
    */
-  def gunzip(in: File, out: File)(implicit bufferSize: BufferSize): Unit =
+  def gunzip(in: File, out: File)(using bufferSize: BufferSize): Unit =
     gunzip(in.toPath, out.toPath)
 
   /**
@@ -84,7 +83,7 @@ object Compressor {
    * @param out output file
    * @param bufferSize buffer size used in I/O operations
    */
-  def gunzip(in: Path, out: Path)(implicit bufferSize: BufferSize): Unit =
+  def gunzip(in: Path, out: Path)(using bufferSize: BufferSize): Unit =
     in.withInputStream() { inStream =>
       out.withOutputStream() { outStream =>
         gunzip(inStream, outStream)
@@ -94,17 +93,16 @@ object Compressor {
   /**
    * Gunzips input stream to output stream.
    *
-   * <strong>Note:</strong> This method does not close input and output streams.
-   *
    * @param in input stream
    * @param out output stream
    * @param bufferSize buffer size used in I/O operations
+   *
+   * @note This method does not close input and output streams.
    */
-  def gunzip(in: InputStream, out: OutputStream)(implicit bufferSize: BufferSize): Unit = {
-    val inflate = new GZIPInputStream(in)
+  def gunzip(in: InputStream, out: OutputStream)(using bufferSize: BufferSize): Unit =
+    val inflate = GZIPInputStream(in)
     out << inflate
     out.flush()
-  }
 
   /**
    * Deflates input file to output file.
@@ -113,7 +111,7 @@ object Compressor {
    * @param out output file
    * @param bufferSize buffer size used in I/O operations
    */
-  def deflate(in: File, out: File)(implicit bufferSize: BufferSize): Unit =
+  def deflate(in: File, out: File)(using bufferSize: BufferSize): Unit =
     deflate(in.toPath, out.toPath)
 
   /**
@@ -123,7 +121,7 @@ object Compressor {
    * @param out output file
    * @param bufferSize buffer size used in I/O operations
    */
-  def deflate(in: Path, out: Path)(implicit bufferSize: BufferSize): Unit =
+  def deflate(in: Path, out: Path)(using bufferSize: BufferSize): Unit =
     in.withInputStream() { inStream =>
       out.withOutputStream() { outStream =>
         deflate(inStream, outStream)
@@ -133,18 +131,17 @@ object Compressor {
   /**
    * Deflates input stream to output stream.
    *
-   * <strong>Note:</strong> This method does not close input and output streams.
-   *
    * @param in input stream
    * @param out output stream
    * @param bufferSize buffer size used in I/O operations
+   *
+   * @note This method does not close input and output streams.
    */
-  def deflate(in: InputStream, out: OutputStream)(implicit bufferSize: BufferSize): Unit = {
-    val deflate = new DeflaterOutputStream(out)
+  def deflate(in: InputStream, out: OutputStream)(using bufferSize: BufferSize): Unit =
+    val deflate = DeflaterOutputStream(out)
     deflate << in
     deflate.finish()
     deflate.flush()
-  }
 
   /**
    * Inflates input file to output file.
@@ -153,7 +150,7 @@ object Compressor {
    * @param out output file
    * @param bufferSize buffer size used in I/O operations
    */
-  def inflate(in: File, out: File)(implicit bufferSize: BufferSize): Unit =
+  def inflate(in: File, out: File)(using bufferSize: BufferSize): Unit =
     inflate(in.toPath, out.toPath)
 
   /**
@@ -163,7 +160,7 @@ object Compressor {
    * @param out output file
    * @param bufferSize buffer size used in I/O operations
    */
-  def inflate(in: Path, out: Path)(implicit bufferSize: BufferSize): Unit =
+  def inflate(in: Path, out: Path)(using bufferSize: BufferSize): Unit =
     in.withInputStream() { inStream =>
       out.withOutputStream() { outStream =>
         inflate(inStream, outStream)
@@ -173,17 +170,16 @@ object Compressor {
   /**
    * Inflates input stream to output stream.
    *
-   * <strong>Note:</strong> This method does not close input and output streams.
-   *
    * @param in input stream
    * @param out output stream
    * @param bufferSize buffer size used in I/O operations
+   *
+   * @note This method does not close input and output streams.
    */
-  def inflate(in: InputStream, out: OutputStream)(implicit bufferSize: BufferSize): Unit = {
-    val inflate = new InflaterInputStream(in)
+  def inflate(in: InputStream, out: OutputStream)(using bufferSize: BufferSize): Unit =
+    val inflate = InflaterInputStream(in)
     out << inflate
     out.flush()
-  }
 
   /**
    * Zips all files in input directory (recursive) to output file.
@@ -192,10 +188,8 @@ object Compressor {
    * @param out output file
    * @param filter file filter
    */
-  def zip(in: File, out: File)(implicit filter: FileFilter): Unit =
-    zip(in.toPath, out.toPath) { path =>
-      filter.accept(path.toFile)
-    }
+  def zip(in: File, out: File)(using filter: FileFilter): Unit =
+    zip(in.toPath, out.toPath)(using path => filter.accept(path.toFile))
 
   /**
    * Zips all files in input directory (recursive) to output file.
@@ -204,24 +198,23 @@ object Compressor {
    * @param out output file
    * @param matcher path matcher
    */
-  def zip(in: Path, out: Path)(implicit matcher: PathMatcher): Unit =
+  def zip(in: Path, out: Path)(using matcher: PathMatcher): Unit =
     out.withOutputStream(CREATE, TRUNCATE_EXISTING) { outStream =>
       import Implicits.bufferSize
 
-      val zipStream = new ZipOutputStream(outStream)
+      val zipStream = ZipOutputStream(outStream)
 
-      try {
+      try
         in.withVisitor {
           case PreVisitDirectory(dir, _) =>
-            matcher.matches(dir) match {
+            matcher.matches(dir) match
               case true  => FileVisitResult.CONTINUE
               case false => FileVisitResult.SKIP_SUBTREE
-            }
 
           case VisitFile(file, _) =>
-            if (matcher.matches(file))
+            if matcher.matches(file) then
               file.withInputStream() { inStream =>
-                zipStream.putNextEntry(new ZipEntry(in.relativize(file).toString))
+                zipStream.putNextEntry(ZipEntry(in.relativize(file).toString))
                 zipStream << inStream
                 zipStream.flush()
                 zipStream.closeEntry()
@@ -230,7 +223,8 @@ object Compressor {
         }
 
         zipStream.finish()
-      } finally Try(zipStream.close())
+      finally
+        Try(zipStream.close())
     }
 
   /**
@@ -240,10 +234,8 @@ object Compressor {
    * @param out output directory
    * @param filter file filter
    */
-  def unzip(in: File, out: File)(implicit filter: FileFilter): Unit =
-    unzip(in.toPath, out.toPath) { path =>
-      filter.accept(path.toFile)
-    }
+  def unzip(in: File, out: File)(using filter: FileFilter): Unit =
+    unzip(in.toPath, out.toPath)(using path => filter.accept(path.toFile))
 
   /**
    * Unzips input file to output directory.
@@ -252,20 +244,20 @@ object Compressor {
    * @param out output directory
    * @param matcher path matcher
    */
-  def unzip(in: Path, out: Path)(implicit matcher: PathMatcher): Unit = {
+  def unzip(in: Path, out: Path)(using matcher: PathMatcher): Unit =
     createDirectory(out)
 
     in.withInputStream() { inStream =>
       import Implicits.bufferSize
 
-      val zipStream = new ZipInputStream(inStream)
+      val zipStream = ZipInputStream(inStream)
       var entry: ZipEntry = null
       var path: Path = null
 
-      while ({ entry = zipStream.getNextEntry(); entry != null }) {
+      while { entry = zipStream.getNextEntry(); entry != null } do
         path = Paths.get(entry.getName)
 
-        if (!entry.isDirectory && matcher.matches(path)) {
+        if !entry.isDirectory && matcher.matches(path) then
           path = out.resolve(path)
           createDirectories(path.getParent)
 
@@ -273,18 +265,14 @@ object Compressor {
             outStream << zipStream
             outStream.flush()
           }
-        }
 
         zipStream.closeEntry()
-      }
     }
-  }
 
   private def createDirectory(path: Path): Unit =
-    if (!Files.isDirectory(path))
+    if !Files.isDirectory(path) then
       Files.createDirectory(path)
 
   private def createDirectories(path: Path): Unit =
-    if (!Files.isDirectory(path))
+    if !Files.isDirectory(path) then
       Files.createDirectories(path)
-}

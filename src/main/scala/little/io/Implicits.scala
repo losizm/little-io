@@ -15,11 +15,11 @@
  */
 package little.io
 
-import java.io._
+import java.io.*
 import java.net.{ URLDecoder, URLEncoder }
 import java.nio.channels.FileChannel
-import java.nio.file._
-import java.nio.file.StandardOpenOption._
+import java.nio.file.*
+import java.nio.file.StandardOpenOption.*
 import java.nio.file.attribute.BasicFileAttributes
 import java.util.Base64
 
@@ -27,19 +27,19 @@ import scala.collection.mutable.ListBuffer
 import scala.util.Try
 import scala.util.control.NonFatal
 
-import FileVisitEvent._
+import FileVisitEvent.*
 
 /** Provides extension methods to `java.io` and `java.nio`. */
-object Implicits {
+object Implicits:
   private val EOL = sys.props("line.separator")
   private val Base64Encoder = Base64.getEncoder()
   private val Base64Decoder = Base64.getDecoder()
 
   /** Default buffer size for I/O operations &mdash; i.e., BufferSize(8192). */
-  implicit val bufferSize = BufferSize(8192)
+  given bufferSize: BufferSize = BufferSize(8192)
 
   /** Provides extension methods to `Array[Byte]`. */
-  implicit class IoByteArrayType(private val bytes: Array[Byte]) extends AnyVal {
+  implicit class IoByteArrayType(bytes: Array[Byte]) extends AnyVal:
     /**
      * Converts bytes to base64 encoded array.
      *
@@ -55,12 +55,11 @@ object Implicits {
      */
     def toBase64Decoded: Array[Byte] =
       Base64Decoder.decode(bytes)
-  }
 
   /** Provides extension methods to `String`. */
-  implicit class IoStringType(private val s: String) extends AnyVal {
+  implicit class IoStringType(s: String) extends AnyVal:
     /** Converts string to File. */
-    def toFile: File = new File(s)
+    def toFile: File = File(s)
 
     /** Converts string to Path. */
     def toPath: Path = Paths.get(s)
@@ -96,21 +95,20 @@ object Implicits {
      */
     def toUrlDecoded(charset: String): String =
       URLDecoder.decode(s, charset)
-  }
 
   /**
    * Provides extension methods to `java.io.File`.
    *
    * @see [[PathType]]
    */
-  implicit class FileType(private val file: File) extends AnyVal {
+  implicit class FileType(file: File) extends AnyVal:
     /**
      * Creates new file appending child path.
      *
      * @return file
      */
     def /(child: String): File =
-      new File(file, child)
+      File(file, child)
 
     /**
      * Appends supplied bytes to file.
@@ -150,7 +148,7 @@ object Implicits {
      *
      * @return file
      */
-    def <<(in: InputStream)(implicit bufferSize: BufferSize): File =
+    def <<(in: InputStream)(using bufferSize: BufferSize): File =
       withOutputStream(true) { out =>
         out << in
         file
@@ -161,7 +159,7 @@ object Implicits {
      *
      * @return file
      */
-    def <<(in: Reader)(implicit bufferSize: BufferSize): File =
+    def <<(in: Reader)(using bufferSize: BufferSize): File =
       withWriter(true) { out =>
         out << in
         file
@@ -242,10 +240,9 @@ object Implicits {
      * listing is not available
      */
     def forEachFile(f: File => Unit): Unit =
-      file.listFiles match {
-        case null  => throw new FileNotFoundException(s"$file (No directory listing)")
+      file.listFiles match
+        case null  => throw FileNotFoundException(s"$file (No directory listing)")
         case files => files.foreach(f)
-      }
 
     /**
      * Maps each file in directory using supplied function.
@@ -256,10 +253,9 @@ object Implicits {
      * listing is not available
      */
     def mapFiles[T](f: File => T): Seq[T] =
-      file.listFiles match {
-        case null  => throw new FileNotFoundException(s"$file (No directory listing)")
+      file.listFiles match
+        case null  => throw FileNotFoundException(s"$file (No directory listing)")
         case files => files.toSeq.map(f)
-      }
 
     /**
      * Builds collection using elements mapped from files in directory.
@@ -270,10 +266,9 @@ object Implicits {
      * listing is not available
      */
     def flatMapFiles[T](f: File => Iterable[T]): Seq[T] =
-      file.listFiles match {
-        case null  => throw new FileNotFoundException(s"$file (No directory listing)")
+      file.listFiles match
+        case null  => throw FileNotFoundException(s"$file (No directory listing)")
         case files => files.toSeq.flatMap(f)
-      }
 
     /**
      * Folds files in directory to single value using given initial value and
@@ -288,10 +283,9 @@ object Implicits {
      * listing is not available
      */
     def foldFiles[T](init: T)(op: (T, File) => T): T =
-      file.listFiles match {
-        case null  => throw new FileNotFoundException(s"$file (No directory listing)")
+      file.listFiles match
+        case null  => throw FileNotFoundException(s"$file (No directory listing)")
         case files => files.foldLeft(init)(op)
-      }
 
     /**
      * Opens InputStream to file and passes it to supplied function. Input
@@ -301,11 +295,10 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withInputStream[T](f: InputStream => T): T = {
-      val in = new FileInputStream(file)
+    def withInputStream[T](f: InputStream => T): T =
+      val in = FileInputStream(file)
       try f(in)
       finally Try(in.close())
-    }
 
     /**
      * Opens OutputStream to file and passes it to supplied function. Output
@@ -329,11 +322,10 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withOutputStream[T](append: Boolean)(f: OutputStream => T): T = {
-      val out = new FileOutputStream(file, append)
+    def withOutputStream[T](append: Boolean)(f: OutputStream => T): T =
+      val out = FileOutputStream(file, append)
       try f(out)
       finally Try(out.close())
-    }
 
     /**
      * Opens BufferedReader to file and passes it to supplied function. Reader
@@ -343,11 +335,10 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withReader[T](f: BufferedReader => T): T = {
-      val reader = new BufferedReader(new FileReader(file))
+    def withReader[T](f: BufferedReader => T): T =
+      val reader = BufferedReader(FileReader(file))
       try f(reader)
       finally Try(reader.close())
-    }
 
     /**
      * Opens BufferedWriter to file and passes it to supplied function. Writer
@@ -371,11 +362,10 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withWriter[T](append: Boolean)(f: BufferedWriter => T): T = {
-      val writer = new BufferedWriter(new FileWriter(file, append))
+    def withWriter[T](append: Boolean)(f: BufferedWriter => T): T =
+      val writer = BufferedWriter(FileWriter(file, append))
       try f(writer)
       finally Try(writer.close())
-    }
 
     /**
      * Opens PrintWriter to file and passes it to supplied function. Writer
@@ -399,11 +389,10 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withPrintWriter[T](append: Boolean)(f: PrintWriter => T): T = {
-      val writer = new PrintWriter(new FileWriter(file, append))
+    def withPrintWriter[T](append: Boolean)(f: PrintWriter => T): T =
+      val writer = PrintWriter(FileWriter(file, append))
       try f(writer)
       finally Try(writer.close())
-    }
 
     /**
      * Opens RandomAccessFile with specified access mode and passes it to
@@ -414,19 +403,17 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withRandomAccess[T](mode: String)(f: RandomAccessFile => T): T = {
-      val raf = new RandomAccessFile(file, mode)
+    def withRandomAccess[T](mode: String)(f: RandomAccessFile => T): T =
+      val raf = RandomAccessFile(file, mode)
       try f(raf)
       finally Try(raf.close())
-    }
-  }
 
   /**
    * Provides extension methods to `java.nio.file.Path`.
    *
    * @see [[FileType]]
    */
-  implicit class PathType(private val path: Path) extends AnyVal {
+  implicit class PathType(path: Path) extends AnyVal:
     /**
      * Creates new file appending child path.
      *
@@ -473,7 +460,7 @@ object Implicits {
      *
      * @return path
      */
-    def <<(in: InputStream)(implicit bufferSize: BufferSize): Path =
+    def <<(in: InputStream)(using bufferSize: BufferSize): Path =
       withOutputStream(CREATE, APPEND) { out =>
         out << in
         path
@@ -484,7 +471,7 @@ object Implicits {
      *
      * @return path
      */
-    def <<(in: Reader)(implicit bufferSize: BufferSize): Path =
+    def <<(in: Reader)(using bufferSize: BufferSize): Path =
       withWriter(CREATE, APPEND) { out =>
         out << in
         path
@@ -500,7 +487,7 @@ object Implicits {
 
     /** Reads file at path and returns its text. */
     def getText(): String =
-      new String(getBytes())
+      String(getBytes())
 
     /** Sets file content to supplied text. */
     def setText(text: String): Unit =
@@ -564,13 +551,12 @@ object Implicits {
      *
      * @throws java.io.IOException if path is not to a directory
      */
-    def forEachFile(f: Path => Unit): Unit = {
-      var stream: DirectoryStream[Path] = null
-      try {
-        stream = Files.newDirectoryStream(path)
+    def forEachFile(f: Path => Unit): Unit =
+      val stream = Files.newDirectoryStream(path)
+      try
         stream.forEach(f(_))
-      } finally Try(stream.close())
-    }
+      finally
+        Try(stream.close())
 
     /**
      * Invokes supplied function for each file in directory satisfying glob.
@@ -580,13 +566,12 @@ object Implicits {
      *
      * @throws java.io.IOException if path is not to a directory
      */
-    def forFiles(glob: String)(f: Path => Unit): Unit = {
-      var stream: DirectoryStream[Path] = null
-      try {
-        stream = Files.newDirectoryStream(path, glob)
+    def forFiles(glob: String)(f: Path => Unit): Unit =
+      val stream = Files.newDirectoryStream(path, glob)
+      try
         stream.forEach(f(_))
-      } finally Try(stream.close())
-    }
+      finally
+        Try(stream.close())
 
     /**
      * Maps each file in directory using supplied function.
@@ -624,13 +609,12 @@ object Implicits {
      *
      * @throws java.io.IOException if path is not to a directory
      */
-    def foldFiles[T](init: T)(op: (T, Path) => T): T = {
+    def foldFiles[T](init: T)(op: (T, Path) => T): T =
       var result = init
       forEachFile { x =>
         result = op(result, x)
       }
       result
-    }
 
     /**
      * Walks file tree starting at path and invokes supplied visitor function
@@ -647,15 +631,14 @@ object Implicits {
      * val sourceDir = Paths.get("src")
      *
      * sourceDir.withVisitor {
-     *   case PreVisitDirectory(dir, attrs) ⇒
-     *     if (dir.getFileName.toString == "test")
+     *   case PreVisitDirectory(dir, attrs) =>
+     *     if dir.getFileName.toString == "test" then
      *       FileVisitResult.SKIP_SUBTREE
-     *     else {
+     *     else
      *       println(s"Listing files in \${dir.getFileName} directory...")
      *       FileVisitResult.CONTINUE
-     *     }
      *
-     *   case VisitFile(file, attrs) ⇒
+     *   case VisitFile(file, attrs) =>
      *     println(s"\${file.getFileName} is \${attrs.size} bytes.")
      *     FileVisitResult.CONTINUE
      * }
@@ -666,7 +649,7 @@ object Implicits {
      * @see [[FileVisitEvent.PreVisitDirectory PreVisitEvent]], [[FileVisitEvent.PostVisitDirectory PostVisitDirectory]]
      *      [[FileVisitEvent.VisitFile VisitFile]], [[FileVisitEvent.VisitFileFailed VisitFileFailed]]
      */
-    def withVisitor(visitor: PartialFunction[FileVisitEvent, FileVisitResult]): Unit =  {
+    def withVisitor(visitor: PartialFunction[FileVisitEvent, FileVisitResult]): Unit =
       Files.walkFileTree(path, new FileVisitor[Path] {
         def preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult =
           visitor.applyOrElse(PreVisitDirectory(dir, attrs),
@@ -684,7 +667,6 @@ object Implicits {
           visitor.applyOrElse(VisitFileFailed(file, ex),
               (evt: FileVisitEvent) => FileVisitResult.CONTINUE)
       })
-    }
 
     /**
      * Watchs file at path for specified events.
@@ -694,17 +676,14 @@ object Implicits {
      *
      * @return watch handle
      */
-    def withWatcher(events: WatchEvent.Kind[_]*)(watcher: WatchEvent[_] => Unit): WatchHandle = {
+    def withWatcher(events: WatchEvent.Kind[_]*)(watcher: WatchEvent[_] => Unit): WatchHandle =
       val service = path.getFileSystem.newWatchService()
 
       try
-        new WatchHandle(service, path.register(service, events : _*), watcher)
-      catch {
-        case NonFatal(e) =>
-          service.close()
-          throw e
-      }
-    }
+        WatchHandle(service, path.register(service, events*), watcher)
+      catch case NonFatal(e) =>
+        service.close()
+        throw e
 
     /**
      * Opens InputStream to file at path and passes it to supplied function.
@@ -715,11 +694,10 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withInputStream[T](options: OpenOption*)(f: InputStream => T): T = {
-      val in = Files.newInputStream(path, options : _*)
+    def withInputStream[T](options: OpenOption*)(f: InputStream => T): T =
+      val in = Files.newInputStream(path, options*)
       try f(in)
       finally Try(in.close())
-    }
 
     /**
      * Opens OutputStream to file at path and passes it to supplied function.
@@ -730,11 +708,10 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withOutputStream[T](options: OpenOption*)(f: OutputStream => T): T = {
-      val out = Files.newOutputStream(path, options : _*)
+    def withOutputStream[T](options: OpenOption*)(f: OutputStream => T): T =
+      val out = Files.newOutputStream(path, options*)
       try f(out)
       finally Try(out.close())
-    }
 
     /**
      * Opens BufferedReader to file at path and passes it to supplied function.
@@ -746,8 +723,8 @@ object Implicits {
      * @return value from supplied function
      */
     def withReader[T](options: OpenOption*)(f: BufferedReader => T): T =
-      withInputStream(options : _*) { in =>
-        val reader = new BufferedReader(new InputStreamReader(in))
+      withInputStream(options*) { in =>
+        val reader = BufferedReader(InputStreamReader(in))
         try f(reader)
         finally Try(reader.close())
       }
@@ -761,11 +738,10 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withWriter[T](options: OpenOption*)(f: BufferedWriter => T): T = {
-      val writer = Files.newBufferedWriter(path, options : _*)
+    def withWriter[T](options: OpenOption*)(f: BufferedWriter => T): T =
+      val writer = Files.newBufferedWriter(path, options*)
       try f(writer)
       finally Try(writer.close())
-    }
 
     /**
      * Opens PrintWriter to file at path and passes it to supplied function.
@@ -777,8 +753,8 @@ object Implicits {
      * @return value from supplied function
      */
     def withPrintWriter[T](options: OpenOption*)(f: PrintWriter => T): T =
-      withOutputStream(options : _*) { out =>
-        val writer = new PrintWriter(out)
+      withOutputStream(options*) { out =>
+        val writer = PrintWriter(out)
         try f(writer)
         finally Try(writer.close())
       }
@@ -792,46 +768,41 @@ object Implicits {
      *
      * @return value from supplied function
      */
-    def withChannel[T](options: OpenOption*)(f: FileChannel => T): T = {
-      val channel = FileChannel.open(path, options : _*)
+    def withChannel[T](options: OpenOption*)(f: FileChannel => T): T =
+      val channel = FileChannel.open(path, options*)
       try f(channel)
       finally Try(channel.close())
-    }
-  }
 
   /**
    * Provides extension methods to `java.io.InputStream`.
    *
    * @see [[OutputStreamType]]
    */
-  implicit class InputStreamType[T <: InputStream](private val in: T) extends AnyVal {
+  implicit class InputStreamType[T <: InputStream](in: T) extends AnyVal:
     /** Gets remaining bytes. */
-    def getBytes(): Array[Byte] = {
-      val out = new ByteArrayOutputStream
+    def getBytes(): Array[Byte] =
+      val out = ByteArrayOutputStream()
       val buf = new Array[Byte](bufferSize.value)
       var len = 0
 
-      while ({ len = in.read(buf); len != -1 })
+      while { len = in.read(buf); len != -1 } do
         out.write(buf, 0, len)
       out.toByteArray
-    }
-  }
 
   /**
    * Provides extension methods to `java.io.OutputStream`.
    *
    * @see [[InputStreamType]]
    */
-  implicit class OutputStreamType[T <: OutputStream](private val out: T) extends AnyVal {
+  implicit class OutputStreamType[T <: OutputStream](out: T) extends AnyVal:
     /**
      * Appends supplied bytes to output stream.
      *
      * @return out
      */
-    def <<(bytes: Array[Byte]): T = {
+    def <<(bytes: Array[Byte]): T =
       out.write(bytes)
       out
-    }
 
     /**
      * Appends contents of supplied input stream.
@@ -840,32 +811,29 @@ object Implicits {
      *
      * @return out
      */
-    def <<(in: InputStream)(implicit bufferSize: BufferSize): T = {
+    def <<(in: InputStream)(using bufferSize: BufferSize): T =
       val buf = new Array[Byte](bufferSize.value)
       var len = 0
 
-      while ({ len = in.read(buf); len != -1 })
+      while { len = in.read(buf); len != -1 } do
         out.write(buf, 0, len)
       out
-    }
-  }
 
   /**
    * Provides extension methods to `java.io.Reader`.
    *
    * @see [[WriterType]]
    */
-  implicit class ReaderType[T <: Reader](private val reader: T) extends AnyVal {
+  implicit class ReaderType[T <: Reader](reader: T) extends AnyVal:
     /** Gets remaining text. */
-    def getText(): String = {
-      val writer = new StringWriter
+    def getText(): String =
+      val writer = StringWriter()
       val buffer = new Array[Char](bufferSize.value)
       var length = 0
 
-      while ({ length = reader.read(buffer); length != -1 })
+      while { length = reader.read(buffer); length != -1 } do
         writer.write(buffer, 0, length)
       writer.toString
-    }
 
     /** Gets lines in file. */
     def getLines(): Seq[String] =
@@ -878,56 +846,51 @@ object Implicits {
      *
      * @param f function
      */
-    def forEachLine(f: String => Unit): Unit = {
-      val in = reader match {
+    def forEachLine(f: String => Unit): Unit =
+      val in = reader match
         case in: BufferedReader => in
-        case _ => new BufferedReader(reader)
-      }
+        case _                  => BufferedReader(reader)
 
       var line: String = null
-      while ({ line = in.readLine(); line != null })
+      while { line = in.readLine(); line != null } do
         f(line)
-    }
 
     /**
      * Filters lines reader reader using supplied predicate.
      *
      * @param p predicate
      */
-    def filterLines(p: String => Boolean): Seq[String] = {
-      var values = new ListBuffer[String]
+    def filterLines(p: String => Boolean): Seq[String] =
+      var values = ListBuffer[String]()
       forEachLine { x =>
-        if (p(x))
+        if p(x) then
           values += x
       }
       values.toSeq
-    }
 
     /**
      * Maps each line reader reader using supplied function.
      *
      * @param f function
      */
-    def mapLines[T](f: String => T): Seq[T] = {
-      var values = new ListBuffer[T]
+    def mapLines[T](f: String => T): Seq[T] =
+      var values = ListBuffer[T]()
       forEachLine { x =>
         values += f(x)
       }
       values.toSeq
-    }
 
     /**
      * Builds collection using elements mapped from lines reader reader.
      *
      * @param f function
      */
-    def flatMapLines[T](f: String => Iterable[T]): Seq[T] = {
-      var values = new ListBuffer[T]
+    def flatMapLines[T](f: String => Iterable[T]): Seq[T] =
+      var values = ListBuffer[T]()
       forEachLine { x =>
         f(x).foreach(values.+=)
       }
       values.toSeq
-    }
 
     /**
      * Folds lines from reader to single value using given initial value and
@@ -938,40 +901,36 @@ object Implicits {
      *
      * @return `init` if end of stream; otherwise, last value returned from `op`
      */
-    def foldLines[T](init: T)(op: (T, String) => T): T = {
+    def foldLines[T](init: T)(op: (T, String) => T): T =
       var result = init
       forEachLine { x =>
         result = op(result, x)
       }
       result
-    }
-  }
 
   /**
    * Provides extension methods to `java.io.Writer`.
    *
    * @see [[ReaderType]]
    */
-  implicit class WriterType[T <: Writer](private val writer: T) extends AnyVal {
+  implicit class WriterType[T <: Writer](writer: T) extends AnyVal:
     /**
      * Appends supplied characters to writer.
      *
      * @return writer
      */
-    def <<(chars: Array[Char]): T = {
+    def <<(chars: Array[Char]): T =
       writer.write(chars)
       writer
-    }
 
     /**
      * Appends supplied characters to writer.
      *
      * @return writer
      */
-    def <<(chars: CharSequence): T = {
+    def <<(chars: CharSequence): T =
       writer.append(chars)
       writer
-    }
 
     /**
      * Appends contents of supplied reader.
@@ -980,17 +939,14 @@ object Implicits {
      *
      * @return writer
      */
-    def <<(in: Reader)(implicit bufferSize: BufferSize): T = {
+    def <<(in: Reader)(using bufferSize: BufferSize): T =
       val buffer = new Array[Char](bufferSize.value)
       var length = 0
 
-      while ({ length = in.read(buffer); length != -1 })
+      while { length = in.read(buffer); length != -1 } do
         writer.write(buffer, 0, length)
       writer
-    }
 
     /** Writes text followed by default line separator. */
     def writeLine(text: String): Unit =
       writer.append(text).append(EOL)
-  }
-}

@@ -17,13 +17,12 @@ package little.io
 
 import java.io.{ ByteArrayInputStream, ByteArrayOutputStream }
 
-import Implicits._
+import Implicits.{ *, given }
 
-class OutputStreamTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
+class OutputStreamTypeSpec extends org.scalatest.flatspec.AnyFlatSpec:
   "OutputStream" should "write bytes from InputStream" in {
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
-    val in = new ByteArrayInputStream(text.getBytes)
-    val out = new ByteArrayOutputStream() << in << text.getBytes
+    val in = ByteArrayInputStream(text.getBytes)
+    val out = ByteArrayOutputStream() << in << text.getBytes
     assert(out.toString == (text * 2))
   }
-}

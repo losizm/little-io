@@ -17,11 +17,11 @@ package little.io
 
 import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, File, StringReader, StringWriter }
 
-import Implicits._
-import TestFile._
+import Implicits.*
+import TestFile.*
 
-class FileTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
-  implicit val bufferSize = BufferSize(64)
+class FileTypeSpec extends org.scalatest.flatspec.AnyFlatSpec:
+  given BufferSize = BufferSize(64)
 
   val text = "Now Peter Piper picked peppers\nbut Run rocks rhymes."
 
@@ -32,7 +32,7 @@ class FileTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     file.withOutputStream(out => out.write(bytes))
 
     file.withInputStream { in =>
-      val out = new ByteArrayOutputStream() << in
+      val out = ByteArrayOutputStream() << in
       assert(out.toByteArray.corresponds(bytes)(_ == _))
     }
 
@@ -45,7 +45,7 @@ class FileTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     file.withWriter(writer => writer.append(text))
 
     file.withReader { reader =>
-      val writer = new StringWriter() << reader
+      val writer = StringWriter() << reader
       assert(writer.toString == text)
     }
 
@@ -65,7 +65,7 @@ class FileTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     val chars = new Array[Byte](bytes.length)
     file.withRandomAccess("r") { f => f.read(chars) }
 
-    assert(new String(chars, "utf-8") == text)
+    assert(String(chars, "utf-8") == text)
   }
 
   it should "have its content set to bytes and text" in {
@@ -79,8 +79,8 @@ class FileTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     file.setBytes("ABC".getBytes)
     file << "123"
     file << ".!?".getBytes
-    file << new ByteArrayInputStream("abc".getBytes)
-    file << new StringReader("xyz")
+    file << ByteArrayInputStream("abc".getBytes)
+    file << StringReader("xyz")
     file << "foobarbaz".toCharArray
 
     assert(file.getText() == "ABC123.!?abcxyzfoobarbaz")
@@ -112,14 +112,14 @@ class FileTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
   }
 
   it should "be created with a child path" in {
-    val f = new File("/a/b/c")
+    val f = File("/a/b/c")
 
-    assert { f / "x" / "y" / "z" == new File("/a/b/c/x/y/z") }
+    assert { f / "x" / "y" / "z" == File("/a/b/c/x/y/z") }
 
-    assert { (f / "/x" / "/y" / "/z").getCanonicalFile == new File("/a/b/c/x/y/z") }
-    assert { (f / "../x" / "/y" / "/z").getCanonicalFile == new File("/a/b/x/y/z") }
-    assert { (f / "../x" / "../y" / "/z").getCanonicalFile == new File("/a/b/y/z") }
-    assert { (f / "../x" / "../y" / "../z").getCanonicalFile == new File("/a/b/z") }
+    assert { (f / "/x" / "/y" / "/z").getCanonicalFile == File("/a/b/c/x/y/z") }
+    assert { (f / "../x" / "/y" / "/z").getCanonicalFile == File("/a/b/x/y/z") }
+    assert { (f / "../x" / "../y" / "/z").getCanonicalFile == File("/a/b/y/z") }
+    assert { (f / "../x" / "../y" / "../z").getCanonicalFile == File("/a/b/z") }
   }
 
   "PrintWriter" should "be created from file" in {
@@ -128,7 +128,7 @@ class FileTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
     file.withPrintWriter(writer => writer.print(text))
 
     file.withReader { reader =>
-      val writer = new StringWriter() << reader
+      val writer = StringWriter() << reader
       assert(writer.toString == text)
     }
 
@@ -138,4 +138,3 @@ class FileTypeSpec extends org.scalatest.flatspec.AnyFlatSpec {
       assert(text.split("\n").contains(line))
     }
   }
-}
