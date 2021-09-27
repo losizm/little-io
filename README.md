@@ -1,15 +1,18 @@
 # little-io
 
-The Scala library that provides extension methods to _java.io_ and _java.nio_.
-
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.losizm/little-io_3.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.losizm%22%20AND%20a:%22little-io_3%22)
+
+The Scala library that provides extension methods to _java.io_ and _java.nio_.
 
 ## Getting Started
 To get started, add **little-io** as a dependency to your project:
 
 ```scala
-libraryDependencies += "com.github.losizm" %% "little-io" % "5.0.0"
+libraryDependencies += "com.github.losizm" %% "little-io" % "5.0.1"
 ```
+
+_**NOTE:** Starting with 5.0, **little-json** is written for Scala 3. See
+previous releases for compatibility with Scala 2.12 and Scala 2.13._
 
 ## A Taste of little-io
 
