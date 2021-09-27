@@ -45,7 +45,7 @@ import scala.util.Try
  * }}}
  */
 final class WatchHandle private[io] (service: WatchService, key: WatchKey, watcher: WatchEvent[_] => Unit):
-  given ExecutionContext = WatchExecutionContext
+  private given ExecutionContext = WatchExecutionContext
 
   @volatile
   private var closed = false
@@ -75,10 +75,10 @@ final class WatchHandle private[io] (service: WatchService, key: WatchKey, watch
     closed
 
 private object WatchExecutionContext extends ExecutionContext:
-  private val threadCount = new AtomicLong(0)
+  private val threadCount = AtomicLong(0)
 
   def execute(runner: Runnable): Unit =
-    val thread = new Thread(runner, s"little-io-WatchHandle-${threadCount.incrementAndGet}")
+    val thread = Thread(runner, s"little-io-WatchHandle-${threadCount.incrementAndGet}")
     thread.setDaemon(true)
     thread.start()
 
