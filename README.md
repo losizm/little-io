@@ -11,7 +11,7 @@ To get started, add **little-io** as a dependency to your project:
 libraryDependencies += "com.github.losizm" %% "little-io" % "5.0.1"
 ```
 
-_**NOTE:** Starting with 5.0, **little-json** is written for Scala 3. See
+_**NOTE:** Starting with 5.0, **little-io** is written for Scala 3. See
 previous releases for compatibility with Scala 2.12 and Scala 2.13._
 
 ## A Taste of little-io
