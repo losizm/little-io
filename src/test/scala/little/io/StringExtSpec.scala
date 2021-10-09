@@ -17,11 +17,9 @@ package little.io
 
 import java.nio.file.Files
 
-import scala.sys.{ props => sysProps }
+import scala.sys.props as sysProps
 
-import Implicits.IoStringType
-
-class IoStringTypeSpec extends org.scalatest.flatspec.AnyFlatSpec:
+class StringExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
   it should "convert String to File" in {
     val file = sysProps("java.io.tmpdir").toFile
     assert(file.isDirectory)

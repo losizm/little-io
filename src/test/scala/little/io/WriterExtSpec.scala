@@ -15,14 +15,15 @@
  */
 package little.io
 
-import java.io.{ ByteArrayInputStream, ByteArrayOutputStream }
+import java.io.{ StringReader, StringWriter }
 
-import Implicits.{ *, given }
-
-class OutputStreamTypeSpec extends org.scalatest.flatspec.AnyFlatSpec:
-  "OutputStream" should "write bytes from InputStream" in {
+class WriterExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
+  "Writer" should "write characters from Reader" in {
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
-    val in = ByteArrayInputStream(text.getBytes)
-    val out = ByteArrayOutputStream() << in << text.getBytes
-    assert(out.toString == (text * 2))
+    val reader = StringReader(text)
+    val writer = StringWriter() << reader << text << text.toCharArray
+    assert(writer.toString == (text * 3))
+
+    writer.writeLine(text)
+    assert(writer.toString == (text * 4) + sys.props("line.separator"))
   }

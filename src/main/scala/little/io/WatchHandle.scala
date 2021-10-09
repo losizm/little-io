@@ -24,12 +24,12 @@ import scala.util.Try
 /**
  * Provides opaque handle to watcher.
  *
- * A handle is obtained via [[Implicits.PathType.withWatcher PathType.withWatcher]].
+ * A handle is obtained via [[PathExt.withWatcher PathExt.withWatcher()]].
  *
  * {{{
  * import java.nio.file.Paths
  * import java.nio.file.StandardWatchEventKinds.ENTRY_CREATE
- * import little.io.Implicits.PathType
+ * import little.io.PathExt
  *
  * val dir = Paths.get(".")
  *

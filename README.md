@@ -23,8 +23,7 @@ Here's a taste of what **little-io** offers.
 If you have a `File`, you can easily get and set its content.
 
 ```scala
-// Add methods to java.io.File and String
-import little.io.Implicits.{ FileType, IoStringType }
+import little.io.{ FileExt, StringExt }
 
 val file = "greeting.txt".toFile
 
@@ -38,7 +37,7 @@ println(file.getText()) // Hello, world!
 And here's another way of going at it.
 
 ```scala
-import little.io.Implicits.{ FileType, IoStringType }
+import little.io.{ FileExt, StringExt }
 
 // Append text to file and return reference to file
 val file = "greeting.txt".toFile << "Hello, world!"
@@ -49,8 +48,7 @@ println(file.getText())
 The same applies to `java.nio.file.Path`.
 
 ```scala
-// Add methods to String and java.nio.file.Path
-import little.io.Implicits.{ IoStringType, PathType }
+import little.io.{ PathExt, StringExt }
 
 val path = "greeting.txt".toPath << "Hello, world!"
 println(path.getText())
@@ -60,7 +58,7 @@ And, if you prefer working with bytes, there are extension methods for those
 too.
 
 ```scala
-import little.io.Implicits.{ FileType, IoStringType }
+import little.io.{ FileExt, StringExt }
 
 val file = "greeting.txt".toFile
 val data = "Hello, world!".getBytes("utf-8")
@@ -78,7 +76,7 @@ write its content, and you can open an `InputStream` or `Reader` to read its
 content, all with automatic resource management.
 
 ```scala
-import little.io.Implicits.{ FileType, IoStringType, WriterType }
+import little.io.{ FileExt, StringExt, WriterExt }
 
 val file = "numbers.txt".toFile
 
@@ -86,10 +84,10 @@ val file = "numbers.txt".toFile
 file.withWriter { out =>
   out write "One\n"
 
-  // WriterType adds writeLine to Writer
+  // WriterExt adds writeLine to Writer
   out writeLine "Two"
 
-  // WriterType adds << to Writer
+  // WriterExt adds << to Writer
   out << "Three\n"
 }
 
@@ -104,7 +102,7 @@ file.withReader { in =>
 Or, if you'll be reading file content line by line, there's an even simpler way.
 
 ```scala
-import little.io.Implicits.{ FileType, IoStringType }
+import little.io.{ FileExt, StringExt }
 
 // Open file, print each line, and close file
 "numbers.txt".toFile.forEachLine(println)
@@ -117,7 +115,7 @@ filter and map the lines in a file to build a collection. Or you can fold them
 to a single value.
 
 ```scala
-import little.io.Implicits.*
+import little.io.*
 
 val file = "test.txt".toFile << "abc\n123\nxyz\n789"
 
@@ -140,7 +138,7 @@ If you have a `File` or `Path` to a directory, you can map the files in the
 directory. Or you can fold them to generate a single value.
 
 ```scala
-import little.io.Implicits.{ FileType, IoStringType }
+import little.io.{ FileExt, StringExt }
 
 val home = sys.props("user.home").toFile
 
@@ -163,9 +161,8 @@ events of interest.
 
 ```scala
 import java.nio.file.FileVisitResult
-// Import file events for walking file tree
-import little.io.FileVisitEvent.{ PreVisitDirectory, VisitFile }
-import little.io.Implicits.{ IoStringType, PathType }
+import little.io.{ FileVisitEvent, StringExt, PathExt }
+import FileVisitEvent.{ PreVisitDirectory, VisitFile }
 
 val sourceDir = "src".toPath
 
@@ -202,7 +199,7 @@ With **little-io**, it's straight to the point.
 
 ```scala
 import java.nio.file.StandardWatchEventKinds.ENTRY_CREATE
-import little.io.Implicits.{ IoStringType, PathType }
+import little.io.{ PathExt, StringExt }
 
 val dir = "/tmp".toPath
 

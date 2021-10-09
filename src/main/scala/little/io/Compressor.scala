@@ -23,7 +23,6 @@ import java.util.zip.*
 import scala.util.Try
 
 import FileVisitEvent.*
-import Implicits.{ OutputStreamType, PathType }
 
 /** Includes compression methods. */
 object Compressor:
@@ -200,8 +199,6 @@ object Compressor:
    */
   def zip(in: Path, out: Path)(using matcher: PathMatcher): Unit =
     out.withOutputStream(CREATE, TRUNCATE_EXISTING) { outStream =>
-      import Implicits.bufferSize
-
       val zipStream = ZipOutputStream(outStream)
 
       try
@@ -248,8 +245,6 @@ object Compressor:
     createDirectory(out)
 
     in.withInputStream() { inStream =>
-      import Implicits.bufferSize
-
       val zipStream = ZipInputStream(inStream)
       var entry: ZipEntry = null
       var path: Path = null

@@ -19,7 +19,6 @@ import java.io.FileFilter
 import java.util.zip.ZipFile
 
 import Compressor.*
-import Implicits.FileType
 import TestFile.*
 
 class CompressorSpec extends org.scalatest.flatspec.AnyFlatSpec:

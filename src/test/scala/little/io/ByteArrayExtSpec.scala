@@ -15,9 +15,7 @@
  */
 package little.io
 
-import Implicits.IoByteArrayType
-
-class IoByteArrayTypeSpec extends org.scalatest.flatspec.AnyFlatSpec:
+class ByteArrayExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
   private val decoded = Array[Byte](87, 104, 121, 32, 100, 111, 101, 115, 32, 105, 116, 32, 109, 97, 116, 116, 101, 114, 63)
   private val encoded = Array[Byte](86, 50, 104, 53, 73, 71, 82, 118, 90, 88, 77, 103, 97, 88, 81, 103, 98, 87, 70, 48, 100, 71, 86, 121, 80, 119, 61, 61)
 

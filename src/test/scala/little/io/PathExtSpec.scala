@@ -23,11 +23,10 @@ import java.nio.file.StandardWatchEventKinds.*
 
 import scala.util.Try
 
-import Implicits.*
 import FileVisitEvent.*
 import TestPath.*
 
-class PathTypeSpec extends org.scalatest.flatspec.AnyFlatSpec:
+class PathExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
   given BufferSize = BufferSize(64)
 
   val text = "Now Peter Piper picked peppers but Run rocks rhymes."

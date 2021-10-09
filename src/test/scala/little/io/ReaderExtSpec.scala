@@ -15,15 +15,13 @@
  */
 package little.io
 
-import java.io.{ ByteArrayInputStream, ByteArrayOutputStream }
+import java.io.{ StringReader, StringWriter }
 
-import Implicits.*
-
-class InputStreamTypeSpec extends org.scalatest.flatspec.AnyFlatSpec:
-  "InputStream" should "read all bytes" in {
+class ReaderExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
+  "Reader" should "read all text" in {
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
-    val in = new ByteArrayInputStream(text.getBytes())
+    val in = StringReader(text)
 
-    try assert(new String(in.getBytes()) == text)
+    try assert(in.getText() == text)
     finally in.close()
   }

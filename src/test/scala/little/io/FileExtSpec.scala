@@ -17,10 +17,9 @@ package little.io
 
 import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, File, StringReader, StringWriter }
 
-import Implicits.*
 import TestFile.*
 
-class FileTypeSpec extends org.scalatest.flatspec.AnyFlatSpec:
+class FileExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
   given BufferSize = BufferSize(64)
 
   val text = "Now Peter Piper picked peppers\nbut Run rocks rhymes."
