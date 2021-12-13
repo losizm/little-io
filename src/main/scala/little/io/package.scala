@@ -15,5 +15,11 @@
  */
 package little.io
 
+import java.util.Base64
+
+private val EOL = sys.props("line.separator")
+private val Base64Encoder = Base64.getEncoder()
+private val Base64Decoder = Base64.getDecoder()
+
 /** Defines default buffer size. */
 given bufferSize: BufferSize = BufferSize(8192)
