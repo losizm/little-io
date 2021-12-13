@@ -8,7 +8,7 @@ The Scala library that provides extension methods to _java.io_ and _java.nio_.
 To get started, add **little-io** as a dependency to your project:
 
 ```scala
-libraryDependencies += "com.github.losizm" %% "little-io" % "6.0.0"
+libraryDependencies += "com.github.losizm" %% "little-io" % "7.0.0"
 ```
 
 _**NOTE:** Starting with 5.0, **little-io** is written for Scala 3. See
