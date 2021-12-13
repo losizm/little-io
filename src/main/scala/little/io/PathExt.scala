@@ -96,6 +96,18 @@ implicit class PathExt(path: Path) extends AnyVal:
       path
     }
 
+  /**
+   * Appends supplied source to file.
+   *
+   * @return path
+   *
+   * @throws IOException if source is same as target
+   */
+  def <<(source: Path): Path =
+    if Files.isSameFile(path, source) then
+      throw IOException("Cannot append file to itself")
+    source.withInputStream() { in => path << in }
+
   /** Reads file at path and returns its bytes. */
   def getBytes(): Array[Byte] =
     Files.readAllBytes(path)

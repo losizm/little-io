@@ -88,6 +88,18 @@ implicit class FileExt(file: File) extends AnyVal:
       file
     }
 
+  /**
+   * Appends supplied source to file.
+   *
+   * @return file
+   *
+   * @throws IOException if source is same as target
+   */
+  def <<(source: File): File =
+    if file.getCanonicalPath == source.getCanonicalPath then
+      throw IOException("Cannot append file to itself")
+    source.withInputStream { in => file << in }
+
   /** Reads file and returns its bytes. */
   def getBytes(): Array[Byte] =
     withInputStream(_.getBytes())

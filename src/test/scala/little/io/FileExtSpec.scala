@@ -15,7 +15,7 @@
  */
 package little.io
 
-import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, File, StringReader, StringWriter }
+import java.io.*
 
 import TestFile.*
 
@@ -119,6 +119,18 @@ class FileExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
     assert { (f / "../x" / "/y" / "/z").getCanonicalFile == File("/a/b/x/y/z") }
     assert { (f / "../x" / "../y" / "/z").getCanonicalFile == File("/a/b/y/z") }
     assert { (f / "../x" / "../y" / "../z").getCanonicalFile == File("/a/b/z") }
+  }
+
+  it should "be append with another file" in {
+    val source = createTempFile() << "Hello, world!"
+    val target = createTempFile() << source
+
+    assert(target.getText() == "Hello, world!")
+
+    target << source
+    assert(target.getText() == "Hello, world!" * 2)
+
+    assertThrows[IOException](target << target)
   }
 
   "PrintWriter" should "be created from file" in {

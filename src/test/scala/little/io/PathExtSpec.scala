@@ -15,7 +15,7 @@
  */
 package little.io
 
-import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, StringReader, StringWriter }
+import java.io.*
 import java.nio.ByteBuffer
 import java.nio.file.{ Files, FileVisitResult, Paths }
 import java.nio.file.StandardOpenOption.*
@@ -131,6 +131,18 @@ class PathExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
     assert { (p / "../x" / "/y" / "/z").normalize() == Paths.get("/a/b/x/y/z") }
     assert { (p / "../x" / "../y" / "/z").normalize() == Paths.get("/a/b/y/z") }
     assert { (p / "../x" / "../y" / "../z").normalize() == Paths.get("/a/b/z") }
+  }
+
+  it should "be append with another file" in {
+    val source = createTempFile() << "Hello, world!"
+    val target = createTempFile() << source
+
+    assert(target.getText() == "Hello, world!")
+
+    target << source
+    assert(target.getText() == "Hello, world!" * 2)
+
+    assertThrows[IOException](target << target)
   }
 
   "PrintWriter" should "be created from file" in {
