@@ -15,13 +15,20 @@
  */
 package little.io
 
-import java.io.{ StringReader, StringWriter }
+import java.io.{ InputStream, ByteArrayOutputStream }
 
-class ReaderExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
-  "Reader" should "read all text" in {
-    val text = "Now Peter Piper picked peppers but Run rocks rhymes."
-    val in = StringReader(text)
+/**
+ * Provides extension methods for `java.io.InputStream`.
+ *
+ * @see [[OutputStreamMethods]]
+ */
+implicit class InputStreamMethods[T <: InputStream](in: T) extends AnyVal:
+  /** Gets remaining bytes. */
+  def getBytes(): Array[Byte] =
+    val out = ByteArrayOutputStream()
+    val buf = new Array[Byte](bufferSize.value)
+    var len = 0
 
-    try assert(in.getText() == text)
-    finally in.close()
-  }
+    while { len = in.read(buf); len != -1 } do
+      out.write(buf, 0, len)
+    out.toByteArray

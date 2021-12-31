@@ -20,11 +20,11 @@ import java.io.{ BufferedReader, Reader, StringWriter }
 import scala.collection.mutable.ListBuffer
 
 /**
- * Provides extension methods to `java.io.Reader`.
+ * Provides extension methods for `java.io.Reader`.
  *
- * @see [[WriterExt]]
+ * @see [[WriterMethods]]
  */
-implicit class ReaderExt[T <: Reader](reader: T) extends AnyVal:
+implicit class ReaderMethods[T <: Reader](reader: T) extends AnyVal:
   /** Gets remaining text. */
   def getText(): String =
     val writer = StringWriter()

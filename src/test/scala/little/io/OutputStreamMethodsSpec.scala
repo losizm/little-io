@@ -15,14 +15,12 @@
  */
 package little.io
 
-class ByteArrayExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
-  private val decoded = Array[Byte](87, 104, 121, 32, 100, 111, 101, 115, 32, 105, 116, 32, 109, 97, 116, 116, 101, 114, 63)
-  private val encoded = Array[Byte](86, 50, 104, 53, 73, 71, 82, 118, 90, 88, 77, 103, 97, 88, 81, 103, 98, 87, 70, 48, 100, 71, 86, 121, 80, 119, 61, 61)
+import java.io.{ ByteArrayInputStream, ByteArrayOutputStream }
 
-  it should "convert byte array to base64 encoded array" in {
-    assert(decoded.toBase64Encoded.toSeq == encoded.toSeq)
-  }
-
-  it should "convert byte array to base64 decoded array" in {
-    assert(encoded.toBase64Decoded.toSeq == decoded.toSeq)
+class OutputStreamMethodsSpec extends org.scalatest.flatspec.AnyFlatSpec:
+  "OutputStream" should "write bytes from InputStream" in {
+    val text = "Now Peter Piper picked peppers but Run rocks rhymes."
+    val in = ByteArrayInputStream(text.getBytes)
+    val out = ByteArrayOutputStream() << in << text.getBytes
+    assert(out.toString == (text * 2))
   }

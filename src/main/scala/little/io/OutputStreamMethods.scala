@@ -18,11 +18,11 @@ package little.io
 import java.io.{ InputStream, OutputStream }
 
 /**
- * Provides extension methods to `java.io.OutputStream`.
+ * Provides extension methods for `java.io.OutputStream`.
  *
- * @see [[InputStreamExt]]
+ * @see [[InputStreamMethods]]
  */
-implicit class OutputStreamExt[T <: OutputStream](out: T) extends AnyVal:
+implicit class OutputStreamMethods[T <: OutputStream](out: T) extends AnyVal:
   /**
    * Appends supplied bytes to output stream.
    *

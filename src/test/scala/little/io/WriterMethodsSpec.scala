@@ -15,20 +15,15 @@
  */
 package little.io
 
-/** Provides extension methods to `Array[Byte]`. */
-implicit class ByteArrayExt(bytes: Array[Byte]) extends AnyVal:
-  /**
-   * Converts bytes to base64 encoded array.
-   *
-   * @return newly-allocated array with encoded bytes
-   */
-  def toBase64Encoded: Array[Byte] =
-    Base64Encoder.encode(bytes)
+import java.io.{ StringReader, StringWriter }
 
-  /**
-   * Converts bytes to base64 decoded array.
-   *
-   * @return newly-allocated array with decoded bytes
-   */
-  def toBase64Decoded: Array[Byte] =
-    Base64Decoder.decode(bytes)
+class WriterMethodsSpec extends org.scalatest.flatspec.AnyFlatSpec:
+  "Writer" should "write characters from Reader" in {
+    val text = "Now Peter Piper picked peppers but Run rocks rhymes."
+    val reader = StringReader(text)
+    val writer = StringWriter() << reader << text << text.toCharArray
+    assert(writer.toString == (text * 3))
+
+    writer.writeLine(text)
+    assert(writer.toString == (text * 4) + sys.props("line.separator"))
+  }

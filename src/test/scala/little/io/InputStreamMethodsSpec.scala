@@ -15,20 +15,13 @@
  */
 package little.io
 
-import java.io.{ InputStream, ByteArrayOutputStream }
+import java.io.{ ByteArrayInputStream, ByteArrayOutputStream }
 
-/**
- * Provides extension methods to `java.io.InputStream`.
- *
- * @see [[OutputStreamExt]]
- */
-implicit class InputStreamExt[T <: InputStream](in: T) extends AnyVal:
-  /** Gets remaining bytes. */
-  def getBytes(): Array[Byte] =
-    val out = ByteArrayOutputStream()
-    val buf = new Array[Byte](bufferSize.value)
-    var len = 0
+class InputStreamMethodsSpec extends org.scalatest.flatspec.AnyFlatSpec:
+  "InputStream" should "read all bytes" in {
+    val text = "Now Peter Piper picked peppers but Run rocks rhymes."
+    val in = new ByteArrayInputStream(text.getBytes())
 
-    while { len = in.read(buf); len != -1 } do
-      out.write(buf, 0, len)
-    out.toByteArray
+    try assert(new String(in.getBytes()) == text)
+    finally in.close()
+  }

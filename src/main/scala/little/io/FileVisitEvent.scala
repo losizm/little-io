@@ -22,7 +22,7 @@ import java.nio.file.attribute.BasicFileAttributes
 /**
  * Defines file visit events.
  *
- * @see [[PathExt.withVisitor PathExt.withVisitor()]]
+ * @see [[PathMethods.withVisitor PathMethods.withVisitor()]]
  */
 enum FileVisitEvent:
   /** Occurs before entries in directory are visited. */

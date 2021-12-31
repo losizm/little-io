@@ -17,13 +17,11 @@ package little.io
 
 import java.io.{ StringReader, StringWriter }
 
-class WriterExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
-  "Writer" should "write characters from Reader" in {
+class ReaderMethodsSpec extends org.scalatest.flatspec.AnyFlatSpec:
+  "Reader" should "read all text" in {
     val text = "Now Peter Piper picked peppers but Run rocks rhymes."
-    val reader = StringReader(text)
-    val writer = StringWriter() << reader << text << text.toCharArray
-    assert(writer.toString == (text * 3))
+    val in = StringReader(text)
 
-    writer.writeLine(text)
-    assert(writer.toString == (text * 4) + sys.props("line.separator"))
+    try assert(in.getText() == text)
+    finally in.close()
   }

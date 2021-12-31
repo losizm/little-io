@@ -19,7 +19,7 @@ import java.nio.file.Files
 
 import scala.sys.props as sysProps
 
-class StringExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
+class IoStringMethodsSpec extends org.scalatest.flatspec.AnyFlatSpec:
   it should "convert String to File" in {
     val file = sysProps("java.io.tmpdir").toFile
     assert(file.isDirectory)

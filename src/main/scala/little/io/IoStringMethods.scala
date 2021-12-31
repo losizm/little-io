@@ -19,8 +19,8 @@ import java.io.File
 import java.net.{ URLDecoder, URLEncoder }
 import java.nio.file.{ Path, Paths }
 
-/** Provides extension methods to `String`. */
-implicit class StringExt(s: String) extends AnyVal:
+/** Provides extension methods for `String`. */
+implicit class IoStringMethods(s: String) extends AnyVal:
   /** Converts string to File. */
   def toFile: File = File(s)
 

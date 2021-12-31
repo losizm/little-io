@@ -20,11 +20,11 @@ import java.io.*
 import scala.util.Try
 
 /**
- * Provides extension methods to `java.io.File`.
+ * Provides extension methods for `java.io.File`.
  *
- * @see [[PathExt]]
+ * @see [[PathMethods]]
  */
-implicit class FileExt(file: File) extends AnyVal:
+implicit class FileMethods(file: File) extends AnyVal:
   /**
    * Creates new file appending child path.
    *

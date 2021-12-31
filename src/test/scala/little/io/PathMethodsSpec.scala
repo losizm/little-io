@@ -26,7 +26,7 @@ import scala.util.Try
 import FileVisitEvent.*
 import TestPath.*
 
-class PathExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
+class PathMethodsSpec extends org.scalatest.flatspec.AnyFlatSpec:
   given BufferSize = BufferSize(64)
 
   val text = "Now Peter Piper picked peppers but Run rocks rhymes."

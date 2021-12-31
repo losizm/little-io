@@ -29,11 +29,11 @@ import scala.util.control.NonFatal
 import FileVisitEvent.*
 
 /**
- * Provides extension methods to `java.io.Writer`.
+ * Provides extension methods for `java.io.Writer`.
  *
- * @see [[ReaderExt]]
+ * @see [[ReaderMethods]]
  */
-implicit class WriterExt[T <: Writer](writer: T) extends AnyVal:
+implicit class WriterMethods[T <: Writer](writer: T) extends AnyVal:
   /**
    * Appends supplied characters to writer.
    *

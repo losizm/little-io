@@ -15,13 +15,20 @@
  */
 package little.io
 
-import java.io.{ ByteArrayInputStream, ByteArrayOutputStream }
+/** Provides extension methods for `Array[Byte]`. */
+implicit class ByteArrayMethods(bytes: Array[Byte]) extends AnyVal:
+  /**
+   * Converts bytes to base64 encoded array.
+   *
+   * @return newly-allocated array with encoded bytes
+   */
+  def toBase64Encoded: Array[Byte] =
+    Base64Encoder.encode(bytes)
 
-class InputStreamExtSpec extends org.scalatest.flatspec.AnyFlatSpec:
-  "InputStream" should "read all bytes" in {
-    val text = "Now Peter Piper picked peppers but Run rocks rhymes."
-    val in = new ByteArrayInputStream(text.getBytes())
-
-    try assert(new String(in.getBytes()) == text)
-    finally in.close()
-  }
+  /**
+   * Converts bytes to base64 decoded array.
+   *
+   * @return newly-allocated array with decoded bytes
+   */
+  def toBase64Decoded: Array[Byte] =
+    Base64Decoder.decode(bytes)

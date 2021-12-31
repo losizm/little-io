@@ -2,7 +2,7 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.losizm/little-io_3.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.losizm%22%20AND%20a:%22little-io_3%22)
 
-The Scala library that provides extension methods to _java.io_ and _java.nio_.
+The Scala library that provides extension methods for _java.io_ and _java.nio_.
 
 ## Getting Started
 To get started, add **little-io** as a dependency to your project:
@@ -23,23 +23,23 @@ Here's a taste of what **little-io** offers.
 If you have a `File`, you can easily get and set its content.
 
 ```scala
-import little.io.{ FileExt, StringExt }
+import little.io.{ FileMethods, IoStringMethods }
 
 val file = "greeting.txt".toFile
 
-// Open writer to file, set content, and close writer
+// Set file content to string
 file.setText("Hello, world!")
 
-// Open reader to file, get content, and close reader
+// Get file content as string
 println(file.getText()) // Hello, world!
 ```
 
-And here's another way of going at it.
+And, if you need to append content, here's how you would do that:
 
 ```scala
-import little.io.{ FileExt, StringExt }
+import little.io.{ FileMethods, IoStringMethods }
 
-// Append text to file and return reference to file
+// Append text and return reference to file
 val file = "greeting.txt".toFile << "Hello, world!"
 
 println(file.getText())
@@ -48,7 +48,7 @@ println(file.getText())
 The same applies to `java.nio.file.Path`.
 
 ```scala
-import little.io.{ PathExt, StringExt }
+import little.io.{ PathMethods, IoStringMethods }
 
 val path = "greeting.txt".toPath << "Hello, world!"
 println(path.getText())
@@ -58,7 +58,7 @@ And, if you prefer working with bytes, there are extension methods for those
 too.
 
 ```scala
-import little.io.{ FileExt, StringExt }
+import little.io.{ FileMethods, IoStringMethods }
 
 val file = "greeting.txt".toFile
 val data = "Hello, world!".getBytes("utf-8")
@@ -72,37 +72,33 @@ println(String(file.getBytes(), "utf-8"))
 ### Reading and Writing File Content
 
 If you have a `File` or `Path`, you can open an `OutputStream` or `Writer` to
-write its content, and you can open an `InputStream` or `Reader` to read its
-content, all with automatic resource management.
+write its content, and open an `InputStream` or `Reader` to read its content,
+all with automatic resource management.
 
 ```scala
-import little.io.{ FileExt, StringExt, WriterExt }
+import little.io.{ FileMethods, IoStringMethods, WriterMethods }
 
 val file = "numbers.txt".toFile
 
-// Open file, write 3 lines of text, and close file
+// Manages writer resource
 file.withWriter { out =>
   out write "One\n"
-
-  // WriterExt adds writeLine to Writer
   out writeLine "Two"
-
-  // WriterExt adds << to Writer
   out << "Three\n"
 }
 
-// Open file, read 3 lines of text, and close file
+// Manages reader resource
 file.withReader { in =>
-  println(in.readLine()) // One
-  println(in.readLine()) // Two
-  println(in.readLine()) // Three
+  println(in.readLine())
+  println(in.readLine())
+  println(in.readLine())
 }
 ```
 
-Or, if you'll be reading file content line by line, there's an even simpler way.
+If you'll be reading file content line by line, there's an even simpler way.
 
 ```scala
-import little.io.{ FileExt, StringExt }
+import little.io.{ FileMethods, IoStringMethods }
 
 // Open file, print each line, and close file
 "numbers.txt".toFile.forEachLine(println)
@@ -110,16 +106,16 @@ import little.io.{ FileExt, StringExt }
 
 ### Filtering, Mapping, and Folding Lines in File
 
-There are other comprehension methods for processing files line by line. You can
-filter and map the lines in a file to build a collection. Or you can fold them
-to a single value.
+There are other methods for processing files line by line. You can filter and
+map the lines in a file to build a collection, or you can fold them to a single
+value.
 
 ```scala
 import little.io.*
 
 val file = "test.txt".toFile << "abc\n123\nxyz\n789"
 
-// Filter lines with numbers only
+// Filter lines containing digits only
 val filtered = file.filterLines(_.matches("\\d+"))
 assert { filtered == Seq("123", "789") }
 
@@ -138,14 +134,14 @@ If you have a `File` or `Path` to a directory, you can map the files in the
 directory. Or you can fold them to generate a single value.
 
 ```scala
-import little.io.{ FileExt, StringExt }
+import little.io.{ FileMethods, IoStringMethods }
 
 val home = sys.props("user.home").toFile
 
-// Get file names in home directory
+// Get file names
 val fileNames = home.mapFiles(_.getName)
 
-// Total file sizes in home directory
+// Calculate disk usage
 val totalSize = home.foldFiles(0L) { _ + _.length }
 ```
 
@@ -161,13 +157,11 @@ events of interest.
 
 ```scala
 import java.nio.file.FileVisitResult
-import little.io.{ FileVisitEvent, StringExt, PathExt }
+import little.io.{ FileVisitEvent, IoStringMethods, PathMethods }
 import FileVisitEvent.{ PreVisitDirectory, VisitFile }
 
-val sourceDir = "src".toPath
-
 // Traverse directories starting at 'src'
-sourceDir.withVisitor {
+"./src".toPath.withVisitor {
   // Go deeper if not 'test' directory
   case PreVisitDirectory(dir, attrs) =>
     if dir.getFileName.toString == "test" then
@@ -199,7 +193,7 @@ With **little-io**, it's straight to the point.
 
 ```scala
 import java.nio.file.StandardWatchEventKinds.ENTRY_CREATE
-import little.io.{ PathExt, StringExt }
+import little.io.{ PathMethods, IoStringMethods }
 
 val dir = "/tmp".toPath
 
@@ -264,8 +258,9 @@ val in  = File("./src")
 val out = File("/tmp/src.zip")
 
 // Set file filter
-given FileFilter = file =>
-  file.isDirectory || file.getName.endsWith(".scala")
+given FileFilter with
+  def accept(f: File) =
+    f.isDirectory || f.getName.endsWith(".scala")
 
 // Zip .scala files in all directories
 zip(in, out)

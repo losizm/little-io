@@ -28,11 +28,11 @@ import scala.util.control.NonFatal
 import FileVisitEvent.*
 
 /**
- * Provides extension methods to `java.nio.file.Path`.
+ * Provides extension methods for `java.nio.file.Path`.
  *
- * @see [[FileExt]]
+ * @see [[FileMethods]]
  */
-implicit class PathExt(path: Path) extends AnyVal:
+implicit class PathMethods(path: Path) extends AnyVal:
   /**
    * Creates new file appending child path.
    *
@@ -257,7 +257,7 @@ implicit class PathExt(path: Path) extends AnyVal:
    * {{{
    * import java.nio.file.{ FileVisitResult, Paths }
    * import little.io.FileVisitEvent.{ PreVisitDirectory, VisitFile }
-   * import little.io.PathExt
+   * import little.io.PathMethods
    *
    * val sourceDir = Paths.get("src")
    *
