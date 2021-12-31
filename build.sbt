@@ -1,14 +1,15 @@
 organization := "com.github.losizm"
 name         := "little-io"
-version      := "7.0.0"
-description  := "The Scala library that provides extension methods to java.io and java.nio"
+version      := "8.0.0"
+description  := "The Scala library that provides extension methods for java.io and java.nio"
 homepage     := Some(url("https://github.com/losizm/little-io"))
 licenses     := List("Apache License, Version 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
 
-scalaVersion  := "3.1.0"
 versionScheme := Some("early-semver")
 
-scalacOptions ++= Seq("-deprecation", "-feature", "-new-syntax", "-Xfatal-warnings", "-Yno-experimental")
+scalaVersion  := "3.1.0"
+
+scalacOptions := Seq("-deprecation", "-feature", "-new-syntax", "-Xfatal-warnings", "-Yno-experimental")
 
 Compile / doc / scalacOptions := Seq(
   "-project", name.value,
