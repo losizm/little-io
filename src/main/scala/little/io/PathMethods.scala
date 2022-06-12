@@ -388,6 +388,38 @@ implicit class PathMethods(path: Path) extends AnyVal:
     }
 
   /**
+   * Opens DataInput to file at path and passes it to supplied function.
+   * Underlying input stream is closed on function's return.
+   *
+   * @param options open options
+   * @param f function
+   *
+   * @return value from supplied function
+   */
+  def withDataInput[T](options: OpenOption*)(f: DataInput => T): T =
+    withInputStream(options*) { in =>
+      val input = DataInputStream(in)
+      try f(input)
+      finally Try(input.close())
+    }
+
+  /**
+   * Opens DataOutput to file at path and passes it to supplied function.
+   * Underlying output stream is closed on function's return.
+   *
+   * @param options open options
+   * @param f function
+   *
+   * @return value from supplied function
+   */
+  def withDataOutput[T](options: OpenOption*)(f: DataOutput => T): T =
+    withOutputStream(options*) { out =>
+      val output = DataOutputStream(out)
+      try f(output)
+      finally Try(output.close())
+    }
+
+  /**
    * Opens FileChannel to file at path and passes it to supplied function.
    * Channel is closed on function's return.
    *

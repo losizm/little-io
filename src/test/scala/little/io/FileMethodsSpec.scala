@@ -55,6 +55,32 @@ class FileMethodsSpec extends org.scalatest.flatspec.AnyFlatSpec:
     }
   }
 
+  it should "write to data output and read from data input" in {
+    val file = createTempFile()
+
+    val result1 = file.withDataOutput { output =>
+      output.writeBoolean(true)
+      output.writeInt(45)
+      output.writeUTF("Hello, world!!!")
+      true
+    }
+
+    assert(result1)
+
+    val result2 = file.withDataOutput(true) { output =>
+      output.writeDouble(123.789)
+      200
+    }
+
+    assert(result2 == 200)
+
+    val result3 = file.withDataInput { input =>
+      (input.readBoolean(), input.readInt(), input.readUTF(), input.readDouble())
+    }
+
+    assert(result3 == (true, 45, "Hello, world!!!", 123.789))
+  }
+
   it should "be written to and read from random access file" in {
     val bytes = text.getBytes("utf-8")
     val file = createTempFile()

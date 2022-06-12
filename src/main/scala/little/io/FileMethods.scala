@@ -330,6 +330,46 @@ implicit class FileMethods(file: File) extends AnyVal:
     finally Try(writer.close())
 
   /**
+   * Opens DataInput to file and passes it to supplied function. Underlying
+   * input stream is closed on function's return.
+   *
+   * @param f function
+   *
+   * @return value from supplied function
+   */
+  def withDataInput[T](f: DataInput => T): T =
+    val input = DataInputStream(FileInputStream(file))
+    try f(input)
+    finally Try(input.close())
+
+  /**
+   * Opens DataOutput to file and passes it to supplied function. Underlying
+   * output stream is closed on function's return.
+   *
+   * @param f function
+   *
+   * @return value from supplied function
+   */
+  def withDataOutput[T](f: DataOutput => T): T =
+    withDataOutput(false)(f)
+
+  /**
+   * Opens DataOutput to file and passes it to supplied function. Underlying
+   * output stream is closed on function's return.
+   *
+   * @param append if `true`, output is appended to end of file; otherwise, if
+   * `false`, file is truncated and output is written at beginning of file
+   *
+   * @param f function
+   *
+   * @return value from supplied function
+   */
+  def withDataOutput[T](append: Boolean)(f: DataOutput => T): T =
+    val output = DataOutputStream(FileOutputStream(file, append))
+    try f(output)
+    finally Try(output.close())
+
+  /**
    * Opens RandomAccessFile with specified access mode and passes it to
    * function. File is closed on function's return.
    *
